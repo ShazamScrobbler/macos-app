@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
+		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
+		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
+		F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F48D995D19C8B0A90062A5FA /* Credits.rtf */; };
+		F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D996119C8B0A90062A5FA /* AppDelegate.m */; };
+		F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F48D996319C8B0A90062A5FA /* MainMenu.xib */; };
+		F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F48D996619C8B0A90062A5FA /* Images.xcassets */; };
+		F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D996D19C8B0A90062A5FA /* XCTest.framework */; };
+		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
+		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
+		F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F48D997019C8B0A90062A5FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F48D994319C8B0A80062A5FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F48D994A19C8B0A80062A5FA;
+			remoteInfo = SBShazamScrobbler;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F48D995219C8B0A80062A5FA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F48D995319C8B0A80062A5FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobbler-Info.plist"; sourceTree = "<group>"; };
+		F48D995819C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F48D995A19C8B0A90062A5FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBShazamScrobbler-Prefix.pch"; sourceTree = "<group>"; };
+		F48D995E19C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		F48D996019C8B0A90062A5FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F48D996119C8B0A90062A5FA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F48D996419C8B0A90062A5FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F48D996619C8B0A90062A5FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SBShazamScrobblerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48D996D19C8B0A90062A5FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
+		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBShazamScrobblerTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F48D994819C8B0A80062A5FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996919C8B0A90062A5FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */,
+				F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F48D994219C8B0A80062A5FA = {
+			isa = PBXGroup;
+			children = (
+				F48D995419C8B0A80062A5FA /* SBShazamScrobbler */,
+				F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */,
+				F48D994D19C8B0A80062A5FA /* Frameworks */,
+				F48D994C19C8B0A80062A5FA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F48D994C19C8B0A80062A5FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */,
+				F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F48D994D19C8B0A80062A5FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F48D994E19C8B0A80062A5FA /* Cocoa.framework */,
+				F48D996D19C8B0A90062A5FA /* XCTest.framework */,
+				F48D995019C8B0A80062A5FA /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F48D995019C8B0A80062A5FA /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F48D995119C8B0A80062A5FA /* AppKit.framework */,
+				F48D995219C8B0A80062A5FA /* CoreData.framework */,
+				F48D995319C8B0A80062A5FA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
+			isa = PBXGroup;
+			children = (
+				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
+				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
+				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
+				F48D996619C8B0A90062A5FA /* Images.xcassets */,
+				F48D995519C8B0A90062A5FA /* Supporting Files */,
+			);
+			path = SBShazamScrobbler;
+			sourceTree = "<group>";
+		};
+		F48D995519C8B0A90062A5FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */,
+				F48D995719C8B0A90062A5FA /* InfoPlist.strings */,
+				F48D995A19C8B0A90062A5FA /* main.m */,
+				F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */,
+				F48D995D19C8B0A90062A5FA /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */ = {
+			isa = PBXGroup;
+			children = (
+				F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */,
+				F48D997319C8B0A90062A5FA /* Supporting Files */,
+			);
+			path = SBShazamScrobblerTests;
+			sourceTree = "<group>";
+		};
+		F48D997319C8B0A90062A5FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */,
+				F48D997519C8B0A90062A5FA /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F48D997C19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobbler" */;
+			buildPhases = (
+				F48D994719C8B0A80062A5FA /* Sources */,
+				F48D994819C8B0A80062A5FA /* Frameworks */,
+				F48D994919C8B0A80062A5FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SBShazamScrobbler;
+			productName = SBShazamScrobbler;
+			productReference = F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F48D996B19C8B0A90062A5FA /* SBShazamScrobblerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F48D997F19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobblerTests" */;
+			buildPhases = (
+				F48D996819C8B0A90062A5FA /* Sources */,
+				F48D996919C8B0A90062A5FA /* Frameworks */,
+				F48D996A19C8B0A90062A5FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F48D997119C8B0A90062A5FA /* PBXTargetDependency */,
+			);
+			name = SBShazamScrobblerTests;
+			productName = SBShazamScrobblerTests;
+			productReference = F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F48D994319C8B0A80062A5FA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Stéphane Bruckert";
+				TargetAttributes = {
+					F48D996B19C8B0A90062A5FA = {
+						TestTargetID = F48D994A19C8B0A80062A5FA;
+					};
+				};
+			};
+			buildConfigurationList = F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F48D994219C8B0A80062A5FA;
+			productRefGroup = F48D994C19C8B0A80062A5FA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */,
+				F48D996B19C8B0A90062A5FA /* SBShazamScrobblerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F48D994919C8B0A80062A5FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
+				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
+				F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996A19C8B0A90062A5FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F48D994719C8B0A80062A5FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
+				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996819C8B0A90062A5FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F48D997119C8B0A90062A5FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */;
+			targetProxy = F48D997019C8B0A90062A5FA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F48D995719C8B0A90062A5FA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D995819C8B0A90062A5FA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F48D995D19C8B0A90062A5FA /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D995E19C8B0A90062A5FA /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		F48D996319C8B0A90062A5FA /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D996419C8B0A90062A5FA /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		F48D997519C8B0A90062A5FA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D997619C8B0A90062A5FA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F48D997A19C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F48D997B19C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F48D997D19C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F48D997E19C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		F48D998019C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		F48D998119C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D997A19C8B0A90062A5FA /* Debug */,
+				F48D997B19C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F48D997C19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobbler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D997D19C8B0A90062A5FA /* Debug */,
+				F48D997E19C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F48D997F19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobblerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D998019C8B0A90062A5FA /* Debug */,
+				F48D998119C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F48D994319C8B0A80062A5FA /* Project object */;
+}
