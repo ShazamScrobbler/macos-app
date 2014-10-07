@@ -12,7 +12,19 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    NSBundle* bundle = [[NSBundle mainBundle] initWithPath:@"~/Library/Containers/com.shazam.mac.Shazam/Data/Documents/"];
+    NSString* filePath = [bundle pathForResource:@"RecentTags" ofType:@"plist"];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        NSLog(@"File exists");
+    } else {
+        NSLog(@"File doesn't exist");
+    }
+
+    NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    for(NSString *key in [plist allKeys]) {
+        NSLog(@"%@",[plist objectForKey:key]);
+    }
 }
 
 @end

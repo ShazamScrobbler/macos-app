@@ -466,6 +466,7 @@
 				F48D997E19C8B0A90062A5FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F48D997F19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobblerTests" */ = {
 			isa = XCConfigurationList;
@@ -474,6 +475,7 @@
 				F48D998119C8B0A90062A5FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
