@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Song.h"
 
 @implementation AppDelegate
 
@@ -20,10 +21,31 @@
     } else {
         NSLog(@"File doesn't exist");
     }
-
+    
+    int dicInARow = 0;
+    Song *test;
     NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    for(NSString *key in [plist allKeys]) {
-        NSLog(@"%@",[plist objectForKey:key]);
+    for (NSDictionary *obj in [plist objectForKey:@"$objects"]) {
+        if ([obj isKindOfClass:[NSString class]]) {
+            if (dicInARow >= 2 && dicInARow <= 3) {
+                if (dicInARow == 2) {
+                    test = [[Song alloc] initWithArtist:[obj description]];
+                } else {
+                    [test setSong:[obj description]];
+                    NSLog(@"%@", [test description]);
+                }
+                dicInARow++;
+            } else {
+                dicInARow = 0;
+            }
+        }
+        if ([obj isKindOfClass:[NSDictionary class]]) {
+            dicInARow++;
+        }
+        if ([obj isKindOfClass:[NSNumber class]]) {
+            //NSLog(@"Number %@", obj);
+            dicInARow = 0;
+        }
     }
 }
 

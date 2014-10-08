@@ -18,6 +18,7 @@
 		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
 		F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */; };
+		F49B0C7419E4792C005B2357 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F49B0C7319E4792C005B2357 /* Song.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
 		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBShazamScrobblerTests.m; sourceTree = "<group>"; };
+		F49B0C7319E4792C005B2357 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		F49B0C7519E47937005B2357 /* Song.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 			children = (
 				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
 				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
+				F49B0C7319E4792C005B2357 /* Song.m */,
+				F49B0C7519E47937005B2357 /* Song.h */,
 				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
 				F48D996619C8B0A90062A5FA /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
@@ -252,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
 				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
 				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
 			);
