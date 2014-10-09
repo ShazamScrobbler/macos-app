@@ -12,6 +12,16 @@
 		F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2C19E729B6003F57AF /* LastFmController.m */; };
 		F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2F19E72C56003F57AF /* ShazamController.m */; };
 		F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D3419E72F14003F57AF /* ShazamConstants.m */; };
+		F46C5D3C19E74425003F57AF /* Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3719E74425003F57AF /* Panel.xib */; };
+		F46C5D3D19E74425003F57AF /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3819E74425003F57AF /* Status.png */; };
+		F46C5D3E19E74425003F57AF /* Status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3919E74425003F57AF /* Status@2x.png */; };
+		F46C5D3F19E74425003F57AF /* StatusHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3A19E74425003F57AF /* StatusHighlighted.png */; };
+		F46C5D4019E74425003F57AF /* StatusHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */; };
+		F46C5D4819E74499003F57AF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4319E74499003F57AF /* BackgroundView.m */; };
+		F46C5D4919E74499003F57AF /* Panel.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4519E74499003F57AF /* Panel.m */; };
+		F46C5D4A19E74499003F57AF /* StatusItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4719E74499003F57AF /* StatusItemView.m */; };
+		F46C5D5019E744FC003F57AF /* MenubarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4D19E744FC003F57AF /* MenubarController.m */; };
+		F46C5D5119E744FC003F57AF /* PanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4F19E744FC003F57AF /* PanelController.m */; };
 		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
 		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
@@ -47,6 +57,21 @@
 		F46C5D3119E72C67003F57AF /* ShazamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamController.h; sourceTree = "<group>"; };
 		F46C5D3319E72F04003F57AF /* ShazamConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamConstants.h; sourceTree = "<group>"; };
 		F46C5D3419E72F14003F57AF /* ShazamConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamConstants.m; sourceTree = "<group>"; };
+		F46C5D3719E74425003F57AF /* Panel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Panel.xib; sourceTree = "<group>"; };
+		F46C5D3819E74425003F57AF /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Status.png; sourceTree = "<group>"; };
+		F46C5D3919E74425003F57AF /* Status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Status@2x.png"; sourceTree = "<group>"; };
+		F46C5D3A19E74425003F57AF /* StatusHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StatusHighlighted.png; sourceTree = "<group>"; };
+		F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StatusHighlighted@2x.png"; sourceTree = "<group>"; };
+		F46C5D4219E74499003F57AF /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
+		F46C5D4319E74499003F57AF /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
+		F46C5D4419E74499003F57AF /* Panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Panel.h; sourceTree = "<group>"; };
+		F46C5D4519E74499003F57AF /* Panel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Panel.m; sourceTree = "<group>"; };
+		F46C5D4619E74499003F57AF /* StatusItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemView.h; sourceTree = "<group>"; };
+		F46C5D4719E74499003F57AF /* StatusItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemView.m; sourceTree = "<group>"; };
+		F46C5D4C19E744FC003F57AF /* MenubarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarController.h; sourceTree = "<group>"; };
+		F46C5D4D19E744FC003F57AF /* MenubarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarController.m; sourceTree = "<group>"; };
+		F46C5D4E19E744FC003F57AF /* PanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelController.h; sourceTree = "<group>"; };
+		F46C5D4F19E744FC003F57AF /* PanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelController.m; sourceTree = "<group>"; };
 		F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -123,6 +148,47 @@
 			name = Shazam;
 			sourceTree = "<group>";
 		};
+		F46C5D3619E743E6003F57AF /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
+				F46C5D3719E74425003F57AF /* Panel.xib */,
+				F46C5D3819E74425003F57AF /* Status.png */,
+				F46C5D3919E74425003F57AF /* Status@2x.png */,
+				F46C5D3A19E74425003F57AF /* StatusHighlighted.png */,
+				F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */,
+			);
+			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		F46C5D4119E74459003F57AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F46C5D4219E74499003F57AF /* BackgroundView.h */,
+				F46C5D4319E74499003F57AF /* BackgroundView.m */,
+				F46C5D4419E74499003F57AF /* Panel.h */,
+				F46C5D4519E74499003F57AF /* Panel.m */,
+				F46C5D4619E74499003F57AF /* StatusItemView.h */,
+				F46C5D4719E74499003F57AF /* StatusItemView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		F46C5D4B19E744B3003F57AF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
+				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
+				F46C5D4C19E744FC003F57AF /* MenubarController.h */,
+				F46C5D4D19E744FC003F57AF /* MenubarController.m */,
+				F46C5D4E19E744FC003F57AF /* PanelController.h */,
+				F46C5D4F19E744FC003F57AF /* PanelController.m */,
+				F46C5D3219E72C79003F57AF /* Shazam */,
+				F46C5D2A19E728F1003F57AF /* LastFm */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		F48D994219C8B0A80062A5FA = {
 			isa = PBXGroup;
 			children = (
@@ -167,12 +233,10 @@
 		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
 			isa = PBXGroup;
 			children = (
-				F46C5D3219E72C79003F57AF /* Shazam */,
-				F46C5D2A19E728F1003F57AF /* LastFm */,
+				F46C5D4B19E744B3003F57AF /* Controllers */,
+				F46C5D4119E74459003F57AF /* Views */,
 				F46C5D2B19E728FC003F57AF /* Models */,
-				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
-				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
-				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
+				F46C5D3619E743E6003F57AF /* User Interface */,
 				F48D996619C8B0A90062A5FA /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
 			);
@@ -288,7 +352,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+				F46C5D3C19E74425003F57AF /* Panel.xib in Resources */,
 				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
+				F46C5D4019E74425003F57AF /* StatusHighlighted@2x.png in Resources */,
+				F46C5D3D19E74425003F57AF /* Status.png in Resources */,
+				F46C5D3E19E74425003F57AF /* Status@2x.png in Resources */,
+				F46C5D3F19E74425003F57AF /* StatusHighlighted.png in Resources */,
 				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
 				F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */,
 			);
@@ -345,10 +414,15 @@
 				F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */,
 				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
 				F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */,
+				F46C5D4A19E74499003F57AF /* StatusItemView.m in Sources */,
+				F46C5D4919E74499003F57AF /* Panel.m in Sources */,
 				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
 				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
 				F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */,
+				F46C5D5119E744FC003F57AF /* PanelController.m in Sources */,
+				F46C5D4819E74499003F57AF /* BackgroundView.m in Sources */,
 				F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */,
+				F46C5D5019E744FC003F57AF /* MenubarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
