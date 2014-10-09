@@ -40,6 +40,10 @@
             }
         }
         if ([obj isKindOfClass:[NSDictionary class]]) {
+            NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
+            NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
+            NSLog(@"%@", newDate);
+            
             dicInARow++;
         }
         if ([obj isKindOfClass:[NSNumber class]]) {
