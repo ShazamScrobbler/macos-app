@@ -13,7 +13,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSBundle* bundle = [[NSBundle mainBundle] initWithPath:@"~/Library/Containers/com.shazam.mac.Shazam/Data/Documents/"];
+    NSBundle* bundle = [[NSBundle alloc] initWithPath:@"~/Library/Containers/com.shazam.mac.Shazam/Data/Documents/"];
     NSString* filePath = [bundle pathForResource:@"RecentTags" ofType:@"plist"];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
