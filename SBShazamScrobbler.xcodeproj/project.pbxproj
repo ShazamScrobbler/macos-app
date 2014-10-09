@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */; };
 		F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2719E722B6003F57AF /* LastFmConstants.m */; };
+		F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2C19E729B6003F57AF /* LastFmController.m */; };
+		F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2F19E72C56003F57AF /* ShazamController.m */; };
+		F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D3419E72F14003F57AF /* ShazamConstants.m */; };
 		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
 		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
@@ -38,6 +41,12 @@
 		9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.xcconfig"; path = "Pods/Pods-SBShazamScrobbler.xcconfig"; sourceTree = "<group>"; };
 		F46C5D2719E722B6003F57AF /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmConstants.m; sourceTree = "<group>"; };
 		F46C5D2919E722C2003F57AF /* LastFmConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmConstants.h; sourceTree = "<group>"; };
+		F46C5D2C19E729B6003F57AF /* LastFmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmController.m; sourceTree = "<group>"; };
+		F46C5D2E19E729C3003F57AF /* LastFmController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmController.h; sourceTree = "<group>"; };
+		F46C5D2F19E72C56003F57AF /* ShazamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamController.m; sourceTree = "<group>"; };
+		F46C5D3119E72C67003F57AF /* ShazamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamController.h; sourceTree = "<group>"; };
+		F46C5D3319E72F04003F57AF /* ShazamConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamConstants.h; sourceTree = "<group>"; };
+		F46C5D3419E72F14003F57AF /* ShazamConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamConstants.m; sourceTree = "<group>"; };
 		F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -83,6 +92,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F46C5D2A19E728F1003F57AF /* LastFm */ = {
+			isa = PBXGroup;
+			children = (
+				F46C5D2C19E729B6003F57AF /* LastFmController.m */,
+				F46C5D2E19E729C3003F57AF /* LastFmController.h */,
+				F46C5D2719E722B6003F57AF /* LastFmConstants.m */,
+				F46C5D2919E722C2003F57AF /* LastFmConstants.h */,
+			);
+			name = LastFm;
+			sourceTree = "<group>";
+		};
+		F46C5D2B19E728FC003F57AF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F49B0C7319E4792C005B2357 /* Song.m */,
+				F49B0C7519E47937005B2357 /* Song.h */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		F46C5D3219E72C79003F57AF /* Shazam */ = {
+			isa = PBXGroup;
+			children = (
+				F46C5D2F19E72C56003F57AF /* ShazamController.m */,
+				F46C5D3119E72C67003F57AF /* ShazamController.h */,
+				F46C5D3419E72F14003F57AF /* ShazamConstants.m */,
+				F46C5D3319E72F04003F57AF /* ShazamConstants.h */,
+			);
+			name = Shazam;
+			sourceTree = "<group>";
+		};
 		F48D994219C8B0A80062A5FA = {
 			isa = PBXGroup;
 			children = (
@@ -127,15 +167,14 @@
 		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
 			isa = PBXGroup;
 			children = (
-				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
+				F46C5D3219E72C79003F57AF /* Shazam */,
+				F46C5D2A19E728F1003F57AF /* LastFm */,
+				F46C5D2B19E728FC003F57AF /* Models */,
 				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
-				F49B0C7319E4792C005B2357 /* Song.m */,
-				F49B0C7519E47937005B2357 /* Song.h */,
+				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
 				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
 				F48D996619C8B0A90062A5FA /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
-				F46C5D2719E722B6003F57AF /* LastFmConstants.m */,
-				F46C5D2919E722C2003F57AF /* LastFmConstants.h */,
 			);
 			path = SBShazamScrobbler;
 			sourceTree = "<group>";
@@ -305,8 +344,11 @@
 			files = (
 				F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */,
 				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
+				F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */,
 				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
 				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
+				F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */,
+				F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
