@@ -44,8 +44,12 @@ static NSString *_defaultModel;
     _song = [aSong copy];
 }
 
+- (void)setDate:(NSDate *)aDate {
+    _date = [aDate copy];
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"Artist=%@ Song=%@",_artist,_song];
+    return [NSString stringWithFormat:@"Artist=%@ Song=%@ Date=%@",_artist,_song,_date];
 }
 
 @end

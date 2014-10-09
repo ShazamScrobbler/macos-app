@@ -17,11 +17,14 @@
 
 @property (copy) NSString *artist;
 @property (copy, nonatomic) NSString *song;
+@property (copy, nonatomic) NSDate *date;
+
 
 - (void)display;
 - (id)initWithArtist:(NSString *)artist;
 + (void)setDefaultModel:(NSString *)aModel;
 - (void)setSong:(NSString *)aSong;
+- (void)setDate:(NSDate *)aDate;
 - (NSString *)description;
 
 @end

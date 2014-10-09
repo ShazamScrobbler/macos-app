@@ -23,6 +23,7 @@
     }
     
     int dicInARow = 0;
+    bool numberBefore = NO;
     Song *test;
     NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     for (NSDictionary *obj in [plist objectForKey:@"$objects"]) {
@@ -32,7 +33,6 @@
                     test = [[Song alloc] initWithArtist:[obj description]];
                 } else {
                     [test setSong:[obj description]];
-                    NSLog(@"%@", [test description]);
                 }
                 dicInARow++;
             } else {
@@ -40,15 +40,19 @@
             }
         }
         if ([obj isKindOfClass:[NSDictionary class]]) {
-            NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
-            NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
-            NSLog(@"%@", newDate);
-            
+            if (numberBefore) {
+                NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
+                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
+                [test setDate:newDate];
+                NSLog(@"%@", [test description]);
+                numberBefore = NO;
+            }
             dicInARow++;
         }
         if ([obj isKindOfClass:[NSNumber class]]) {
             //NSLog(@"Number %@", obj);
             dicInARow = 0;
+            numberBefore = YES;
         }
     }
 }
