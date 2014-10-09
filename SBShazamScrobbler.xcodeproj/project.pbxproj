@@ -1,1124 +1,538 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>19ADBAE9053A465E908D1DB8</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-SBShazamScrobbler.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>8CDC010E86884012896F1104</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Pods-SBShazamScrobbler-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>9533E5B3EC304CF4B66AE70A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-SBShazamScrobbler.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Pods-SBShazamScrobbler.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>CC37679FB88A422A86C38D3D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>19ADBAE9053A465E908D1DB8</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F230C1ED27CB433FA1A6F71E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>F48D994219C8B0A80062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D995419C8B0A80062A5FA</string>
-				<string>F48D997219C8B0A90062A5FA</string>
-				<string>F48D994D19C8B0A80062A5FA</string>
-				<string>F48D994C19C8B0A80062A5FA</string>
-				<string>9533E5B3EC304CF4B66AE70A</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D994319C8B0A80062A5FA</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0510</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>St&#233;phane Bruckert</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>F48D996B19C8B0A90062A5FA</key>
-					<dict>
-						<key>TestTargetID</key>
-						<string>F48D994A19C8B0A80062A5FA</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>F48D994619C8B0A80062A5FA</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>F48D994219C8B0A80062A5FA</string>
-			<key>productRefGroup</key>
-			<string>F48D994C19C8B0A80062A5FA</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>F48D994A19C8B0A80062A5FA</string>
-				<string>F48D996B19C8B0A90062A5FA</string>
-			</array>
-		</dict>
-		<key>F48D994619C8B0A80062A5FA</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>F48D997A19C8B0A90062A5FA</string>
-				<string>F48D997B19C8B0A90062A5FA</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>F48D994719C8B0A80062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F49B0C7419E4792C005B2357</string>
-				<string>F48D996219C8B0A90062A5FA</string>
-				<string>F48D995B19C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D994819C8B0A80062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F48D994F19C8B0A80062A5FA</string>
-				<string>CC37679FB88A422A86C38D3D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D994919C8B0A80062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F48D995919C8B0A90062A5FA</string>
-				<string>F48D996719C8B0A90062A5FA</string>
-				<string>F48D995F19C8B0A90062A5FA</string>
-				<string>F48D996519C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D994A19C8B0A80062A5FA</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>F48D997C19C8B0A90062A5FA</string>
-			<key>buildPhases</key>
-			<array>
-				<string>F230C1ED27CB433FA1A6F71E</string>
-				<string>F48D994719C8B0A80062A5FA</string>
-				<string>F48D994819C8B0A80062A5FA</string>
-				<string>F48D994919C8B0A80062A5FA</string>
-				<string>8CDC010E86884012896F1104</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>SBShazamScrobbler</string>
-			<key>productName</key>
-			<string>SBShazamScrobbler</string>
-			<key>productReference</key>
-			<string>F48D994B19C8B0A80062A5FA</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>F48D994B19C8B0A80062A5FA</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>SBShazamScrobbler.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>F48D994C19C8B0A80062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D994B19C8B0A80062A5FA</string>
-				<string>F48D996C19C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D994D19C8B0A80062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D994E19C8B0A80062A5FA</string>
-				<string>F48D996D19C8B0A90062A5FA</string>
-				<string>F48D995019C8B0A80062A5FA</string>
-				<string>19ADBAE9053A465E908D1DB8</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D994E19C8B0A80062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Cocoa.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Cocoa.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>F48D994F19C8B0A80062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D994E19C8B0A80062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D995019C8B0A80062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D995119C8B0A80062A5FA</string>
-				<string>F48D995219C8B0A80062A5FA</string>
-				<string>F48D995319C8B0A80062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Other Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995119C8B0A80062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>AppKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/AppKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>F48D995219C8B0A80062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreData.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreData.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>F48D995319C8B0A80062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>F48D995419C8B0A80062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D996019C8B0A90062A5FA</string>
-				<string>F48D996119C8B0A90062A5FA</string>
-				<string>F49B0C7319E4792C005B2357</string>
-				<string>F49B0C7519E47937005B2357</string>
-				<string>F48D996319C8B0A90062A5FA</string>
-				<string>F48D996619C8B0A90062A5FA</string>
-				<string>F48D995519C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>SBShazamScrobbler</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995519C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D995619C8B0A90062A5FA</string>
-				<string>F48D995719C8B0A90062A5FA</string>
-				<string>F48D995A19C8B0A90062A5FA</string>
-				<string>F48D995C19C8B0A90062A5FA</string>
-				<string>F48D995D19C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995619C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>SBShazamScrobbler-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995719C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D995819C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995819C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995919C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D995719C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D995A19C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995B19C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D995A19C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D995C19C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>SBShazamScrobbler-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995D19C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D995E19C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>Credits.rtf</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995E19C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.rtf</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/Credits.rtf</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D995F19C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D995D19C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D996019C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>AppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D996119C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>AppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D996219C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D996119C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D996319C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D996419C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>MainMenu.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D996419C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/MainMenu.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D996519C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D996319C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D996619C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D996719C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D996619C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D996819C8B0A90062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F48D997919C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D996919C8B0A90062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F48D996F19C8B0A90062A5FA</string>
-				<string>F48D996E19C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D996A19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F48D997719C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F48D996B19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>F48D997F19C8B0A90062A5FA</string>
-			<key>buildPhases</key>
-			<array>
-				<string>F48D996819C8B0A90062A5FA</string>
-				<string>F48D996919C8B0A90062A5FA</string>
-				<string>F48D996A19C8B0A90062A5FA</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>F48D997119C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>SBShazamScrobblerTests</string>
-			<key>productName</key>
-			<string>SBShazamScrobblerTests</string>
-			<key>productReference</key>
-			<string>F48D996C19C8B0A90062A5FA</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>F48D996C19C8B0A90062A5FA</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>SBShazamScrobblerTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>F48D996D19C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>F48D996E19C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D996D19C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D996F19C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D994E19C8B0A80062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D997019C8B0A90062A5FA</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>F48D994319C8B0A80062A5FA</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>F48D994A19C8B0A80062A5FA</string>
-			<key>remoteInfo</key>
-			<string>SBShazamScrobbler</string>
-		</dict>
-		<key>F48D997119C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>F48D994A19C8B0A80062A5FA</string>
-			<key>targetProxy</key>
-			<string>F48D997019C8B0A90062A5FA</string>
-		</dict>
-		<key>F48D997219C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D997819C8B0A90062A5FA</string>
-				<string>F48D997319C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>SBShazamScrobblerTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997319C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D997419C8B0A90062A5FA</string>
-				<string>F48D997519C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997419C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>SBShazamScrobblerTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997519C8B0A90062A5FA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>F48D997619C8B0A90062A5FA</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997619C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997719C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D997519C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D997819C8B0A90062A5FA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>SBShazamScrobblerTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F48D997919C8B0A90062A5FA</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F48D997819C8B0A90062A5FA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F48D997A19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_ENABLE_OBJC_EXCEPTIONS</key>
-				<string>YES</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>F48D997B19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf-with-dsym</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_ENABLE_OBJC_EXCEPTIONS</key>
-				<string>YES</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>10.9</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>F48D997C19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>F48D997D19C8B0A90062A5FA</string>
-				<string>F48D997E19C8B0A90062A5FA</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>F48D997D19C8B0A90062A5FA</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>9533E5B3EC304CF4B66AE70A</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>F48D997E19C8B0A90062A5FA</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>9533E5B3EC304CF4B66AE70A</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>F48D997F19C8B0A90062A5FA</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>F48D998019C8B0A90062A5FA</string>
-				<string>F48D998119C8B0A90062A5FA</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>F48D998019C8B0A90062A5FA</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>F48D998119C8B0A90062A5FA</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler</string>
-				<key>COMBINE_HIDPI_IMAGES</key>
-				<string>YES</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>SBShazamScrobbler/SBShazamScrobbler-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>F49B0C7319E4792C005B2357</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>Song.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F49B0C7419E4792C005B2357</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F49B0C7319E4792C005B2357</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>F49B0C7519E47937005B2357</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Song.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>F48D994319C8B0A80062A5FA</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */; };
+		F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2719E722B6003F57AF /* LastFmConstants.m */; };
+		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
+		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
+		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
+		F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F48D995D19C8B0A90062A5FA /* Credits.rtf */; };
+		F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D996119C8B0A90062A5FA /* AppDelegate.m */; };
+		F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F48D996319C8B0A90062A5FA /* MainMenu.xib */; };
+		F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F48D996619C8B0A90062A5FA /* Images.xcassets */; };
+		F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D996D19C8B0A90062A5FA /* XCTest.framework */; };
+		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
+		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
+		F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */; };
+		F49B0C7419E4792C005B2357 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F49B0C7319E4792C005B2357 /* Song.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F48D997019C8B0A90062A5FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F48D994319C8B0A80062A5FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F48D994A19C8B0A80062A5FA;
+			remoteInfo = SBShazamScrobbler;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.xcconfig"; path = "Pods/Pods-SBShazamScrobbler.xcconfig"; sourceTree = "<group>"; };
+		F46C5D2719E722B6003F57AF /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmConstants.m; sourceTree = "<group>"; };
+		F46C5D2919E722C2003F57AF /* LastFmConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmConstants.h; sourceTree = "<group>"; };
+		F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F48D995219C8B0A80062A5FA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F48D995319C8B0A80062A5FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobbler-Info.plist"; sourceTree = "<group>"; };
+		F48D995819C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F48D995A19C8B0A90062A5FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBShazamScrobbler-Prefix.pch"; sourceTree = "<group>"; };
+		F48D995E19C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		F48D996019C8B0A90062A5FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F48D996119C8B0A90062A5FA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F48D996419C8B0A90062A5FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F48D996619C8B0A90062A5FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SBShazamScrobblerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48D996D19C8B0A90062A5FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
+		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBShazamScrobblerTests.m; sourceTree = "<group>"; };
+		F49B0C7319E4792C005B2357 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		F49B0C7519E47937005B2357 /* Song.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F48D994819C8B0A80062A5FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */,
+				CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996919C8B0A90062A5FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */,
+				F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F48D994219C8B0A80062A5FA = {
+			isa = PBXGroup;
+			children = (
+				F48D995419C8B0A80062A5FA /* SBShazamScrobbler */,
+				F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */,
+				F48D994D19C8B0A80062A5FA /* Frameworks */,
+				F48D994C19C8B0A80062A5FA /* Products */,
+				9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		F48D994C19C8B0A80062A5FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */,
+				F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F48D994D19C8B0A80062A5FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F48D994E19C8B0A80062A5FA /* Cocoa.framework */,
+				F48D996D19C8B0A90062A5FA /* XCTest.framework */,
+				F48D995019C8B0A80062A5FA /* Other Frameworks */,
+				19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F48D995019C8B0A80062A5FA /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F48D995119C8B0A80062A5FA /* AppKit.framework */,
+				F48D995219C8B0A80062A5FA /* CoreData.framework */,
+				F48D995319C8B0A80062A5FA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
+			isa = PBXGroup;
+			children = (
+				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
+				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
+				F49B0C7319E4792C005B2357 /* Song.m */,
+				F49B0C7519E47937005B2357 /* Song.h */,
+				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
+				F48D996619C8B0A90062A5FA /* Images.xcassets */,
+				F48D995519C8B0A90062A5FA /* Supporting Files */,
+				F46C5D2719E722B6003F57AF /* LastFmConstants.m */,
+				F46C5D2919E722C2003F57AF /* LastFmConstants.h */,
+			);
+			path = SBShazamScrobbler;
+			sourceTree = "<group>";
+		};
+		F48D995519C8B0A90062A5FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */,
+				F48D995719C8B0A90062A5FA /* InfoPlist.strings */,
+				F48D995A19C8B0A90062A5FA /* main.m */,
+				F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */,
+				F48D995D19C8B0A90062A5FA /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */ = {
+			isa = PBXGroup;
+			children = (
+				F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */,
+				F48D997319C8B0A90062A5FA /* Supporting Files */,
+			);
+			path = SBShazamScrobblerTests;
+			sourceTree = "<group>";
+		};
+		F48D997319C8B0A90062A5FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */,
+				F48D997519C8B0A90062A5FA /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F48D997C19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobbler" */;
+			buildPhases = (
+				F230C1ED27CB433FA1A6F71E /* Check Pods Manifest.lock */,
+				F48D994719C8B0A80062A5FA /* Sources */,
+				F48D994819C8B0A80062A5FA /* Frameworks */,
+				F48D994919C8B0A80062A5FA /* Resources */,
+				8CDC010E86884012896F1104 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SBShazamScrobbler;
+			productName = SBShazamScrobbler;
+			productReference = F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F48D996B19C8B0A90062A5FA /* SBShazamScrobblerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F48D997F19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobblerTests" */;
+			buildPhases = (
+				F48D996819C8B0A90062A5FA /* Sources */,
+				F48D996919C8B0A90062A5FA /* Frameworks */,
+				F48D996A19C8B0A90062A5FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F48D997119C8B0A90062A5FA /* PBXTargetDependency */,
+			);
+			name = SBShazamScrobblerTests;
+			productName = SBShazamScrobblerTests;
+			productReference = F48D996C19C8B0A90062A5FA /* SBShazamScrobblerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F48D994319C8B0A80062A5FA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Stéphane Bruckert";
+				TargetAttributes = {
+					F48D996B19C8B0A90062A5FA = {
+						TestTargetID = F48D994A19C8B0A80062A5FA;
+					};
+				};
+			};
+			buildConfigurationList = F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F48D994219C8B0A80062A5FA;
+			productRefGroup = F48D994C19C8B0A80062A5FA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */,
+				F48D996B19C8B0A90062A5FA /* SBShazamScrobblerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F48D994919C8B0A80062A5FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
+				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
+				F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996A19C8B0A90062A5FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8CDC010E86884012896F1104 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-SBShazamScrobbler-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F230C1ED27CB433FA1A6F71E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F48D994719C8B0A80062A5FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */,
+				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
+				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
+				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48D996819C8B0A90062A5FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F48D997119C8B0A90062A5FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F48D994A19C8B0A80062A5FA /* SBShazamScrobbler */;
+			targetProxy = F48D997019C8B0A90062A5FA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F48D995719C8B0A90062A5FA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D995819C8B0A90062A5FA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F48D995D19C8B0A90062A5FA /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D995E19C8B0A90062A5FA /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		F48D996319C8B0A90062A5FA /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D996419C8B0A90062A5FA /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		F48D997519C8B0A90062A5FA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F48D997619C8B0A90062A5FA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F48D997A19C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F48D997B19C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F48D997D19C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F48D997E19C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		F48D998019C8B0A90062A5FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		F48D998119C8B0A90062A5FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D997A19C8B0A90062A5FA /* Debug */,
+				F48D997B19C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F48D997C19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobbler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D997D19C8B0A90062A5FA /* Debug */,
+				F48D997E19C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F48D997F19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "SBShazamScrobblerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48D998019C8B0A90062A5FA /* Debug */,
+				F48D998119C8B0A90062A5FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F48D994319C8B0A80062A5FA /* Project object */;
+}

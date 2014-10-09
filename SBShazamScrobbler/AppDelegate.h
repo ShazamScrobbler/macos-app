@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define SESSION_KEY @"sb.stephanebruckert.shazamscrobbler.session"
+#define USERNAME_KEY @"sb.stephanebruckert.shazamscrobbler.username"
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
