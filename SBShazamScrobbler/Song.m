@@ -49,7 +49,7 @@ static NSString *_defaultModel;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"Artist=%@ Song=%@ Date=%@",_artist,_song,_date];
+    return [NSString stringWithFormat:@"Date=%@; Artist=%@; Song=%@",_date, _artist, _song];
 }
 
 @end
