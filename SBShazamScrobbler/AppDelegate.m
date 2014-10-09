@@ -50,7 +50,6 @@
             dicInARow++;
         }
         if ([obj isKindOfClass:[NSNumber class]]) {
-            //NSLog(@"Number %@", obj);
             dicInARow = 0;
             numberBefore = YES;
         }
