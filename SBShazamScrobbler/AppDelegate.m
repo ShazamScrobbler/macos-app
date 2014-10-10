@@ -43,7 +43,7 @@ void *kContextActivePanel = &kContextActivePanel;
     // Install icon into the menu bar
     self.menubarController = [[MenubarController alloc] init];
     [ShazamController doShazam];
-    [ShazamController monitorShazam];
+    [ShazamController monitorShazam:@"/Users/stephane/Library/Containers/com.shazam.mac.Shazam/Data/Documents/RecentTags.plist"];
     [LastFmController doLastFm];
 }
 
