@@ -44,7 +44,6 @@ void *kContextActivePanel = &kContextActivePanel;
     self.menubarController = [[MenubarController alloc] init];
     [ShazamController doShazam];
     [ShazamController monitorShazam:@"/Users/stephane/Library/Containers/com.shazam.mac.Shazam/Data/Documents/RecentTags.plist"];
-    [LastFmController doLastFm];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender

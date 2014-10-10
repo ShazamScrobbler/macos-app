@@ -15,15 +15,15 @@
     // Protected instance variables (not recommended)
 }
 
-@property (copy) NSString *artist;
+@property (copy, nonatomic) NSString *artist;
 @property (copy, nonatomic) NSString *song;
 @property (copy, nonatomic) NSDate *date;
 
 
 - (void)display;
-- (id)initWithArtist:(NSString *)artist;
+- (id)initWithSong:(NSString *)song;
 + (void)setDefaultModel:(NSString *)aModel;
-- (void)setSong:(NSString *)aSong;
+- (void)setArtist:(NSString *)aArtist;
 - (void)setDate:(NSDate *)aDate;
 - (NSString *)description;
 

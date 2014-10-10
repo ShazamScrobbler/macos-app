@@ -9,9 +9,11 @@
 #ifndef SBShazamScrobbler_LastFmController_h
 #define SBShazamScrobbler_LastFmController_h
 
+#import "Song.h"
+
 @interface LastFmController : NSObject
 
-+ (void)doLastFm;
++ (void)doLastFm:(Song*) song;
 
 @end
 

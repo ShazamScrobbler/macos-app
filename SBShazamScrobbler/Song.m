@@ -20,28 +20,28 @@ static NSString *_defaultModel;
     NSLog(@"My song: %@", self.artist);
 }
 
-- (id)initWithArtist:(NSString *)artist {
+- (id)initWithSong:(NSString *)song {
     self = [super init];
     if (self) {
         // Any custom setup work goes here
-        _artist = [artist copy];
+        _song = [song copy];
         _odometer = 0;
-        _song = @" ";
+        _artist = @" ";
     }
     return self;
 }
 
 - (id)init {
     // Forward to the "designated" initialization method
-    return [self initWithArtist:_defaultModel];
+    return [self initWithSong:_defaultModel];
 }
 
 + (void)setDefaultModel:(NSString *)aModel {
     _defaultModel = [aModel copy];
 }
 
-- (void)setSong:(NSString *)aSong {
-    _song = [aSong copy];
+- (void)setArtist:(NSString *)aArtist {
+    _artist = [aArtist copy];
 }
 
 - (void)setDate:(NSDate *)aDate {

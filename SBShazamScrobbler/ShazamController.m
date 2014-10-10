@@ -10,6 +10,7 @@
 #import "ShazamController.h"
 #import "Song.h"
 #import "ShazamConstants.h"
+#import "LastFmController.h"
 
 @interface ShazamController ()
 
@@ -50,9 +51,9 @@
         if ([obj isKindOfClass:[NSString class]]) {
             if (dicInARow >= 2 && dicInARow <= 3) {
                 if (dicInARow == 2) {
-                    test = [[Song alloc] initWithArtist:[obj description]];
+                    test = [[Song alloc] initWithSong:[obj description]];
                 } else {
-                    [test setSong:[obj description]];
+                    [test setArtist:[obj description]];
                 }
                 dicInARow++;
                 lookForFirstDicAfterStrings = YES;
@@ -66,6 +67,7 @@
                 NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
                 [test setDate:newDate];
                 NSLog(@"%@", [test description]);
+                [LastFmController doLastFm:test];
                 lookForFirstDicAfterStrings = NO;
             }
             dicInARow++;

@@ -10,14 +10,14 @@
 #import <LastFm/LastFm.h>
 #import "LastFmConstants.h"
 #import "LastFmController.h"
-
+#import "Song.h"
 @interface LastFmController ()
 
 @end
 
 @implementation LastFmController : NSObject
 
-+ (void)doLastFm {
++ (void)doLastFm:(Song*) song {
     // Set the Last.fm session info
     [LastFm sharedInstance].apiKey = APIKEY;
     [LastFm sharedInstance].apiSecret = SECRET;
@@ -27,7 +27,7 @@
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
         // Scrobble a track
-        [[LastFm sharedInstance] sendScrobbledTrack:@"Wish You Were Here" byArtist:@"Pink Floyd" onAlbum:@"Wish You Were Here" withDuration:534 atTimestamp:(int)[[NSDate date] timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+        [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
             NSLog(@"scrobble result: %@", result);
         } failureHandler:^(NSError *error) {
             NSLog(@"scrobble error: %@", error);
