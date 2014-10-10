@@ -30,9 +30,16 @@
     int dicInARow = 0;
     bool numberBefore = NO;
     Song *test;
-    NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     
-    for (NSDictionary *obj in [plist objectForKey:@"$objects"]) {
+    //Dictionary of tags
+    NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    NSArray* myDic = [plist objectForKey:@"$objects"];
+    NSDictionary *obj;
+    
+    int lastTag = 10000;
+    int i;
+    for (i = lastTag; i < [myDic count]; i++) {
+        obj = [myDic objectAtIndex:i];
         if ([obj isKindOfClass:[NSString class]]) {
             if (dicInARow >= 2 && dicInARow <= 3) {
                 if (dicInARow == 2) {
@@ -60,7 +67,9 @@
             numberBefore = YES;
         }
     }
-
+    lastTag = i;
+    NSLog(@"Last tag: %d", i);
+    
 }
 
 @end
