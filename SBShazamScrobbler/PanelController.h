@@ -20,11 +20,14 @@
     __unsafe_unretained id<PanelControllerDelegate> _delegate;
     __unsafe_unretained NSSearchField *_searchField;
     __unsafe_unretained NSTextField *_textField;
+    __unsafe_unretained NSTableColumn *_scrobbleTable;
 }
 
 @property (nonatomic, unsafe_unretained) IBOutlet BackgroundView *backgroundView;
 @property (nonatomic, unsafe_unretained) IBOutlet NSSearchField *searchField;
 @property (nonatomic, unsafe_unretained) IBOutlet NSTextField *textField;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTableColumn *scrobbleTable;
+
 
 @property (nonatomic) BOOL hasActivePanel;
 @property (nonatomic, unsafe_unretained, readonly) id<PanelControllerDelegate> delegate;

@@ -8,7 +8,7 @@
 
 #define SEARCH_INSET 17
 
-#define POPUP_HEIGHT 122
+#define POPUP_HEIGHT 300
 #define PANEL_WIDTH 280
 #define MENU_ANIMATION_DURATION .1
 
@@ -20,6 +20,7 @@
 @synthesize delegate = _delegate;
 @synthesize searchField = _searchField;
 @synthesize textField = _textField;
+@synthesize scrobbleTable = _scrobbleTable;
 
 #pragma mark -
 
