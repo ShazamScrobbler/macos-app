@@ -12,6 +12,7 @@
 @interface ShazamController : NSObject
 
 + (void)doShazam;
++ (void)monitorShazam;
 
 @end
 
