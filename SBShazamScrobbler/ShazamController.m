@@ -18,6 +18,12 @@
 @implementation ShazamController : NSObject
 
 + (void)doShazam {
+    //Initialize previous session information
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if ([prefs integerForKey:@"lastTag"] < 0) {
+        [prefs setInteger:0 forKey:@"lastTag"];
+    };
+    
     NSBundle* bundle = [[NSBundle alloc] initWithPath:PATH];
     NSString* filePath = [bundle pathForResource:FILENAME ofType:EXTENSION];
     
@@ -36,9 +42,10 @@
     NSArray* myDic = [plist objectForKey:@"$objects"];
     NSDictionary *obj;
     
-    int lastTag = 10000;
     int i;
-    for (i = lastTag; i < [myDic count]; i++) {
+    NSInteger myInt = [prefs integerForKey:@"lastTag"];
+    NSLog(@"my preivous %d", (int)myInt);
+    for (i = ((int)myInt); i < [myDic count]; i++) {
         obj = [myDic objectAtIndex:i];
         if ([obj isKindOfClass:[NSString class]]) {
             if (dicInARow >= 2 && dicInARow <= 3) {
@@ -67,8 +74,10 @@
             numberBefore = YES;
         }
     }
-    lastTag = i;
     NSLog(@"Last tag: %d", i);
+    
+    // saving an NSInteger
+    [prefs setInteger:i forKey:@"lastTag"];
     
 }
 
