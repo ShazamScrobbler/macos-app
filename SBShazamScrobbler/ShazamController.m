@@ -98,9 +98,8 @@
                                               [blockSelf monitorShazam:path];
                                               [blockSelf doShazam];
                                           }
-                                          // Reload config file
                                       });
-    dispatch_source_set_cancel_handler(source, ^(void) 
+    dispatch_source_set_cancel_handler(source, ^(void)
                                        {
                                            close(fildes);
                                        });
