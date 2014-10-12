@@ -18,6 +18,7 @@
 @property (copy, nonatomic) NSString *artist;
 @property (copy, nonatomic) NSString *song;
 @property (copy, nonatomic) NSDate *date;
+@property (nonatomic) bool scrobbled;
 
 
 - (void)display;
@@ -25,6 +26,7 @@
 + (void)setDefaultModel:(NSString *)aModel;
 - (void)setArtist:(NSString *)aArtist;
 - (void)setDate:(NSDate *)aDate;
+- (void)setScrobbled;
 - (NSString *)description;
 
 @end

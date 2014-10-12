@@ -27,6 +27,7 @@ static NSString *_defaultModel;
         _song = [song copy];
         _odometer = 0;
         _artist = @" ";
+        _scrobbled = NO;
     }
     return self;
 }
@@ -46,6 +47,10 @@ static NSString *_defaultModel;
 
 - (void)setDate:(NSDate *)aDate {
     _date = [aDate copy];
+}
+
+- (void)setScrobbled {
+    _scrobbled = YES;
 }
 
 - (NSString *)description {

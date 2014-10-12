@@ -23,17 +23,17 @@
     [LastFm sharedInstance].apiSecret = SECRET;
     
     [[LastFm sharedInstance] getSessionForUser:USERNAME password:PASSWORD successHandler:^(NSDictionary *result) {
-        NSLog(@"result: %@", result);
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
         // Scrobble a track
         [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-            NSLog(@"scrobble result: %@", result);
+            NSLog(@"%@ scrobbled!", [song description]);
+            [song setScrobbled];
         } failureHandler:^(NSError *error) {
             NSLog(@"scrobble error: %@", error);
         }];
     } failureHandler:^(NSError *error) {
-        NSLog(@"error: %@", error);
+        NSLog(@"Couldn't make Last.fm session %@", error);
     }];
 }
 

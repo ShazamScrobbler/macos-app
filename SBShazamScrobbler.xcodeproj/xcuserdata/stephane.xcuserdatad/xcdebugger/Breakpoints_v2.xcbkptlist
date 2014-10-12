@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SBShazamScrobbler/Song.m"
-            timestampString = "434480660.060164"
+            timestampString = "434760900.657216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "-setArtist:"
             landmarkType = "5">
          </BreakpointContent>

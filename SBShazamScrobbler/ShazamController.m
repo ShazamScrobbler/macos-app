@@ -29,9 +29,7 @@
     NSBundle* bundle = [[NSBundle alloc] initWithPath:PATH];
     NSString* filePath = [bundle pathForResource:FILENAME ofType:EXTENSION];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        NSLog(@"File exists");
-    } else {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         NSLog(@"File doesn't exist");
     }
     
@@ -66,7 +64,6 @@
                 NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
                 NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
                 [test setDate:newDate];
-                NSLog(@"%@", [test description]);
                 [LastFmController doLastFm:test];
                 lookForFirstDicAfterStrings = NO;
             }
