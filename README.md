@@ -9,7 +9,8 @@ Shazam Desktop Scrobbler for Mac OS X.
  - scrobble songs from a mix,
  - scrobble your vinyles (finally!),
  - scrobble the radio,
- - scrobble the OST of a movie.
+ - scrobble the OST of a movie,
+ - scrobble music from a game (i.e. GTA radios).
  
 The Shazam Desktop Scrobbler is for you!
 
