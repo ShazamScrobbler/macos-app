@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "LastFmController.h"
 #import "ShazamController.h"
+#import "ShazamConstants.h"
 
 @implementation AppDelegate
 
@@ -42,8 +43,10 @@ void *kContextActivePanel = &kContextActivePanel;
 {
     // Install icon into the menu bar
     self.menubarController = [[MenubarController alloc] init];
+    
+    [LastFmController init];
     [ShazamController doShazam];
-    [ShazamController monitorShazam:@"/Users/stephane/Library/Containers/com.shazam.mac.Shazam/Data/Documents/RecentTags.plist"];
+    [ShazamController monitorShazam:[ShazamConstants getFullPath]];
     
     NSString *bundlePath = [[NSBundle mainBundle]bundlePath]; //Path of your bundle
     NSString *path = [bundlePath stringByAppendingPathComponent:@"Scrobbles.plist"];
@@ -57,12 +60,9 @@ void *kContextActivePanel = &kContextActivePanel;
     
     NSMutableDictionary *data;
     
-    if ([fileManager fileExistsAtPath: path])
-    {
+    if ([fileManager fileExistsAtPath: path]) {
         data = [[NSMutableDictionary alloc] initWithContentsOfFile: path];  // if file exist at path initialise your dictionary with its data
-    }
-    else
-    {
+    } else {
         // If the file doesn’t exist, create an empty dictionary
         data = [[NSMutableDictionary alloc] init];
     }

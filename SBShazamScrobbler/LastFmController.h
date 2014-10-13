@@ -13,7 +13,8 @@
 
 @interface LastFmController : NSObject
 
-+ (void)doLastFm:(Song*) song;
++ (void)init;
++ (void)scrobble:(Song*) song;
 
 @end
 

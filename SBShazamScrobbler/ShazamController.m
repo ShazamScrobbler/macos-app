@@ -38,7 +38,7 @@
     NSArray* myDic = [plist objectForKey:@"$objects"];
     NSDictionary *obj;
     
-    Song *test;
+    Song *song;
     int i, dicInARow = 0;
     int lastTag = (int)[prefs integerForKey:@"lastTag"];
     bool lookForFirstDicAfterStrings = NO;
@@ -49,9 +49,9 @@
         if ([obj isKindOfClass:[NSString class]]) {
             if (dicInARow >= 2 && dicInARow <= 3) {
                 if (dicInARow == 2) {
-                    test = [[Song alloc] initWithSong:[obj description]];
+                    song = [[Song alloc] initWithSong:[obj description]];
                 } else {
-                    [test setArtist:[obj description]];
+                    [song setArtist:[obj description]];
                 }
                 dicInARow++;
                 lookForFirstDicAfterStrings = YES;
@@ -63,8 +63,8 @@
             if (lookForFirstDicAfterStrings) {
                 NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
                 NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
-                [test setDate:newDate];
-                [LastFmController doLastFm:test];
+                [song setDate:newDate];
+                [LastFmController scrobble:song];
                 lookForFirstDicAfterStrings = NO;
             }
             dicInARow++;
@@ -73,6 +73,10 @@
             dicInARow = 0;
         }
     }
+    
+    // save position of last unscrobbled
+    //compare with i
+    // if pos < i setinterger pos
     
     // Saving the last tag position
     [prefs setInteger:(i - 1) forKey:@"lastTag"];

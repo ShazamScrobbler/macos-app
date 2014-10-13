@@ -17,20 +17,24 @@
 
 @implementation LastFmController : NSObject
 
-+ (void)doLastFm:(Song*) song {
++ (void) init {
     // Set the Last.fm session info
     [LastFm sharedInstance].apiKey = APIKEY;
     [LastFm sharedInstance].apiSecret = SECRET;
-    
+}
+
++ (void)scrobble:(Song*) song {
+    [LastFm sharedInstance].apiKey = APIKEY;
+    [LastFm sharedInstance].apiSecret = SECRET;
     [[LastFm sharedInstance] getSessionForUser:USERNAME password:PASSWORD successHandler:^(NSDictionary *result) {
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
         // Scrobble a track
         [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-            NSLog(@"%@ scrobbled!", [song description]);
+            NSLog(@"New scrobble: %@ ", [song description]);
             [song setScrobbled];
         } failureHandler:^(NSError *error) {
-            NSLog(@"scrobble error: %@", error);
+            NSLog(@"Scrobble error: %@", error);
         }];
     } failureHandler:^(NSError *error) {
         NSLog(@"Couldn't make Last.fm session %@", error);

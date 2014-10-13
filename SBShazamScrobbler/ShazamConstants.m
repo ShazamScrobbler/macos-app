@@ -15,4 +15,8 @@ NSString* const PATH = @"~/Library/Containers/com.shazam.mac.Shazam/Data/Documen
 NSString* const FILENAME = @"RecentTags";
 NSString* const EXTENSION = @"plist";
 
++ (NSString*)getFullPath {
+    return [[[[PATH stringByExpandingTildeInPath] stringByAppendingString:@"/"] stringByAppendingString:FILENAME] stringByAppendingPathExtension:EXTENSION];
+}
+
 @end

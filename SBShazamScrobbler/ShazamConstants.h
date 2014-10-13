@@ -16,6 +16,8 @@ extern NSString* const PATH;
 extern NSString* const FILENAME;
 extern NSString* const EXTENSION;
 
++ (NSString*)getFullPath;
+
 @end
 
 #endif
