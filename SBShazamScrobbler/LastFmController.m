@@ -11,6 +11,7 @@
 #import "LastFmConstants.h"
 #import "LastFmController.h"
 #import "Song.h"
+
 @interface LastFmController ()
 
 @end

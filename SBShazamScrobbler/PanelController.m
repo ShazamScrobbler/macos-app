@@ -20,7 +20,7 @@
 @synthesize delegate = _delegate;
 @synthesize searchField = _searchField;
 @synthesize textField = _textField;
-@synthesize scrobbleTable = _scrobbleTable;
+@synthesize scrollView = _scrollView;
 
 #pragma mark -
 
@@ -51,7 +51,8 @@
     [panel setLevel:NSPopUpMenuWindowLevel];
     [panel setOpaque:NO];
     [panel setBackgroundColor:[NSColor clearColor]];
-    
+    self.scrollView.refreshableEdges = ITPullToRefreshEdgeTop | ITPullToRefreshEdgeBottom;
+
     // Follow search string
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runSearch) name:NSControlTextDidChangeNotification object:self.searchField];
 }

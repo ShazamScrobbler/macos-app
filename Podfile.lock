@@ -1,12 +1,15 @@
 PODS:
+  - ITPullToRefreshScrollView (0.0.1)
   - KissXML (5.0)
   - LastFm (1.15.0):
     - KissXML (~> 5.0)
 
 DEPENDENCIES:
+  - ITPullToRefreshScrollView
   - LastFm
 
 SPEC CHECKSUMS:
+  ITPullToRefreshScrollView: 5c235f83a46d88c105fd55aa73659853fb1b458f
   KissXML: e537c38b18ede903ee6de45953a9bd86c131ebe9
   LastFm: 26cffa0ee5b39a4ad8c9451e882d75ce27036d3e
 

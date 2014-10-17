@@ -1,5 +1,6 @@
 #import "BackgroundView.h"
 #import "StatusItemView.h"
+#import "ITPullToRefreshScrollView.h"
 
 @class PanelController;
 
@@ -20,14 +21,13 @@
     __unsafe_unretained id<PanelControllerDelegate> _delegate;
     __unsafe_unretained NSSearchField *_searchField;
     __unsafe_unretained NSTextField *_textField;
-    __unsafe_unretained NSTableColumn *_scrobbleTable;
+    __unsafe_unretained ITPullToRefreshScrollView *_scrollView;
 }
 
 @property (nonatomic, unsafe_unretained) IBOutlet BackgroundView *backgroundView;
 @property (nonatomic, unsafe_unretained) IBOutlet NSSearchField *searchField;
 @property (nonatomic, unsafe_unretained) IBOutlet NSTextField *textField;
-@property (nonatomic, unsafe_unretained) IBOutlet NSTableColumn *scrobbleTable;
-
+@property (assign) IBOutlet ITPullToRefreshScrollView *scrollView;
 
 @property (nonatomic) BOOL hasActivePanel;
 @property (nonatomic, unsafe_unretained, readonly) id<PanelControllerDelegate> delegate;

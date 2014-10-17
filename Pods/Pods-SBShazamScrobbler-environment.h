@@ -6,6 +6,12 @@
 // project.
 
 
+// ITPullToRefreshScrollView
+#define COCOAPODS_POD_AVAILABLE_ITPullToRefreshScrollView
+#define COCOAPODS_VERSION_MAJOR_ITPullToRefreshScrollView 0
+#define COCOAPODS_VERSION_MINOR_ITPullToRefreshScrollView 0
+#define COCOAPODS_VERSION_PATCH_ITPullToRefreshScrollView 1
+
 // KissXML
 #define COCOAPODS_POD_AVAILABLE_KissXML
 #define COCOAPODS_VERSION_MAJOR_KissXML 5
