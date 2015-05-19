@@ -12,16 +12,6 @@
 		F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2C19E729B6003F57AF /* LastFmController.m */; };
 		F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2F19E72C56003F57AF /* ShazamController.m */; };
 		F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D3419E72F14003F57AF /* ShazamConstants.m */; };
-		F46C5D3C19E74425003F57AF /* Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3719E74425003F57AF /* Panel.xib */; };
-		F46C5D3D19E74425003F57AF /* Status.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3819E74425003F57AF /* Status.png */; };
-		F46C5D3E19E74425003F57AF /* Status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3919E74425003F57AF /* Status@2x.png */; };
-		F46C5D3F19E74425003F57AF /* StatusHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3A19E74425003F57AF /* StatusHighlighted.png */; };
-		F46C5D4019E74425003F57AF /* StatusHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */; };
-		F46C5D4819E74499003F57AF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4319E74499003F57AF /* BackgroundView.m */; };
-		F46C5D4919E74499003F57AF /* Panel.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4519E74499003F57AF /* Panel.m */; };
-		F46C5D4A19E74499003F57AF /* StatusItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4719E74499003F57AF /* StatusItemView.m */; };
-		F46C5D5019E744FC003F57AF /* MenubarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4D19E744FC003F57AF /* MenubarController.m */; };
-		F46C5D5119E744FC003F57AF /* PanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D4F19E744FC003F57AF /* PanelController.m */; };
 		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
 		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
@@ -48,7 +38,8 @@
 
 /* Begin PBXFileReference section */
 		19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.xcconfig"; path = "Pods/Pods-SBShazamScrobbler.xcconfig"; sourceTree = "<group>"; };
+		1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
+		4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
 		F46C5D2719E722B6003F57AF /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmConstants.m; sourceTree = "<group>"; };
 		F46C5D2919E722C2003F57AF /* LastFmConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmConstants.h; sourceTree = "<group>"; };
 		F46C5D2C19E729B6003F57AF /* LastFmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmController.m; sourceTree = "<group>"; };
@@ -57,21 +48,6 @@
 		F46C5D3119E72C67003F57AF /* ShazamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamController.h; sourceTree = "<group>"; };
 		F46C5D3319E72F04003F57AF /* ShazamConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamConstants.h; sourceTree = "<group>"; };
 		F46C5D3419E72F14003F57AF /* ShazamConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamConstants.m; sourceTree = "<group>"; };
-		F46C5D3719E74425003F57AF /* Panel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Panel.xib; sourceTree = "<group>"; };
-		F46C5D3819E74425003F57AF /* Status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Status.png; sourceTree = "<group>"; };
-		F46C5D3919E74425003F57AF /* Status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Status@2x.png"; sourceTree = "<group>"; };
-		F46C5D3A19E74425003F57AF /* StatusHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StatusHighlighted.png; sourceTree = "<group>"; };
-		F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StatusHighlighted@2x.png"; sourceTree = "<group>"; };
-		F46C5D4219E74499003F57AF /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
-		F46C5D4319E74499003F57AF /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
-		F46C5D4419E74499003F57AF /* Panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Panel.h; sourceTree = "<group>"; };
-		F46C5D4519E74499003F57AF /* Panel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Panel.m; sourceTree = "<group>"; };
-		F46C5D4619E74499003F57AF /* StatusItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemView.h; sourceTree = "<group>"; };
-		F46C5D4719E74499003F57AF /* StatusItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemView.m; sourceTree = "<group>"; };
-		F46C5D4C19E744FC003F57AF /* MenubarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarController.h; sourceTree = "<group>"; };
-		F46C5D4D19E744FC003F57AF /* MenubarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarController.m; sourceTree = "<group>"; };
-		F46C5D4E19E744FC003F57AF /* PanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelController.h; sourceTree = "<group>"; };
-		F46C5D4F19E744FC003F57AF /* PanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelController.m; sourceTree = "<group>"; };
 		F48D994B19C8B0A80062A5FA /* SBShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -117,6 +93,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		563690269C0DB7780323EDF6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */,
+				4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F46C5D2A19E728F1003F57AF /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,11 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				F48D996319C8B0A90062A5FA /* MainMenu.xib */,
-				F46C5D3719E74425003F57AF /* Panel.xib */,
-				F46C5D3819E74425003F57AF /* Status.png */,
-				F46C5D3919E74425003F57AF /* Status@2x.png */,
-				F46C5D3A19E74425003F57AF /* StatusHighlighted.png */,
-				F46C5D3B19E74425003F57AF /* StatusHighlighted@2x.png */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -164,12 +144,6 @@
 		F46C5D4119E74459003F57AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F46C5D4219E74499003F57AF /* BackgroundView.h */,
-				F46C5D4319E74499003F57AF /* BackgroundView.m */,
-				F46C5D4419E74499003F57AF /* Panel.h */,
-				F46C5D4519E74499003F57AF /* Panel.m */,
-				F46C5D4619E74499003F57AF /* StatusItemView.h */,
-				F46C5D4719E74499003F57AF /* StatusItemView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -179,10 +153,6 @@
 			children = (
 				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
 				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
-				F46C5D4C19E744FC003F57AF /* MenubarController.h */,
-				F46C5D4D19E744FC003F57AF /* MenubarController.m */,
-				F46C5D4E19E744FC003F57AF /* PanelController.h */,
-				F46C5D4F19E744FC003F57AF /* PanelController.m */,
 				F46C5D3219E72C79003F57AF /* Shazam */,
 				F46C5D2A19E728F1003F57AF /* LastFm */,
 			);
@@ -196,7 +166,7 @@
 				F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */,
 				F48D994D19C8B0A80062A5FA /* Frameworks */,
 				F48D994C19C8B0A80062A5FA /* Products */,
-				9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */,
+				563690269C0DB7780323EDF6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -352,12 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
-				F46C5D3C19E74425003F57AF /* Panel.xib in Resources */,
 				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
-				F46C5D4019E74425003F57AF /* StatusHighlighted@2x.png in Resources */,
-				F46C5D3D19E74425003F57AF /* Status.png in Resources */,
-				F46C5D3E19E74425003F57AF /* Status@2x.png in Resources */,
-				F46C5D3F19E74425003F57AF /* StatusHighlighted.png in Resources */,
 				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
 				F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */,
 			);
@@ -386,7 +351,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-SBShazamScrobbler-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F230C1ED27CB433FA1A6F71E /* Check Pods Manifest.lock */ = {
@@ -414,15 +379,10 @@
 				F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */,
 				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
 				F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */,
-				F46C5D4A19E74499003F57AF /* StatusItemView.m in Sources */,
-				F46C5D4919E74499003F57AF /* Panel.m in Sources */,
 				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
 				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
 				F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */,
-				F46C5D5119E744FC003F57AF /* PanelController.m in Sources */,
-				F46C5D4819E74499003F57AF /* BackgroundView.m in Sources */,
 				F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */,
-				F46C5D5019E744FC003F57AF /* MenubarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,7 +512,7 @@
 		};
 		F48D997D19C8B0A90062A5FA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */;
+			baseConfigurationReference = 1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -566,7 +526,7 @@
 		};
 		F48D997E19C8B0A90062A5FA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9533E5B3EC304CF4B66AE70A /* Pods-SBShazamScrobbler.xcconfig */;
+			baseConfigurationReference = 4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;

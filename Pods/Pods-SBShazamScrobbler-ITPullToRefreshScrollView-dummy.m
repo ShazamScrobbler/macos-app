@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_SBShazamScrobbler_ITPullToRefreshScrollView : NSObject
-@end
-@implementation PodsDummy_Pods_SBShazamScrobbler_ITPullToRefreshScrollView
-@end

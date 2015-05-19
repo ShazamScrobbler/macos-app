@@ -3,7 +3,6 @@
 
 target "SBShazamScrobbler" do
 pod 'LastFm'
-pod 'ITPullToRefreshScrollView'
 end
 
 target "SBShazamScrobblerTests" do

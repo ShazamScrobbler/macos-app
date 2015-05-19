@@ -1,1 +1,0 @@
-../../ITPullToRefreshScrollView/ITPullToRefreshScrollView/Classes/ITPullToRefreshEdgeView.h
