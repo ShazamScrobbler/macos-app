@@ -3,6 +3,8 @@ SBShazamScrobbler
 
 Shazam Desktop Scrobbler for Mac OS X.
 
+[![Build Status](https://travis-ci.org/stephanebruckert/ShazamScrobbler.svg?branch=master)](https://travis-ci.org/stephanebruckert/ShazamScrobbler)
+
 ### If you would love to:
 
  - scrobble the songs played at your place by your roommates, family or girlfriend,

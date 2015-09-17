@@ -2,4 +2,4 @@ language: objective-c
 before_install:
     - brew update
     - brew outdated xctool || brew upgrade xctool
-script: xctool -workspace SBShazamScrobbler.xcworkspace -scheme SBShazamScrobbler test
+script: xctool -workspace SBShazamScrobbler.xcworkspace -scheme SBShazamScrobbler
