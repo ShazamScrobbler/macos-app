@@ -17,37 +17,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    _statusItem.image = [NSImage imageNamed:@"icon.png"];
-    [_statusItem.image setTemplate:YES];
-    _menu = [[NSMenu alloc] init];
-    [self buildMenu];
-    
-    // Install icon into the menu bar
+    _menu = [[MenuController alloc] init];
     [LastFmController init];
-    [ShazamController initTags:_menu];
-    [ShazamController monitorShazam:[ShazamConstants getJournalPath]];
-    [ShazamController doShazam];
+    [ShazamController init];
+    [ShazamController watch:[ShazamConstants getJournalPath]];
+    [ShazamController findChanges];
 }
-
-
-- (void)buildMenu {
-    NSMenuItem *scrobbling = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(openFeedbin:) keyEquivalent:@""];
-    [scrobbling setState:NSOnState];
-    [_menu addItem:scrobbling];
-    
-    if (true) {
-        [_menu addItemWithTitle:@"1stance – Log Out" action:@selector(logOut:) keyEquivalent:@""];
-    } else {
-        [_menu addItemWithTitle:@"Log In" action:@selector(logIn:) keyEquivalent:@""];
-    }
-    [_menu addItem:[NSMenuItem separatorItem]]; // A thin grey line
-    [_menu addItem:[NSMenuItem separatorItem]]; // A thin grey line
-    [_menu addItemWithTitle:@"Quit ShazamScrobbler" action:@selector(terminate:) keyEquivalent:@""];
-    _statusItem.menu = _menu;
-}
-
-
 
 @end
 

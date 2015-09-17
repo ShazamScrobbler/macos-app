@@ -11,9 +11,9 @@
 
 @interface ShazamController : NSObject
 
-+ (void)doShazam;
-+ (void)monitorShazam:(NSString*)path;
-+ (void)initTags:(NSMenu*)path ;
++ (void)init;
++ (void)watch:(NSString*)path;
++ (void)findChanges;
 @end
 
 #endif
