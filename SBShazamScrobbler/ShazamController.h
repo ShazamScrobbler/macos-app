@@ -13,7 +13,7 @@
 
 + (void)doShazam;
 + (void)monitorShazam:(NSString*)path;
-
++ (void)initTags:(NSMenu*)path ;
 @end
 
 #endif

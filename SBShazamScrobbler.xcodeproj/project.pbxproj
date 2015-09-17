@@ -24,6 +24,7 @@
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
 		F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */; };
 		F49B0C7419E4792C005B2357 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F49B0C7319E4792C005B2357 /* Song.m */; };
+		F4B617991B9E514A00A47D31 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4B617981B9E514A00A47D31 /* icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBShazamScrobblerTests.m; sourceTree = "<group>"; };
 		F49B0C7319E4792C005B2357 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		F49B0C7519E47937005B2357 /* Song.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+		F4B617981B9E514A00A47D31 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +205,7 @@
 		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
 			isa = PBXGroup;
 			children = (
+				F4B617981B9E514A00A47D31 /* icon.png */,
 				F46C5D4B19E744B3003F57AF /* Controllers */,
 				F46C5D4119E74459003F57AF /* Views */,
 				F46C5D2B19E728FC003F57AF /* Models */,
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
+				F4B617991B9E514A00A47D31 /* icon.png in Resources */,
 				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
 				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
 				F48D996519C8B0A90062A5FA /* MainMenu.xib in Resources */,

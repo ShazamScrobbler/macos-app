@@ -3,6 +3,7 @@
 
 target "SBShazamScrobbler" do
 pod 'LastFm'
+pod 'FMDB'
 end
 
 target "SBShazamScrobblerTests" do

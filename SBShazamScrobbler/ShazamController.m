@@ -11,6 +11,9 @@
 #import "Song.h"
 #import "ShazamConstants.h"
 #import "LastFmController.h"
+#import "AppDelegate.h"
+#import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
 
 @interface ShazamController ()
 
@@ -19,70 +22,48 @@
 @implementation ShazamController : NSObject
 
 + (void)doShazam {
+    NSLog(@"A change happened!");
+
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if ([prefs integerForKey:@"lastTag"] < 0) {
-        [prefs setInteger:1 forKey:@"lastTag"];
+        [prefs setInteger:0 forKey:@"lastTag"];
     };
+    NSLog(@"%ld", [prefs integerForKey:@"lastTag"]);
+    FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     
-    //Get the plist file
-    NSBundle* bundle = [[NSBundle alloc] initWithPath:PATH];
-    NSString* filePath = [bundle pathForResource:FILENAME ofType:EXTENSION];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        NSLog(@"File doesn't exist");
+    NSString *lastId;
+    if([database open]) {
+        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", [prefs integerForKey:@"lastTag"]]];
+        NSString *artist;
+        NSString *track;
+        NSString *date;
+        while ([rs next]) {
+            artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
+            track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
+            date = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZDATE"]];
+            NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[date doubleValue]];
+            Song *song = [[Song alloc] initWithSong:track];
+            [song setArtist:artist];
+            [song setDate:newDate];
+            NSLog(@"%@", song);
+            [LastFmController scrobble:song];
+        }
+        FMResultSet *last = [database executeQuery:@"select track.Z_PK as ZID from ZSHTAGRESULTMO track ORDER BY track.Z_PK DESC LIMIT 10"];
+        if ([last next]) {
+            lastId = [NSString stringWithFormat:@"%@", [last stringForColumn:@"ZID"]];
+            NSLog(@"%@", lastId);
+        };
+        
+        [database close];
     }
-    
-    //Dictionary of tags
-    NSDictionary* plist = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    NSArray* myDic = [plist objectForKey:@"$objects"];
-    NSDictionary *obj;
-    
-    Song *song;
-    int i, dicInARow = 0;
-    int lastTag = (int)[prefs integerForKey:@"lastTag"];
-    bool lookForFirstDicAfterStrings = NO;
-    
-    //Iterate through songs data
-    for (i = lastTag; i < [myDic count]; i++) {
-        obj = [myDic objectAtIndex:i];
-        if ([obj isKindOfClass:[NSString class]]) {
-            if (dicInARow >= 2 && dicInARow <= 3) {
-                if (dicInARow == 2) {
-                    song = [[Song alloc] initWithSong:[obj description]];
-                } else {
-                    [song setArtist:[obj description]];
-                }
-                dicInARow++;
-                lookForFirstDicAfterStrings = YES;
-            } else {
-                dicInARow = 0;
-            }
-        }
-        if ([obj isKindOfClass:[NSDictionary class]]) {
-            if (lookForFirstDicAfterStrings) {
-                NSTimeInterval timeInterval = [[obj objectForKey:@"NS.time"] doubleValue];
-                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
-                [song setDate:newDate];
-                [LastFmController scrobble:song];
-                lookForFirstDicAfterStrings = NO;
-            }
-            dicInARow++;
-        }
-        if ([obj isKindOfClass:[NSNumber class]]) {
-            dicInARow = 0;
-        }
-    }
-    
-    // save position of last unscrobbled
-    //compare with i
-    // if pos < i setinterger pos
-    
+
     // Saving the last tag position
-    [prefs setInteger:(i - 1) forKey:@"lastTag"];
+    [prefs setInteger:[lastId intValue] forKey:@"lastTag"];
 }
 
 + (void)monitorShazam:(NSString*) path {
+    NSLog(@"Exploring...");
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     int fildes = open([path UTF8String], O_EVTONLY);
     
@@ -92,19 +73,41 @@
                                                               queue);
     dispatch_source_set_event_handler(source, ^
                                       {
-                                          unsigned long flags = dispatch_source_get_data(source);
-                                          if(flags & DISPATCH_VNODE_DELETE)
-                                          {
                                               dispatch_source_cancel(source);
-                                              [blockSelf monitorShazam:path];
-                                              [blockSelf doShazam];
-                                          }
+                                          [blockSelf performSelectorInBackground:@selector(doShazam)
+                                                                 withObject:nil];
+                                          
                                       });
     dispatch_source_set_cancel_handler(source, ^(void)
                                        {
                                            close(fildes);
                                        });
     dispatch_resume(source);
+}
+
+// only fills in the menu with last 20 shazamed songs
+// to do: use the same array as the scrobbling to avoid opening the db twice
++ (void)initTags:(NSMenu*)menu {
+    FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
+    if([database open]) {
+        [database close];
+    }
+    
+    NSMenuItem *menuItem;
+    if([database open]) {
+        FMResultSet *rs = [database executeQuery:@"select track.Z_PK as ZID, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT 20"];
+        int i = 3;
+        NSString *artist;
+        NSString *track;
+        while ([rs next]) {
+            artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
+            track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
+            menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(callXml:) keyEquivalent:@""];
+            //[menuItem setState:NSOnState];
+            [menu insertItem:menuItem atIndex:i++];
+        }
+        [database close];
+    }
 }
 
 @end

@@ -17,40 +17,37 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    _statusItem.image = [NSImage imageNamed:@"icon.png"];
+    [_statusItem.image setTemplate:YES];
+    _menu = [[NSMenu alloc] init];
+    [self buildMenu];
+    
     // Install icon into the menu bar
     [LastFmController init];
+    [ShazamController initTags:_menu];
+    [ShazamController monitorShazam:[ShazamConstants getJournalPath]];
     [ShazamController doShazam];
-    [ShazamController monitorShazam:[ShazamConstants getFullPath]];
-    
-    NSString *bundlePath = [[NSBundle mainBundle]bundlePath]; //Path of your bundle
-    NSString *path = [bundlePath stringByAppendingPathComponent:@"Scrobbles.plist"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    //To retrieve the data from the plist
-    NSMutableDictionary *savedData = [[NSMutableDictionary alloc] initWithContentsOfFile: path];
-    int savedValue;
-    savedValue = [[savedData objectForKey:@"value"] intValue];
-    NSLog(@"%i",savedValue);
-    
-    NSMutableDictionary *data;
-    
-    if ([fileManager fileExistsAtPath: path]) {
-        data = [[NSMutableDictionary alloc] initWithContentsOfFile: path];  // if file exist at path initialise your dictionary with its data
-    } else {
-        // If the file doesn’t exist, create an empty dictionary
-        data = [[NSMutableDictionary alloc] init];
-    }
-    
-    //To insert the data into the plist
-    int value = 6;
-    [data setObject:[NSNumber numberWithInt:value] forKey:@"value"];
-    [data writeToFile: path atomically:YES];
-    
-    //To retrieve the data from the plist
-    savedData = [[NSMutableDictionary alloc] initWithContentsOfFile: path];
-    savedValue = [[savedData objectForKey:@"value"] intValue];
-    NSLog(@"%i",savedValue);
 }
+
+
+- (void)buildMenu {
+    NSMenuItem *scrobbling = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(openFeedbin:) keyEquivalent:@""];
+    [scrobbling setState:NSOnState];
+    [_menu addItem:scrobbling];
+    
+    if (true) {
+        [_menu addItemWithTitle:@"1stance – Log Out" action:@selector(logOut:) keyEquivalent:@""];
+    } else {
+        [_menu addItemWithTitle:@"Log In" action:@selector(logIn:) keyEquivalent:@""];
+    }
+    [_menu addItem:[NSMenuItem separatorItem]]; // A thin grey line
+    [_menu addItem:[NSMenuItem separatorItem]]; // A thin grey line
+    [_menu addItemWithTitle:@"Quit ShazamScrobbler" action:@selector(terminate:) keyEquivalent:@""];
+    _statusItem.menu = _menu;
+}
+
+
 
 @end
 
