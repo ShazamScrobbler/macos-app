@@ -68,20 +68,19 @@
     int fildes = open([path UTF8String], O_EVTONLY);
     
     __block typeof(self) blockSelf = self;
-    __block dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE,fildes,
-                                                              DISPATCH_VNODE_DELETE | DISPATCH_VNODE_WRITE | DISPATCH_VNODE_EXTEND | DISPATCH_VNODE_ATTRIB | DISPATCH_VNODE_LINK | DISPATCH_VNODE_RENAME | DISPATCH_VNODE_REVOKE,
-                                                              queue);
-    dispatch_source_set_event_handler(source, ^
-                                      {
-                                              dispatch_source_cancel(source);
-                                          [blockSelf performSelectorInBackground:@selector(doShazam)
-                                                                 withObject:nil];
-                                          
-                                      });
-    dispatch_source_set_cancel_handler(source, ^(void)
-                                       {
-                                           close(fildes);
-                                       });
+    __block dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fildes, DISPATCH_VNODE_ATTRIB, queue);
+    dispatch_source_set_event_handler(source, ^{
+        unsigned long flags = dispatch_source_get_data(source);
+        if(flags)
+        {
+            dispatch_source_cancel(source);
+            [self doShazam];
+            [blockSelf monitorShazam:path];
+        }
+    });
+    dispatch_source_set_cancel_handler(source, ^(void) {
+        close(fildes);
+    });
     dispatch_resume(source);
 }
 
@@ -89,9 +88,6 @@
 // to do: use the same array as the scrobbling to avoid opening the db twice
 + (void)initTags:(NSMenu*)menu {
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
-    if([database open]) {
-        [database close];
-    }
     
     NSMenuItem *menuItem;
     if([database open]) {
