@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "LastFmController.h"
 
 @interface LoginViewController ()
 
@@ -16,7 +17,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do view setup here.
 }
 
+- (IBAction)connect:(id)sender {
+    NSLog(@"efwef");
+    [LastFmController login:[_usernameField stringValue] withPassword:[_passwordField stringValue]];
+}
 @end
