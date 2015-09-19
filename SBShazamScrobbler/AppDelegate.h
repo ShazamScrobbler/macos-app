@@ -13,6 +13,6 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (strong, nonatomic) NSStatusItem *statusItem;
-@property (strong, nonatomic) MenuController *menu;
+@property NSController *menu;
 
 @end

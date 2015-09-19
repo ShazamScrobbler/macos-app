@@ -8,14 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 #import "FMDatabase.h"
+#import "AppDelegate.h"
 #import "FMDatabaseAdditions.h"
 
 @interface MenuController : NSMenu
 
 @property (strong, nonatomic) NSStatusItem *statusItem;
 
--(id)init;
--(void) insert:(FMResultSet*)rs withIndex:(int)i;
--(void)insert:(FMResultSet*)rs;
+- (id) init;
+- (void) insert:(FMResultSet*)rs withIndex:(int)i;
+- (void) insert:(FMResultSet*)rs;
+- (IBAction) open:(id)sender;
 
 @end

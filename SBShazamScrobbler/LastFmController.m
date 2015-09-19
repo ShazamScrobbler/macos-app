@@ -20,8 +20,20 @@
 
 + (void) init {
     // Set the Last.fm session info
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSLog(@"session %@", [LastFm sharedInstance].session);
+    
+    // Setup the Last.fm SDK
+    // IMPORTANT: please register your own API key at http://www.last.fm/api - do NOT use this key!
     [LastFm sharedInstance].apiKey = APIKEY;
     [LastFm sharedInstance].apiSecret = SECRET;
+    [LastFm sharedInstance].session = [prefs valueForKey:@"lastFmSession"];
+    [LastFm sharedInstance].username = [prefs valueForKey:@"username"];
+}
+
++ (void) login {
+
+    
 }
 
 + (void)scrobble:(Song*) song {
@@ -30,6 +42,11 @@
     [[LastFm sharedInstance] getSessionForUser:USERNAME password:PASSWORD successHandler:^(NSDictionary *result) {
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
+        NSLog(@"session %@", [LastFm sharedInstance].session);
+        
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setValue:[LastFm sharedInstance].session forKey:@"lastFmSession"];
+        
         // Scrobble a track
         [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
             NSLog(@"New scrobble: %@ ", [song description]);
