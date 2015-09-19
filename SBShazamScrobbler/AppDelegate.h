@@ -8,11 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MenuController.h"
+#import "LoginViewController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property NSController *menu;
+@property (assign) IBOutlet LoginViewController *loginViewController;
 
 @end

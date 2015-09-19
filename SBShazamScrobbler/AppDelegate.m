@@ -18,12 +18,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    _menu = [[NSController alloc] init];
+    _menu = [[MenuController alloc] init];
     [LastFmController init];
     [ShazamController init];
     [ShazamController watch:[ShazamConstants getJournalPath]];
     [ShazamController findChanges];
-
+    [self.loginViewController.view setFrame:[self.window.contentView bounds]];
+    self.loginViewController.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [self.window.contentView addSubview:self.loginViewController.view];
 }
 
 @end

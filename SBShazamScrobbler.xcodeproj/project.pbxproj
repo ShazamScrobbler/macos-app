@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */; };
+		F469F3351BAE01DF00C1B352 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F469F3331BAE01DF00C1B352 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F469F3361BAE01DF00C1B352 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F469F3341BAE01DF00C1B352 /* LoginViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2719E722B6003F57AF /* LastFmConstants.m */; };
 		F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2C19E729B6003F57AF /* LastFmController.m */; };
 		F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2F19E72C56003F57AF /* ShazamController.m */; };
@@ -42,6 +44,9 @@
 		19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
 		4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
+		F469F3321BAE01DF00C1B352 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		F469F3331BAE01DF00C1B352 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		F469F3341BAE01DF00C1B352 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		F46C5D2719E722B6003F57AF /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmConstants.m; sourceTree = "<group>"; };
 		F46C5D2919E722C2003F57AF /* LastFmConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmConstants.h; sourceTree = "<group>"; };
 		F46C5D2C19E729B6003F57AF /* LastFmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmController.m; sourceTree = "<group>"; };
@@ -116,6 +121,16 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
+		F469F3311BAE01BB00C1B352 /* LoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F469F3321BAE01DF00C1B352 /* LoginViewController.h */,
+				F469F3331BAE01DF00C1B352 /* LoginViewController.m */,
+				F469F3341BAE01DF00C1B352 /* LoginViewController.xib */,
+			);
+			name = LoginViewController;
+			sourceTree = "<group>";
+		};
 		F46C5D2A19E728F1003F57AF /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +180,7 @@
 		F46C5D4B19E744B3003F57AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F469F3311BAE01BB00C1B352 /* LoginViewController */,
 				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
 				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
 				F40A38D11BAAF04F001CE3AD /* Menu */,
@@ -339,6 +355,7 @@
 			files = (
 				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
 				F4B617991B9E514A00A47D31 /* icon.png in Resources */,
+				F469F3361BAE01DF00C1B352 /* LoginViewController.xib in Resources */,
 				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
 				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
 				F4ABE0EE1BADCBF100704B75 /* MainMenu.xib in Resources */,
@@ -398,6 +415,7 @@
 				F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */,
 				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
 				F4FC1AEC1BADD3B400716F50 /* MenuController.m in Sources */,
+				F469F3351BAE01DF00C1B352 /* LoginViewController.m in Sources */,
 				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
 				F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */,
 				F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */,
