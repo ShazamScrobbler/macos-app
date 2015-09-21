@@ -13,10 +13,11 @@
 
 @interface LastFmController : NSObject
 
-+ (void) init;
-+ (void) scrobble:(Song*) song;
-+ (bool) login:(NSString*)username withPassword:(NSString*)password;
-+ (bool) logout;
++ (void)init;
++ (void)scrobble:(Song*) song;
++ (bool)login:(NSString*)username withPassword:(NSString*)password;
++ (bool)logout;
+
 
 @end
 

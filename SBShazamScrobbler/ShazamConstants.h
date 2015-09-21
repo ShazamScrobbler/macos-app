@@ -9,14 +9,12 @@
 #ifndef SBShazamScrobbler_ShazamConstants_h
 #define SBShazamScrobbler_ShazamConstants_h
 
-
 @interface ShazamConstants : NSObject
 
 extern NSString* const PATH;
 extern NSString* const FILENAME;
 extern NSString* const EXTENSION;
 extern NSString* const JOURNAL;
-
 
 + (NSString*)getSqlitePath;
 + (NSString*)getSqliteWalPath;

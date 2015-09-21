@@ -14,8 +14,9 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (strong, nonatomic) NSStatusItem *statusItem;
-@property (assign) IBOutlet LoginViewController *loginViewController;
+@property (strong, nonatomic) IBOutlet LoginViewController *loginViewController;
 @property (strong, nonatomic) MenuController* menu;
 
+- (void) loadView;
 
 @end

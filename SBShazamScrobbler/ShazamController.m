@@ -21,9 +21,7 @@
 
 @implementation ShazamController : NSObject
 
-/*
- * Fills the menu with last 20 shazamed songs
- */
+//Fills the menu with last 20 shazamed songs
 + (void)init {
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     
@@ -38,10 +36,8 @@
     }
 }
 
-/*
- * Wait for Shazam to tag a song
- * The function automatically detects changes happening on the Shazam SQLite file
- */
+// Wait for Shazam to tag a song
+// The function automatically detects changes happening on the Shazam SQLite file
 + (void)watch:(NSString*) path {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     int fildes = open([path UTF8String], O_EVTONLY);
@@ -63,9 +59,7 @@
     dispatch_resume(source);
 }
 
-/*
- * Find and scrobble new tags
- */
+//Find and scrobble new tags
 + (void)findChanges {
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -105,9 +99,5 @@
     // Saving the last tag position
     [prefs setInteger:[lastId intValue] forKey:@"lastTag"];
 }
-
-
-
-
 
 @end

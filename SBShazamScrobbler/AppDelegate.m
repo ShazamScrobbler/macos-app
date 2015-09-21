@@ -23,11 +23,14 @@
     [ShazamController init];
     [ShazamController watch:[ShazamConstants getJournalPath]];
     [ShazamController findChanges];
+    [self loadView];
+}
+
+- (void) loadView {
     [self.loginViewController.view setFrame:[self.window.contentView bounds]];
     self.loginViewController.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self.window.contentView addSubview:self.loginViewController.view];
 }
-
 // MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
 
 @end

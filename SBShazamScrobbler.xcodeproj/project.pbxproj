@@ -124,8 +124,8 @@
 		F469F3311BAE01BB00C1B352 /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F469F3321BAE01DF00C1B352 /* LoginViewController.h */,
 				F469F3331BAE01DF00C1B352 /* LoginViewController.m */,
+				F469F3321BAE01DF00C1B352 /* LoginViewController.h */,
 				F469F3341BAE01DF00C1B352 /* LoginViewController.xib */,
 			);
 			name = LoginViewController;
@@ -321,7 +321,7 @@
 		F48D994319C8B0A80062A5FA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Stéphane Bruckert";
 				TargetAttributes = {
 					F48D996B19C8B0A90062A5FA = {
@@ -493,6 +493,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -555,6 +556,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
 				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "SB.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -569,6 +571,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
 				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "SB.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -590,6 +593,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "SB.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -608,6 +612,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
 				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "SB.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

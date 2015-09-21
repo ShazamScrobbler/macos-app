@@ -7,7 +7,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
-                <outlet property="connect" destination="Enm-Cc-Atv" id="cyO-ML-pCK"/>
+                <outlet property="alert" destination="zEc-vB-qIA" id="GoR-NF-BCH"/>
+                <outlet property="connectButton" destination="Enm-Cc-Atv" id="l71-xR-vzR"/>
                 <outlet property="passwordField" destination="CBL-sX-dwU" id="8Ne-Uz-wbO"/>
                 <outlet property="usernameField" destination="Te3-jx-FdS" id="ERB-cP-fVh"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="Pf6-TE-cxn"/>
@@ -51,16 +52,6 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Enm-Cc-Atv">
-                    <rect key="frame" x="175" y="61" width="99" height="32"/>
-                    <buttonCell key="cell" type="push" title="Connect" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fnj-Pd-FSM">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="connect:" target="-2" id="Ozq-4S-ejS"/>
-                    </connections>
-                </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CBL-sX-dwU">
                     <rect key="frame" x="213" y="118" width="110" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="cul-eF-jUN">
@@ -72,6 +63,21 @@
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
                 </secureTextField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEc-vB-qIA">
+                    <rect key="frame" x="135" y="36" width="187" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Couldn't make Last.fm session" id="hKU-eo-A2Z">
+                        <font key="font" size="11" name=".HelveticaNeueDeskInterface-Regular"/>
+                        <color key="textColor" red="0.90588241815567017" green="0.30980393290519714" blue="0.31372550129890442" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Enm-Cc-Atv">
+                    <rect key="frame" x="159" y="61" width="138" height="32"/>
+                    <buttonCell key="cell" type="push" title="Connect" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fnj-Pd-FSM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
             </subviews>
             <point key="canvasLocation" x="312" y="242"/>
         </customView>

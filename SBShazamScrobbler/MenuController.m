@@ -25,11 +25,14 @@
     [_statusItem setHighlightMode:YES];
     [_statusItem setMenu:_main];
     
-    NSMenuItem *scrobbling = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(open:) keyEquivalent:@""];
-    [scrobbling setTarget:_main];
-    [scrobbling setState:NSOnState];
+    _scrobblingItem = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(negateScrobbling:) keyEquivalent:@""];
+    [_scrobblingItem setTarget:self];
+    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
+    NSInteger state = scrobbling == NSOnState ? NSOnState : NSOffState;
+    [_scrobblingItem setState:state];
+    [_scrobblingItem setEnabled:YES];
     
-    [_main addItem:scrobbling];
+    [_main addItem:_scrobblingItem];
     [_main addItem:[self createAccountsItem]];
     [_main addItem:[NSMenuItem separatorItem]]; // A thin grey line
     [_main addItem:[NSMenuItem separatorItem]];
@@ -38,10 +41,21 @@
     return self;
 }
 
+- (IBAction)negateScrobbling:(id)sender
+{
+    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
+    NSInteger state = scrobbling != NSOnState ? NSOnState : NSOffState;
+    [_scrobblingItem setState:state];
+    [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
+    [[_main itemAtIndex:0] setEnabled:scrobbling];
+    [_main itemChanged:[_main itemAtIndex:0]];
+}
+
 - (IBAction)open:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
-    [((AppDelegate *)[NSApplication sharedApplication].delegate).window makeKeyAndOrderFront:nil];
+    AppDelegate* app = (AppDelegate *)[NSApplication sharedApplication].delegate;
+    [app.window makeKeyAndOrderFront:nil];
 }
 
 -(void)insert:(FMResultSet*)rs withIndex:(int)i {
@@ -55,18 +69,18 @@
     [_main insertItem:menuItem atIndex:i];
 }
 
--(void)insert:(FMResultSet*)rs {
+- (void)insert:(FMResultSet*)rs {
     [self insert:rs withIndex:3];
     [_main removeItemAtIndex:23];
 }
 
-- (NSMenuItem*) createAccountsItem {
+- (NSMenuItem*)createAccountsItem {
     _accountsItem = [[NSMenuItem alloc] initWithTitle:@"Account" action:@selector(open:) keyEquivalent:@""];
     [_accountsItem setTarget:self];
     [_accountsItem setEnabled:TRUE];
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSMenu* accountMenu = [[NSMenu alloc] initWithTitle:@"Account"];
 
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if ([prefs stringForKey:@"session"] != nil) {
         NSMenuItem* connectedAccount = [[NSMenuItem alloc] initWithTitle:[prefs valueForKey:@"username"] action:@selector(open:) keyEquivalent:@""];
         [connectedAccount setState:NSOnState];
@@ -87,13 +101,12 @@
     return _accountsItem;
 }
 
-
 - (IBAction)logoutMenuAction:(id)sender
 {
     [LastFmController logout];
 }
 
-- (void) updateAccountItem {
+- (void)updateAccountItem {
     [_main removeItemAtIndex:1];
     [_main insertItem:[self createAccountsItem] atIndex:1];
 }

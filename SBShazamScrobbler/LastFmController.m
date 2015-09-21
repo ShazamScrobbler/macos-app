@@ -20,7 +20,7 @@
 
 @implementation LastFmController : NSObject
 
-+ (void) init {
++ (void)init {
     // Set the Last.fm session info
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
@@ -32,7 +32,9 @@
     [LastFm sharedInstance].username = [prefs valueForKey:@"username"];
 }
 
-+ (bool) login:(NSString*)username withPassword:(NSString*)password {
++ (bool)login:(NSString*)username withPassword:(NSString*)password {
+    LoginViewController *loginController = ((AppDelegate *)[NSApplication sharedApplication].delegate).loginViewController;
+    [loginController connecting];
     [[LastFm sharedInstance] getSessionForUser:username password:password successHandler:^(NSDictionary *result) {
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
@@ -41,23 +43,25 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
         [menu updateAccountItem];
+        [loginController loginSuccess];
     } failureHandler:^(NSError *error) {
-        NSLog(@"Couldn't make Last.fm session %@", error);
+        //NSLog(@"Couldn't make Last.fm session %@", error);
+        [loginController loginFail];
         [self logout];
     }];
-    return TRUE;
+    return true;
 }
 
-+ (bool) logout {
++ (bool)logout {
     [[LastFm sharedInstance] logout];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"session"];
-    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
-    [menu updateAccountItem];
+    AppDelegate* app = (AppDelegate *)[NSApplication sharedApplication].delegate;
+    [app.menu updateAccountItem];
+    [app.loginViewController logoutChanges];
     return TRUE;
 }
 
-
-+ (void) scrobble:(Song*) song {
++ (void)scrobble:(Song*) song {
     // Scrobble a track
     [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
         NSLog(@"New scrobble: %@ ", [song description]);

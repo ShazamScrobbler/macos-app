@@ -13,8 +13,13 @@
 
 @property (weak) IBOutlet NSTextField *usernameField;
 @property (weak) IBOutlet NSSecureTextField *passwordField;
-@property (weak) IBOutlet NSButton *connect;
+@property (weak) IBOutlet NSTextField *alert;
 
-- (IBAction)connect:(id)sender;
+- (void)login;
+- (void)logout;
+- (void)logoutChanges;
+- (void)loginFail;
+- (void)loginSuccess;
+- (void)connecting;
 
 @end

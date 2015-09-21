@@ -444,7 +444,7 @@
 		CA8342AF9FD5640FB299DB28 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = A87DF770963F20323E512F54 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -544,6 +544,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -561,6 +562,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -578,6 +580,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -595,6 +598,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-FMDB/Pods-SBShazamScrobbler-FMDB-prefix.pch";
@@ -611,6 +615,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ABCBCF69468ABF1892B4292B /* Pods-SBShazamScrobbler.debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -628,6 +633,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-LastFm/Pods-SBShazamScrobbler-LastFm-prefix.pch";
@@ -644,6 +650,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 263B52C29C8FCDCF4762C3CB /* Pods-SBShazamScrobbler.release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -662,6 +669,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-KissXML/Pods-SBShazamScrobbler-KissXML-prefix.pch";
@@ -726,6 +734,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;

@@ -16,13 +16,15 @@
 @property (strong, nonatomic) NSMenu *main;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) NSMenuItem *accountsItem;
+@property (strong, nonatomic) NSMenuItem *scrobblingItem;
 
-- (id) init;
-- (void) insert:(FMResultSet*)rs withIndex:(int)i;
-- (void) insert:(FMResultSet*)rs;
-- (IBAction) open:(id)sender;
-- (IBAction) logoutMenuAction:(id)sender;
-- (NSMenuItem*) createAccountsItem;
-- (void) updateAccountItem;
+- (id)init;
+- (void)insert:(FMResultSet*)rs withIndex:(int)i;
+- (void)insert:(FMResultSet*)rs;
+- (IBAction)negateScrobbling:(id)sender;
+- (IBAction)open:(id)sender;
+- (IBAction)logoutMenuAction:(id)sender;
+- (NSMenuItem*)createAccountsItem;
+- (void)updateAccountItem;
 
 @end
