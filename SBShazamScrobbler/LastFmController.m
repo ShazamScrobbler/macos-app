@@ -10,7 +10,9 @@
 #import <LastFm/LastFm.h>
 #import "LastFmConstants.h"
 #import "LastFmController.h"
+#import "MenuController.h"
 #import "Song.h"
+#import "AppDelegate.h"
 
 @interface LastFmController ()
 
@@ -21,30 +23,39 @@
 + (void) init {
     // Set the Last.fm session info
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSLog(@"session %@", [LastFm sharedInstance].session);
     
     // Setup the Last.fm SDK
     // IMPORTANT: please register your own API key at http://www.last.fm/api - do NOT use this key!
     [LastFm sharedInstance].apiKey = APIKEY;
     [LastFm sharedInstance].apiSecret = SECRET;
-    [LastFm sharedInstance].session = [prefs valueForKey:@"key"];
-    [LastFm sharedInstance].username = [prefs valueForKey:@"name"];
+    [LastFm sharedInstance].session = [prefs valueForKey:@"session"];
+    [LastFm sharedInstance].username = [prefs valueForKey:@"username"];
 }
 
 + (bool) login:(NSString*)username withPassword:(NSString*)password {
-    
     [[LastFm sharedInstance] getSessionForUser:username password:password successHandler:^(NSDictionary *result) {
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
-        NSLog(@"connected");
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs setValue:[LastFm sharedInstance].session forKey:@"key"];
-        [prefs setValue:[LastFm sharedInstance].session forKey:@"name"];
+        [[NSUserDefaults standardUserDefaults] setObject:[LastFm sharedInstance].session forKey:@"session"];
+        [[NSUserDefaults standardUserDefaults] setObject:[LastFm sharedInstance].username forKey:@"username"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+        [menu updateAccountItem];
     } failureHandler:^(NSError *error) {
         NSLog(@"Couldn't make Last.fm session %@", error);
+        [self logout];
     }];
     return TRUE;
 }
+
++ (bool) logout {
+    [[LastFm sharedInstance] logout];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"session"];
+    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+    [menu updateAccountItem];
+    return TRUE;
+}
+
 
 + (void) scrobble:(Song*) song {
     // Scrobble a track

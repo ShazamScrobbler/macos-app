@@ -115,8 +115,8 @@
 		F40A38D11BAAF04F001CE3AD /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				F4FC1AEA1BADD3B400716F50 /* MenuController.h */,
 				F4FC1AEB1BADD3B400716F50 /* MenuController.m */,
+				F4FC1AEA1BADD3B400716F50 /* MenuController.h */,
 			);
 			name = Menu;
 			sourceTree = "<group>";

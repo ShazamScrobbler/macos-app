@@ -8,6 +8,8 @@
 
 #import "LoginViewController.h"
 #import "LastFmController.h"
+#import "MenuController.h"
+#import "AppDelegate.h"
 
 @interface LoginViewController ()
 
@@ -20,7 +22,7 @@
 }
 
 - (IBAction)connect:(id)sender {
-    NSLog(@"efwef");
+    NSLog(@"foo");
     [LastFmController login:[_usernameField stringValue] withPassword:[_passwordField stringValue]];
 }
 @end

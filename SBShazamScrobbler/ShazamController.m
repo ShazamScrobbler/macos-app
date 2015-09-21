@@ -72,8 +72,8 @@
     if ([prefs integerForKey:@"lastTag"] < 0) {
         [prefs setInteger:0 forKey:@"lastTag"];
     };
+
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
-    
     NSString *lastId;
     if([database open]) {
         FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", [prefs integerForKey:@"lastTag"]]];

@@ -16,6 +16,7 @@
 + (void) init;
 + (void) scrobble:(Song*) song;
 + (bool) login:(NSString*)username withPassword:(NSString*)password;
++ (bool) logout;
 
 @end
 

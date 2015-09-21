@@ -14,6 +14,7 @@
 + (void)init;
 + (void)watch:(NSString*)path;
 + (void)findChanges;
+
 @end
 
 #endif

@@ -28,5 +28,7 @@
     [self.window.contentView addSubview:self.loginViewController.view];
 }
 
+// MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+
 @end
 
