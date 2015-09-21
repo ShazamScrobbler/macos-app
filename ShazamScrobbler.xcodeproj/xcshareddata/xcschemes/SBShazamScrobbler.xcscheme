@@ -31,7 +31,7 @@
                BlueprintIdentifier = "F48D994A19C8B0A80062A5FA"
                BuildableName = "SBShazamScrobbler.app"
                BlueprintName = "SBShazamScrobbler"
-               ReferencedContainer = "container:SBShazamScrobbler.xcodeproj">
+               ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "F48D996B19C8B0A90062A5FA"
                BuildableName = "SBShazamScrobblerTests.xctest"
                BlueprintName = "SBShazamScrobblerTests"
-               ReferencedContainer = "container:SBShazamScrobbler.xcodeproj">
+               ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -59,7 +59,7 @@
             BlueprintIdentifier = "F48D994A19C8B0A80062A5FA"
             BuildableName = "SBShazamScrobbler.app"
             BlueprintName = "SBShazamScrobbler"
-            ReferencedContainer = "container:SBShazamScrobbler.xcodeproj">
+            ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "F48D994A19C8B0A80062A5FA"
             BuildableName = "SBShazamScrobbler.app"
             BlueprintName = "SBShazamScrobbler"
-            ReferencedContainer = "container:SBShazamScrobbler.xcodeproj">
+            ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -101,7 +101,7 @@
             BlueprintIdentifier = "F48D994A19C8B0A80062A5FA"
             BuildableName = "SBShazamScrobbler.app"
             BlueprintName = "SBShazamScrobbler"
-            ReferencedContainer = "container:SBShazamScrobbler.xcodeproj">
+            ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

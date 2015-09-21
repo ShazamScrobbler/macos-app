@@ -193,8 +193,8 @@
 		F48D994219C8B0A80062A5FA = {
 			isa = PBXGroup;
 			children = (
-				F48D995419C8B0A80062A5FA /* SBShazamScrobbler */,
-				F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */,
+				F48D995419C8B0A80062A5FA /* ShazamScrobbler */,
+				F48D997219C8B0A90062A5FA /* ShazamScrobblerTests */,
 				F48D994D19C8B0A80062A5FA /* Frameworks */,
 				F48D994C19C8B0A80062A5FA /* Products */,
 				563690269C0DB7780323EDF6 /* Pods */,
@@ -231,7 +231,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		F48D995419C8B0A80062A5FA /* SBShazamScrobbler */ = {
+		F48D995419C8B0A80062A5FA /* ShazamScrobbler */ = {
 			isa = PBXGroup;
 			children = (
 				F4B617981B9E514A00A47D31 /* icon.png */,
@@ -242,6 +242,7 @@
 				F48D996619C8B0A90062A5FA /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
 			);
+			name = ShazamScrobbler;
 			path = SBShazamScrobbler;
 			sourceTree = "<group>";
 		};
@@ -257,12 +258,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F48D997219C8B0A90062A5FA /* SBShazamScrobblerTests */ = {
+		F48D997219C8B0A90062A5FA /* ShazamScrobblerTests */ = {
 			isa = PBXGroup;
 			children = (
 				F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */,
 				F48D997319C8B0A90062A5FA /* Supporting Files */,
 			);
+			name = ShazamScrobblerTests;
 			path = SBShazamScrobblerTests;
 			sourceTree = "<group>";
 		};
@@ -329,7 +331,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */;
+			buildConfigurationList = F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "ShazamScrobbler" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -556,7 +558,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
 				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "SB.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ShazamScrobbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -571,7 +573,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
 				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "SB.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ShazamScrobbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -622,7 +624,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "SBShazamScrobbler" */ = {
+		F48D994619C8B0A80062A5FA /* Build configuration list for PBXProject "ShazamScrobbler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F48D997A19C8B0A90062A5FA /* Debug */,
