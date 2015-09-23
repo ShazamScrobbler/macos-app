@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DA1353D4EDE71688478ABBD5"
-               BuildableName = "libPods-SBShazamScrobbler.a"
-               BlueprintName = "Pods-SBShazamScrobbler"
+               BuildableName = "libPods-ShazamScrobbler.a"
+               BlueprintName = "Pods-ShazamScrobbler"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

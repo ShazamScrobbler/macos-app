@@ -1,6 +1,6 @@
 //
 //  MenuController.m
-//  SBShazamScrobbler
+//  ShazamScrobbler
 //
 //  Created by Stephane Bruckert on 9/17/15.
 //  Copyright © 2015 Stéphane Bruckert. All rights reserved.

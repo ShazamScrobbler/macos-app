@@ -37,7 +37,7 @@
 			containerPortal = F48D994319C8B0A80062A5FA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F48D994A19C8B0A80062A5FA;
-			remoteInfo = SBShazamScrobbler;
+			remoteInfo = ShazamScrobbler;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -246,7 +246,7 @@
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
 			);
 			name = ShazamScrobbler;
-			path = SBShazamScrobbler;
+			path = ShazamScrobbler;
 			sourceTree = "<group>";
 		};
 		F48D995519C8B0A90062A5FA /* Supporting Files */ = {
@@ -297,7 +297,7 @@
 			dependencies = (
 			);
 			name = ShazamScrobbler;
-			productName = SBShazamScrobbler;
+			productName = ShazamScrobbler;
 			productReference = F48D994B19C8B0A80062A5FA /* ShazamScrobbler.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -585,7 +585,7 @@
 		F48D998019C8B0A90062A5FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -608,7 +608,7 @@
 		F48D998119C8B0A90062A5FA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",

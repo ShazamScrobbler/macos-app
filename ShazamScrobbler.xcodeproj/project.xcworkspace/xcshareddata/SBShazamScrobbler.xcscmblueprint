@@ -9,12 +9,12 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "BE543F46-F1E1-484C-AEEA-30CBB3E69940",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "1998C517B1B74A15F13D17E532DFA04FE37F5EF4" : "SBShazamScrobbler\/SBShazamScrobbler\/LastFm",
-    "D24BC658A504CCF30EC307653A05CDE068E5B578" : "SBShazamScrobbler"
+    "1998C517B1B74A15F13D17E532DFA04FE37F5EF4" : "ShazamScrobbler\/ShazamScrobbler\/LastFm",
+    "D24BC658A504CCF30EC307653A05CDE068E5B578" : "ShazamScrobbler"
   },
-  "DVTSourceControlWorkspaceBlueprintNameKey" : "SBShazamScrobbler",
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ShazamScrobbler",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
-  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SBShazamScrobbler.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ShazamScrobbler.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/gangverk\/LastFm.git",
@@ -22,7 +22,7 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1998C517B1B74A15F13D17E532DFA04FE37F5EF4"
     },
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/stephanebruckert\/SBShazamScrobbler.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/stephanebruckert\/ShazamScrobbler.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D24BC658A504CCF30EC307653A05CDE068E5B578"
     }
