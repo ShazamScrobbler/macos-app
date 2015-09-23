@@ -22,7 +22,7 @@
     [LastFmController init];
     [ShazamController init];
     [ShazamController watch:[ShazamConstants getJournalPath]];
-    [ShazamController findChanges];
+    [ShazamController findNewTags];
     [self loadView];
 }
 

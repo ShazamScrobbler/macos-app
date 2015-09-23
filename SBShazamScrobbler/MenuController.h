@@ -24,7 +24,9 @@
 - (IBAction)negateScrobbling:(id)sender;
 - (IBAction)open:(id)sender;
 - (IBAction)logoutMenuAction:(id)sender;
-- (NSMenuItem*)createAccountsItem;
 - (void)updateAccountItem;
+- (void)updateScrobblingWith:(NSInteger)itemsToScrobble;
+- (NSMenuItem*)createEnableScrobblingItem;
+- (NSMenuItem*)createAccountsItem;
 
 @end

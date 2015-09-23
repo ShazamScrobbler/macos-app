@@ -49,7 +49,7 @@
         if (flags)
         {
             dispatch_source_cancel(source);
-            [self findChanges];
+            [self findNewTags];
             [blockSelf watch:path];
         }
     });
@@ -60,44 +60,50 @@
 }
 
 //Find and scrobble new tags
-+ (void)findChanges {
++ (void)findNewTags {
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+
     if ([prefs integerForKey:@"lastTag"] < 0) {
         [prefs setInteger:0 forKey:@"lastTag"];
     };
-
+    
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
-    NSString *lastId;
+    NSInteger lastId = [prefs integerForKey:@"lastTag"];
     if([database open]) {
         FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", [prefs integerForKey:@"lastTag"]]];
-        NSString *artist;
-        NSString *track;
-        NSString *date;
-        while ([rs next]) {
-            artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
-            track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
-            date = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZDATE"]];
-            NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[date doubleValue]];
-            Song *song = [[Song alloc] initWithSong:track];
-            [song setArtist:artist];
-            [song setDate:newDate];
-            NSLog(@"%@", song);
-            MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
-            [menu insert:rs];
-            //TODO call scrobble from [menu insert:rs];
-            [LastFmController scrobble:song];
-        }
         FMResultSet *last = [database executeQuery:@"select track.Z_PK as ZID from ZSHTAGRESULTMO track ORDER BY track.Z_PK DESC LIMIT 10"];
-        if ([last next]) {
-            lastId = [NSString stringWithFormat:@"%@", [last stringForColumn:@"ZID"]];
-        };
-        
-        [database close];
+        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+        NSInteger count = 0;
+        while ([rs next]) {
+            // SONG MUST BE ADDED TO LIST IN ANY CASE
+            // AND MENU ITEM INSTANCE CAN BE USED TO BE CHANGED AFTERWARDS
+            [menu insert:rs];
+            if ([prefs integerForKey:@"scrobbling"] == 1) {
+                //SCROBBLING IS ENABLED
+                //ADD ARGUMENT TO CHANGE MENUITEM STATE? [menu insert:rs];
+                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"ZDATE"] doubleValue]];
+                Song *song = [[Song alloc] initWithSong:[rs stringForColumn:@"ZTRACKNAME"]
+                                                 artist:[rs stringForColumn:@"ZNAME"]
+                                                   date:newDate];
+                [LastFmController scrobble:song];
+                if ([last next]) {
+                    // Saving the last tag position
+                    lastId = [last intForColumn:@"ZID"];
+                    [prefs setInteger:lastId forKey:@"lastTag"];
+                };
+            } else {
+                //SCROBBLING IS DISABLED
+                //INCREMENT SCROBBLECOUNT
+                count++;
+            }
+        }
+        // WILL UPDATE TO 0
+        // IF SCROBBLING ENABLED
+        [menu updateScrobblingWith:count];
     }
-
-    // Saving the last tag position
-    [prefs setInteger:[lastId intValue] forKey:@"lastTag"];
+    [prefs setInteger:lastId forKey:@"lastTag"];
+    [database close];
 }
 
 @end

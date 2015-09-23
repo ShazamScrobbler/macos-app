@@ -26,6 +26,7 @@
         [self loginFail];
     }
     _alert.hidden = true;
+    _loader.hidden = true;
     [super viewDidLoad];
 }
 
@@ -51,13 +52,16 @@
 }
 
 - (void)connecting {
-    _connectButton.title = @"Connecting...";
+    _loader.hidden = false;
+    [_loader startAnimation:self];
     _connectButton.enabled = false;
     _alert.hidden = true;
 }
 
 - (void)loginFail {
     _alert.hidden = false;
+    _loader.hidden = true;
+
     [_passwordField setStringValue:@""];
     
     _connectButton.enabled = true;
@@ -67,6 +71,7 @@
 }
 
 - (void)loginSuccess {
+    _loader.hidden = true;
     [((AppDelegate *)[NSApplication sharedApplication].delegate).window close];
 
     [_usernameField setEnabled:false];

@@ -13,7 +13,7 @@
 
 + (void)init;
 + (void)watch:(NSString*)path;
-+ (void)findChanges;
++ (void)findNewTags;
 
 @end
 

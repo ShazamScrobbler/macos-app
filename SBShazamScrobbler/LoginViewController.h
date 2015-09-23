@@ -14,6 +14,7 @@
 @property (weak) IBOutlet NSTextField *usernameField;
 @property (weak) IBOutlet NSSecureTextField *passwordField;
 @property (weak) IBOutlet NSTextField *alert;
+@property (weak) IBOutlet NSProgressIndicator *loader;
 
 - (void)login;
 - (void)logout;

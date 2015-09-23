@@ -10,6 +10,7 @@
 #import <LastFm/LastFm.h>
 #import "LastFmController.h"
 #import "AppDelegate.h"
+#import "ShazamController.h"
 
 @interface MenuController ()
 
@@ -20,19 +21,14 @@
 - (id)init {
     _main = [NSMenu new];
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    [_statusItem setImage:[NSImage imageNamed:@"icon.png"]];
+    NSImage* icon = [NSImage imageNamed:@"icon.png"];
+    [icon setSize:NSMakeSize(MIN(icon.size.width, 16), MIN(icon.size.height, 16))];
+    [_statusItem setImage:icon];
     [_statusItem.image setTemplate:YES];
     [_statusItem setHighlightMode:YES];
     [_statusItem setMenu:_main];
     
-    _scrobblingItem = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(negateScrobbling:) keyEquivalent:@""];
-    [_scrobblingItem setTarget:self];
-    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
-    NSInteger state = scrobbling == NSOnState ? NSOnState : NSOffState;
-    [_scrobblingItem setState:state];
-    [_scrobblingItem setEnabled:YES];
-    
-    [_main addItem:_scrobblingItem];
+    [_main addItem:[self createEnableScrobblingItem]];
     [_main addItem:[self createAccountsItem]];
     [_main addItem:[NSMenuItem separatorItem]]; // A thin grey line
     [_main addItem:[NSMenuItem separatorItem]];
@@ -45,10 +41,14 @@
 {
     NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
     NSInteger state = scrobbling != NSOnState ? NSOnState : NSOffState;
-    [_scrobblingItem setState:state];
     [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
-    [[_main itemAtIndex:0] setEnabled:scrobbling];
+
+    [_scrobblingItem setState:state];
+    [_scrobblingItem setEnabled:state];
     [_main itemChanged:[_main itemAtIndex:0]];
+    if (state == 1) {
+        [ShazamController findNewTags];
+    }
 }
 
 - (IBAction)open:(id)sender
@@ -72,6 +72,27 @@
 - (void)insert:(FMResultSet*)rs {
     [self insert:rs withIndex:3];
     [_main removeItemAtIndex:23];
+}
+
+- (NSMenuItem*) createEnableScrobblingItem {
+    _scrobblingItem = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(negateScrobbling:) keyEquivalent:@""];
+    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
+    NSInteger state = scrobbling == NSOnState ? NSOnState : NSOffState;
+    [_scrobblingItem setTarget:self];
+    [_scrobblingItem setState:state];
+    [_scrobblingItem setEnabled:YES];
+    return _scrobblingItem;
+}
+
+- (void)updateScrobblingWith:(NSInteger)itemsToScrobble
+{
+    // If no songs awaiting to be scrobbled, don't precise it
+    if (itemsToScrobble == 0) {
+        [_scrobblingItem setTitle:@"Enable Scrobbling"];
+    } else {
+        [_scrobblingItem setTitle:[NSString stringWithFormat:@"Enable Scrobbling (%ld songs awaiting)", itemsToScrobble]];
+    }
+    [_main itemChanged:[_main itemAtIndex:0]];
 }
 
 - (NSMenuItem*)createAccountsItem {

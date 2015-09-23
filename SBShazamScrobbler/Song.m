@@ -16,25 +16,22 @@ static NSString *_defaultModel;
     double _odometer;
 }
 
-- (void)display {
-    NSLog(@"My song: %@", self.artist);
-}
-
-- (id)initWithSong:(NSString *)song {
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date {
     self = [super init];
     if (self) {
         // Any custom setup work goes here
         _song = [song copy];
         _odometer = 0;
-        _artist = @" ";
+        _artist = artist;
         _scrobbled = NO;
+        _date = date;
     }
     return self;
 }
 
 - (id)init {
     // Forward to the "designated" initialization method
-    return [self initWithSong:_defaultModel];
+    return [self initWithSong:_defaultModel artist:nil date:nil];
 }
 
 + (void)setDefaultModel:(NSString *)aModel {

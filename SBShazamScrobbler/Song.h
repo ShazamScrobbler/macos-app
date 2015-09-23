@@ -21,8 +21,7 @@
 @property (nonatomic) bool scrobbled;
 
 
-- (void)display;
-- (id)initWithSong:(NSString *)song;
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date;
 + (void)setDefaultModel:(NSString *)aModel;
 - (void)setArtist:(NSString *)aArtist;
 - (void)setDate:(NSDate *)aDate;

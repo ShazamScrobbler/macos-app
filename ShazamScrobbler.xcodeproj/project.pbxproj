@@ -26,6 +26,7 @@
 		F48D997919C8B0A90062A5FA /* SBShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* SBShazamScrobblerTests.m */; };
 		F49B0C7419E4792C005B2357 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F49B0C7319E4792C005B2357 /* Song.m */; };
 		F4ABE0EE1BADCBF100704B75 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4ABE0EC1BADCBF100704B75 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
+		F4B4F53E1BB2D3DB002487E7 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4B4F53D1BB2D3DB002487E7 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
 		F4B617991B9E514A00A47D31 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4B617981B9E514A00A47D31 /* icon.png */; };
 		F4FC1AEC1BADD3B400716F50 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FC1AEB1BADD3B400716F50 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		F49B0C7319E4792C005B2357 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		F49B0C7519E47937005B2357 /* Song.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		F4ABE0ED1BADCBF100704B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F4B4F53D1BB2D3DB002487E7 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
 		F4B617981B9E514A00A47D31 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F4FC1AEA1BADD3B400716F50 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		F4FC1AEB1BADD3B400716F50 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
@@ -180,9 +182,9 @@
 		F46C5D4B19E744B3003F57AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F469F3311BAE01BB00C1B352 /* LoginViewController */,
 				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
 				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
+				F469F3311BAE01BB00C1B352 /* LoginViewController */,
 				F40A38D11BAAF04F001CE3AD /* Menu */,
 				F46C5D3219E72C79003F57AF /* Shazam */,
 				F46C5D2A19E728F1003F57AF /* LastFm */,
@@ -235,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				F4B617981B9E514A00A47D31 /* icon.png */,
+				F4B4F53D1BB2D3DB002487E7 /* icon2.png */,
 				F46C5D4B19E744B3003F57AF /* Controllers */,
 				F46C5D4119E74459003F57AF /* Views */,
 				F46C5D2B19E728FC003F57AF /* Models */,
@@ -360,6 +363,7 @@
 				F469F3361BAE01DF00C1B352 /* LoginViewController.xib in Resources */,
 				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
 				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
+				F4B4F53E1BB2D3DB002487E7 /* icon2.png in Resources */,
 				F4ABE0EE1BADCBF100704B75 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
