@@ -49,7 +49,7 @@
         if (flags)
         {
             dispatch_source_cancel(source);
-            [self findNewTags];
+            [self findNewTags:false];
             [blockSelf watch:path];
         }
     });
@@ -60,49 +60,55 @@
 }
 
 //Find and scrobble new tags
-+ (void)findNewTags {
++ (void)findNewTags:(bool)scrobblingWasDisabled {
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-
-    if ([prefs integerForKey:@"lastTag"] < 0) {
-        [prefs setInteger:0 forKey:@"lastTag"];
+    
+    // Last scrobble to last.fm
+    if ([prefs integerForKey:@"lastScrobble"] < 0) {
+        [prefs setInteger:0 forKey:@"lastScrobble"];
     };
     
+    // Connection to the DB
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
-    NSInteger lastId = [prefs integerForKey:@"lastTag"];
-    if([database open]) {
-        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", [prefs integerForKey:@"lastTag"]]];
-        FMResultSet *last = [database executeQuery:@"select track.Z_PK as ZID from ZSHTAGRESULTMO track ORDER BY track.Z_PK DESC LIMIT 10"];
+    if([database open])
+    {
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
-        NSInteger count = 0;
-        while ([rs next]) {
-            // SONG MUST BE ADDED TO LIST IN ANY CASE
-            // AND MENU ITEM INSTANCE CAN BE USED TO BE CHANGED AFTERWARDS
-            [menu insert:rs];
-            if ([prefs integerForKey:@"scrobbling"] == 1) {
-                //SCROBBLING IS ENABLED
-                //ADD ARGUMENT TO CHANGE MENUITEM STATE? [menu insert:rs];
-                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"ZDATE"] doubleValue]];
-                Song *song = [[Song alloc] initWithSong:[rs stringForColumn:@"ZTRACKNAME"]
-                                                 artist:[rs stringForColumn:@"ZNAME"]
-                                                   date:newDate];
-                [LastFmController scrobble:song];
-                if ([last next]) {
-                    // Saving the last tag position
-                    lastId = [last intForColumn:@"ZID"];
-                    [prefs setInteger:lastId forKey:@"lastTag"];
-                };
-            } else {
-                //SCROBBLING IS DISABLED
-                //INCREMENT SCROBBLECOUNT
-                count++;
+        NSInteger unscrobbledCount = 0;
+        NSInteger lastScrobblePosition = [prefs integerForKey:@"lastScrobble"];
+
+        // Get Shazam tags since the last Scrobble to last.fm
+        FMResultSet *shazamTagsSinceLastScrobble = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", lastScrobblePosition]];
+        
+        // While a new Shazam tag is found
+        while ([shazamTagsSinceLastScrobble next]) {
+
+            // Because the tagged list can contain unscrobbled items,
+            // only add the song to the menubar if asked
+            if (!scrobblingWasDisabled) {
+                [menu insert:shazamTagsSinceLastScrobble];
             }
+            
+            // Check if scrobbling is enabled
+            if ([prefs integerForKey:@"scrobbling"]) {
+                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[shazamTagsSinceLastScrobble stringForColumn:@"ZDATE"] doubleValue]];
+                Song *song = [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
+                                                 artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
+                                                   date:newDate];
+                
+                //ADD ARGUMENT TO CHANGE MENUITEM STATE? [menu insert:rs];
+                [LastFmController scrobble:song];
+                lastScrobblePosition++;
+                [prefs setInteger:lastScrobblePosition forKey:@"lastScrobble"];
+            } else {
+                unscrobbledCount++;
+            }
+            
         }
-        // WILL UPDATE TO 0
-        // IF SCROBBLING ENABLED
-        [menu updateScrobblingWith:count];
+        // Will update to 0 if scrobbling ENABLED or no new songs
+        // To > 0 if scrobbling disabled
+        [menu updateScrobblingItemWith:unscrobbledCount];
     }
-    [prefs setInteger:lastId forKey:@"lastTag"];
     [database close];
 }
 

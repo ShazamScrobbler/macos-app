@@ -47,7 +47,7 @@
     [_scrobblingItem setEnabled:state];
     [_main itemChanged:[_main itemAtIndex:0]];
     if (state == 1) {
-        [ShazamController findNewTags];
+        [ShazamController findNewTags:true];
     }
 }
 
@@ -84,7 +84,7 @@
     return _scrobblingItem;
 }
 
-- (void)updateScrobblingWith:(NSInteger)itemsToScrobble
+- (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble
 {
     // If no songs awaiting to be scrobbled, don't precise it
     if (itemsToScrobble == 0) {

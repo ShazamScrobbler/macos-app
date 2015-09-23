@@ -22,7 +22,7 @@
     [LastFmController init];
     [ShazamController init];
     [ShazamController watch:[ShazamConstants getJournalPath]];
-    [ShazamController findNewTags];
+    [ShazamController findNewTags:false];
     [self loadView];
 }
 
@@ -31,7 +31,6 @@
     self.loginViewController.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self.window.contentView addSubview:self.loginViewController.view];
 }
-// MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
 
 @end
 

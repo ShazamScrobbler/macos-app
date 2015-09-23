@@ -21,11 +21,14 @@
 - (id)init;
 - (void)insert:(FMResultSet*)rs withIndex:(int)i;
 - (void)insert:(FMResultSet*)rs;
+
 - (IBAction)negateScrobbling:(id)sender;
 - (IBAction)open:(id)sender;
 - (IBAction)logoutMenuAction:(id)sender;
+
 - (void)updateAccountItem;
-- (void)updateScrobblingWith:(NSInteger)itemsToScrobble;
+- (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble;
+
 - (NSMenuItem*)createEnableScrobblingItem;
 - (NSMenuItem*)createAccountsItem;
 
