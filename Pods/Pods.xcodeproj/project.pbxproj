@@ -7,601 +7,545 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		16C2414DAACD2F4FCD757963 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = C362457AD6AB1DF6528A3BB1 /* FMDatabase.h */; };
-		32DA48F29FFEF453269AB30A /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 959F7990ABF776D374C0C21B /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		34B0A6E89EE08DD5A72E5FB9 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C574960629D8B1970BD0F83 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		3EF808075896EB9CD883210B /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 440712D55E474347734CF07E /* FMDatabaseAdditions.h */; };
-		420760DE6A05F6CFF5681763 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F40FAD49110F82955855BF2 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		48402B76032C546787E6F62A /* DDXMLPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = DEC3D223A5EDA3581C2DEDBB /* DDXMLPrivate.h */; };
-		4B23EE029293C754D13D0A7D /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32E3124E7AA49730A03E9A95 /* DDXMLElementAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		5C8E19270D0E949B6B924DDE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073AA75EAB7C4A7234913571 /* Cocoa.framework */; };
-		832860A2C965E0EB6B034915 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FF9ED81AC9D12CAC7356084 /* DDXMLNode.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		8CAD0D4D87786C669911D6BD /* DDXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 345170AA3CFCFB2F79DE75A7 /* DDXML.h */; };
-		9430476A78884C20CB6290DC /* DDXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C8E97D0E5EEF2AE2014E808 /* DDXMLElement.h */; };
-		995898CF54AC0AF59ECA3F8C /* LastFm.h in Headers */ = {isa = PBXBuildFile; fileRef = 244129F91060FD2D45557087 /* LastFm.h */; };
-		9F419C1D6F405E71F841764A /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F6ACF8AD9358CCA44C3BE8 /* DDXMLDocument.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		A1DA7A15641F556E03799A03 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 54195CC7822161BB6AF70CE9 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		A37A9C5F4E6876E924240F8F /* DDXMLElementAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E04BF268ED4C35B38EF7ACA /* DDXMLElementAdditions.h */; };
-		A702759995036F748DA32040 /* Pods-SBShazamScrobbler-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2A2DC79ADE4C97A75AC4F /* Pods-SBShazamScrobbler-dummy.m */; };
-		BC33C5270E24CBF99CF28E77 /* Pods-SBShazamScrobbler-FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05098645652217BBD1737388 /* Pods-SBShazamScrobbler-FMDB-dummy.m */; };
-		C22AE081C925AF16BB4B2F92 /* NSString+DDXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 92BBA854F37A29A7E9196575 /* NSString+DDXML.h */; };
-		C7E86F6EBAEB847B4FB869F9 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9DE7545E095B2E70DD692 /* FMDatabasePool.h */; };
-		C80E331BCEAD48E14DBF7077 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073AA75EAB7C4A7234913571 /* Cocoa.framework */; };
-		C834365959CF873C8FB5C291 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD4AA3718E0695462B156A /* DDXMLElement.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		CE341FFBE1822429241722BB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073AA75EAB7C4A7234913571 /* Cocoa.framework */; };
-		D0F950A343B78788FD7350F3 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B14E88519CE365E55E9468B /* FMResultSet.h */; };
-		DABB96CA18C51636CA2616AE /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 7445602F5C0A54A9048C63BF /* FMDB.h */; };
-		DB6AD8FC4D99D50EE5FA8249 /* Pods-SBShazamScrobbler-LastFm-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD023FB08D755F4ABA80300 /* Pods-SBShazamScrobbler-LastFm-dummy.m */; };
-		E0147E730BA080B9A5EF5635 /* Pods-SBShazamScrobbler-KissXML-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BED05BAC75431BD09AD54079 /* Pods-SBShazamScrobbler-KissXML-dummy.m */; };
-		E32E2F616200A36647A67891 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A20F5008D81A5FC922B7CA /* FMDatabaseQueue.h */; };
-		E6BA6B14CE3AC6BC7A847690 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 109958CCC04C7CF8CBDE4DBF /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		EADE30AD5F0CB296A012B272 /* DDXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = A560B13DD79F2DCC153EB13D /* DDXMLDocument.h */; };
-		ED96ABBAA820FE5AD3CE1631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 073AA75EAB7C4A7234913571 /* Cocoa.framework */; };
-		F30660FCC324E88F7304805A /* DDXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 542A84E01E830DDEA9DF9914 /* DDXMLNode.h */; };
-		F4E1D4E3C917CE9FE8E5ECAC /* LastFm.m in Sources */ = {isa = PBXBuildFile; fileRef = 606D15806602742FF45A8BEB /* LastFm.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		F944D31D02B3C43975D6D434 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 36BEA2A51446D5F8F570CB04 /* NSString+DDXML.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0EC9E279EBFC82CF79ACC34FB2E5B1FB /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0BE7C7F2CF122781336638148AF63B /* FMDB.h */; };
+		240DE3A792AA8A4AACFFE389E0AEFC93 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D6621D938599EC9EF96CD7A0B59E04A9 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		254C6D8313CF901C290930AF313952FC /* FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C889D9E3E871E0F848814AB70C6AAE0F /* FMDB-dummy.m */; };
+		28C74D2DC5A0765B3F52E58C451F2B90 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 1573170DB543C36CB8095CD247D9E3B8 /* FMDatabasePool.h */; };
+		313F7528FD1CBDD8EA525AFCB3610555 /* Pods-ShazamScrobbler-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1888EE72EC2014F081FFE36EE48AC1A8 /* Pods-ShazamScrobbler-dummy.m */; };
+		3FB223F9E07AE0772E1314F6DAA22FD0 /* DDXMLPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E5DA2430B3EFDA5C546C873236C2A32 /* DDXMLPrivate.h */; };
+		402E1420A83B79169A2D8753630397F8 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B2824C49D08F7D2912FEDCA84F1AF1 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		4892806FC0833F0DEA3FFBE0D8764BB6 /* KissXML-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BDAA6AA758283FF6B6DEF8387B4B27BA /* KissXML-dummy.m */; };
+		48973A310313C7CC7101090F48A89805 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 2955ADB49611601832B147945B2E89A5 /* FMDatabaseQueue.h */; };
+		48C0597B644FFD8829AE1602AB54C43D /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 41795FC53238024238C61C425976B956 /* FMResultSet.h */; };
+		5D304408BA4883BDAC04445FBA80BE3E /* DDXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 90E9CB10820C5BF2C1685F8517237BC5 /* DDXML.h */; };
+		66F371AE394897C7FD4C925D4D61F62A /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E1364EE63DC8E4A69BD509EFA6FA93F4 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		6983780F30F2E57C7395A31762F1B48C /* DDXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D94A760E9F655067512ACF5F062338B /* DDXMLDocument.h */; };
+		6A4ACF31FABAD8FDD2D1EF5930831AD5 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB39A308C842FBB5D6CB165CBF6046A /* DDXMLElementAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		88013CD7CA0827563AF5BCD73F2D82B2 /* DDXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8921B2FCD346B8AEEFE195261F0606FD /* DDXMLElement.h */; };
+		8A3A13EF73071FA0DDDAF5D0D6E2D4F0 /* LastFm-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F8B75CF1D12FDECA14C31E9B5B9CCA /* LastFm-dummy.m */; };
+		8A508D4988C7525868AEC6D104561788 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */; };
+		94C185D4222FF625457B27A5FADBAFCB /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2BBA70655E6D330A94113F0AB0D94B /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		97226E0E189684948F74927F4ED24DB6 /* DDXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 96765933D97C4122AB9C5D647155B2FE /* DDXMLNode.h */; };
+		9921B0C77BF0F9B43544E6405ED32039 /* NSString+DDXML.h in Headers */ = {isa = PBXBuildFile; fileRef = 1268A77FF5F40B4C18E793437AC8EE45 /* NSString+DDXML.h */; };
+		A0ACD15EAADAD53F3757C4CEB921F390 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 8147F7792CCD9D4742C682FA0E367B64 /* NSString+DDXML.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A0C6EAD9E60FE26195D71776978FD787 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5E6E3C25A5D2F87D5BB22D5207C11 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		ABA6991163367A9AE2460D8311EC6F54 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C0FAB30F29909485474982DE6848844 /* FMDatabase.h */; };
+		ADAE4532C1EC2DA3B39CF3E6761D65CE /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B7E1D07A004D99C6FBE5A5CC949B09 /* DDXMLDocument.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		C19A73E668D5B1932E656A58504D257D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */; };
+		CCE9B13F4E767EBC0621CB937C379D56 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = F101C47246721F8345DC42500DC7F133 /* DDXMLElement.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		D30F7E1F31D148F5A771C45B4EBA79D0 /* LastFm.m in Sources */ = {isa = PBXBuildFile; fileRef = 4282C7DBF9191680A1AD6B3F1D881C0E /* LastFm.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		D77DF500AC73D50197E27236CA18C055 /* LastFm.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E6A44A059FC0EB23906DBFEDAB9CE46 /* LastFm.h */; };
+		DBE09AD1CC875D42907217E1B291048A /* DDXMLElementAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 37F25516C065D4B434440B8096F6D56E /* DDXMLElementAdditions.h */; };
+		E122754FDA048D8BA2E6E3B7BE6D0384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */; };
+		F65812937834307EB8D942D20FD21D1B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */; };
+		F8E202294CBF3F2BE32821A2974E792C /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D9BC75A7A51EAE05433AE582936868 /* DDXMLNode.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		FBCBED8B54BA1323C2D820A0F1DA9D92 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 96149AB45935F159EC9FF4A41EBE5B12 /* FMDatabaseAdditions.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		79E01C68A070ED0BC05F988A /* PBXContainerItemProxy */ = {
+		361580D593F3CF30EFBDAD0CD010B908 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CA8342AF9FD5640FB299DB28 /* Project object */;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 770E4853B62CEEEC5AC3BE50;
-			remoteInfo = "Pods-SBShazamScrobbler-KissXML";
+			remoteGlobalIDString = F96F310B035ADB82B769D63DE78E01DA;
+			remoteInfo = LastFm;
 		};
-		D99D72E8A16899459B2993AE /* PBXContainerItemProxy */ = {
+		67F370711941E5EA0F97A923F90848F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CA8342AF9FD5640FB299DB28 /* Project object */;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 770E4853B62CEEEC5AC3BE50;
-			remoteInfo = "Pods-SBShazamScrobbler-KissXML";
+			remoteGlobalIDString = 7D2D89031D52CD8C6165B16ACAF40DF1;
+			remoteInfo = KissXML;
 		};
-		E54C20F16CD3A90EE4DC5089 /* PBXContainerItemProxy */ = {
+		9D2B488DE5C2794DA8D243F27996EE63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CA8342AF9FD5640FB299DB28 /* Project object */;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 23B64FF1671121845ECFDECE;
-			remoteInfo = "Pods-SBShazamScrobbler-FMDB";
+			remoteGlobalIDString = 7D2D89031D52CD8C6165B16ACAF40DF1;
+			remoteInfo = KissXML;
 		};
-		EA2CAB7271BA4EAD827BF4F5 /* PBXContainerItemProxy */ = {
+		DC17733A1DCB4FAF3E9C1DF1359623D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CA8342AF9FD5640FB299DB28 /* Project object */;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3F40EFA49B48A4AF3C6E634E;
-			remoteInfo = "Pods-SBShazamScrobbler-LastFm";
+			remoteGlobalIDString = 46CA0D495E70157CD38307FB9EA7B7B5;
+			remoteInfo = FMDB;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03F9DE7545E095B2E70DD692 /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
-		05098645652217BBD1737388 /* Pods-SBShazamScrobbler-FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBShazamScrobbler-FMDB-dummy.m"; sourceTree = "<group>"; };
-		073AA75EAB7C4A7234913571 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		0C5345232C4FA2EFF5CEE0DE /* Pods-SBShazamScrobbler-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SBShazamScrobbler-resources.sh"; sourceTree = "<group>"; };
-		109958CCC04C7CF8CBDE4DBF /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
-		1C8E97D0E5EEF2AE2014E808 /* DDXMLElement.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLElement.h; path = KissXML/DDXMLElement.h; sourceTree = "<group>"; };
-		1F40FAD49110F82955855BF2 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
-		244129F91060FD2D45557087 /* LastFm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LastFm.h; path = LastFm/LastFm.h; sourceTree = "<group>"; };
-		263B52C29C8FCDCF4762C3CB /* Pods-SBShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
-		32E3124E7AA49730A03E9A95 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLElementAdditions.m; path = KissXML/Additions/DDXMLElementAdditions.m; sourceTree = "<group>"; };
-		34109C684CC3D3485BCFF212 /* Pods-SBShazamScrobbler-LastFm-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBShazamScrobbler-LastFm-prefix.pch"; sourceTree = "<group>"; };
-		345170AA3CFCFB2F79DE75A7 /* DDXML.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXML.h; path = KissXML/DDXML.h; sourceTree = "<group>"; };
-		36BEA2A51446D5F8F570CB04 /* NSString+DDXML.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+DDXML.m"; path = "KissXML/Categories/NSString+DDXML.m"; sourceTree = "<group>"; };
-		3C574960629D8B1970BD0F83 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
-		3D88393170E94B81FCAB85E0 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E04BF268ED4C35B38EF7ACA /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLElementAdditions.h; path = KissXML/Additions/DDXMLElementAdditions.h; sourceTree = "<group>"; };
-		440712D55E474347734CF07E /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		54195CC7822161BB6AF70CE9 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		542A84E01E830DDEA9DF9914 /* DDXMLNode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLNode.h; path = KissXML/DDXMLNode.h; sourceTree = "<group>"; };
-		58196DE7676C46B4AC25811B /* Pods-SBShazamScrobbler-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SBShazamScrobbler-acknowledgements.markdown"; sourceTree = "<group>"; };
-		59A20F5008D81A5FC922B7CA /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
-		5CC2A2DC79ADE4C97A75AC4F /* Pods-SBShazamScrobbler-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBShazamScrobbler-dummy.m"; sourceTree = "<group>"; };
-		5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-LastFm-Private.xcconfig"; sourceTree = "<group>"; };
-		606D15806602742FF45A8BEB /* LastFm.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LastFm.m; path = LastFm/LastFm.m; sourceTree = "<group>"; };
-		6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-FMDB-Private.xcconfig"; sourceTree = "<group>"; };
-		6DD023FB08D755F4ABA80300 /* Pods-SBShazamScrobbler-LastFm-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBShazamScrobbler-LastFm-dummy.m"; sourceTree = "<group>"; };
-		7445602F5C0A54A9048C63BF /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
-		7781CC9998C1F7E84BBCD372 /* Pods-SBShazamScrobbler-FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBShazamScrobbler-FMDB-prefix.pch"; sourceTree = "<group>"; };
-		7B14E88519CE365E55E9468B /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
-		7BCFA37A5215BA5B15698D4E /* Pods-SBShazamScrobbler-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBShazamScrobbler-environment.h"; sourceTree = "<group>"; };
-		7F80DBDA983349B2ED97815B /* libPods-SBShazamScrobbler-FMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler-FMDB.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		84F6ACF8AD9358CCA44C3BE8 /* DDXMLDocument.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLDocument.m; path = KissXML/DDXMLDocument.m; sourceTree = "<group>"; };
-		8B9E3F46EE02CCFCB7CDA02F /* libPods-SBShazamScrobbler-KissXML.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler-KissXML.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		92BBA854F37A29A7E9196575 /* NSString+DDXML.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSString+DDXML.h"; path = "KissXML/Categories/NSString+DDXML.h"; sourceTree = "<group>"; };
-		959F7990ABF776D374C0C21B /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
-		98CD4AA3718E0695462B156A /* DDXMLElement.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLElement.m; path = KissXML/DDXMLElement.m; sourceTree = "<group>"; };
-		99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-KissXML-Private.xcconfig"; sourceTree = "<group>"; };
-		9FF9ED81AC9D12CAC7356084 /* DDXMLNode.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLNode.m; path = KissXML/DDXMLNode.m; sourceTree = "<group>"; };
-		A560B13DD79F2DCC153EB13D /* DDXMLDocument.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLDocument.h; path = KissXML/DDXMLDocument.h; sourceTree = "<group>"; };
-		A5987FBFBCC85D4FB3BCCCA6 /* Pods-SBShazamScrobbler-KissXML-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBShazamScrobbler-KissXML-prefix.pch"; sourceTree = "<group>"; };
-		ABCBCF69468ABF1892B4292B /* Pods-SBShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
-		B116360E62C04D44167F8954 /* Pods-SBShazamScrobbler-FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-FMDB.xcconfig"; sourceTree = "<group>"; };
-		B40A3541C4588A77103562FC /* Pods-SBShazamScrobbler-KissXML.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-KissXML.xcconfig"; sourceTree = "<group>"; };
-		BED05BAC75431BD09AD54079 /* Pods-SBShazamScrobbler-KissXML-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBShazamScrobbler-KissXML-dummy.m"; sourceTree = "<group>"; };
-		C1F3565D7247531FAB9C80C8 /* Pods-SBShazamScrobbler-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SBShazamScrobbler-acknowledgements.plist"; sourceTree = "<group>"; };
-		C362457AD6AB1DF6528A3BB1 /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
-		DEC3D223A5EDA3581C2DEDBB /* DDXMLPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLPrivate.h; path = KissXML/Private/DDXMLPrivate.h; sourceTree = "<group>"; };
-		E4A9C30D13BD2525595EDB64 /* Pods-SBShazamScrobbler-LastFm.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBShazamScrobbler-LastFm.xcconfig"; sourceTree = "<group>"; };
-		F64A293C55ED211147F41845 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		FF4113CFAAA1104974D1E738 /* libPods-SBShazamScrobbler-LastFm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler-LastFm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		020C3AC21340C551C58BFB3F596F0E62 /* Pods-ShazamScrobbler-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ShazamScrobbler-acknowledgements.markdown"; sourceTree = "<group>"; };
+		0694E1F9CE67F19198BF4550D364A8B7 /* KissXML.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KissXML.xcconfig; sourceTree = "<group>"; };
+		08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		0A0BE7C7F2CF122781336638148AF63B /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
+		1268A77FF5F40B4C18E793437AC8EE45 /* NSString+DDXML.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSString+DDXML.h"; path = "KissXML/Categories/NSString+DDXML.h"; sourceTree = "<group>"; };
+		1573170DB543C36CB8095CD247D9E3B8 /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
+		1888EE72EC2014F081FFE36EE48AC1A8 /* Pods-ShazamScrobbler-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ShazamScrobbler-dummy.m"; sourceTree = "<group>"; };
+		23C689CF2D4B8D948537045A7C94B347 /* FMDB-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "FMDB-Private.xcconfig"; sourceTree = "<group>"; };
+		25D9BC75A7A51EAE05433AE582936868 /* DDXMLNode.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLNode.m; path = KissXML/DDXMLNode.m; sourceTree = "<group>"; };
+		2955ADB49611601832B147945B2E89A5 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		2BF5E6E3C25A5D2F87D5BB22D5207C11 /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
+		2E2BBA70655E6D330A94113F0AB0D94B /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
+		37F25516C065D4B434440B8096F6D56E /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLElementAdditions.h; path = KissXML/Additions/DDXMLElementAdditions.h; sourceTree = "<group>"; };
+		3C0FAB30F29909485474982DE6848844 /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
+		41795FC53238024238C61C425976B956 /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		4282C7DBF9191680A1AD6B3F1D881C0E /* LastFm.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LastFm.m; path = LastFm/LastFm.m; sourceTree = "<group>"; };
+		4A7F79CC89F50AEE030D0D915D51DC72 /* libKissXML.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKissXML.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		530705462AC0DF08C666E60879530CD6 /* LastFm.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LastFm.xcconfig; sourceTree = "<group>"; };
+		5D94A760E9F655067512ACF5F062338B /* DDXMLDocument.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLDocument.h; path = KissXML/DDXMLDocument.h; sourceTree = "<group>"; };
+		5E6A44A059FC0EB23906DBFEDAB9CE46 /* LastFm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LastFm.h; path = LastFm/LastFm.h; sourceTree = "<group>"; };
+		60B2824C49D08F7D2912FEDCA84F1AF1 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
+		68EDB43BB6E81B604448D74F182CB921 /* KissXML-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "KissXML-Private.xcconfig"; sourceTree = "<group>"; };
+		7B0F6756E4CA829798F73F4B6C4DDD41 /* Pods-ShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
+		7E5DA2430B3EFDA5C546C873236C2A32 /* DDXMLPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLPrivate.h; path = KissXML/Private/DDXMLPrivate.h; sourceTree = "<group>"; };
+		8147F7792CCD9D4742C682FA0E367B64 /* NSString+DDXML.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+DDXML.m"; path = "KissXML/Categories/NSString+DDXML.m"; sourceTree = "<group>"; };
+		84B7E1D07A004D99C6FBE5A5CC949B09 /* DDXMLDocument.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLDocument.m; path = KissXML/DDXMLDocument.m; sourceTree = "<group>"; };
+		85873CFBAE8A91072361C2681AD5FB34 /* libLastFm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLastFm.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		86E4C922995268B7C68EF609D7D18270 /* LastFm-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LastFm-prefix.pch"; sourceTree = "<group>"; };
+		8921B2FCD346B8AEEFE195261F0606FD /* DDXMLElement.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLElement.h; path = KissXML/DDXMLElement.h; sourceTree = "<group>"; };
+		900120D18BE0956F0E90F01625AE1D97 /* libPods-ShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		90E9CB10820C5BF2C1685F8517237BC5 /* DDXML.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXML.h; path = KissXML/DDXML.h; sourceTree = "<group>"; };
+		91F8B75CF1D12FDECA14C31E9B5B9CCA /* LastFm-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LastFm-dummy.m"; sourceTree = "<group>"; };
+		96149AB45935F159EC9FF4A41EBE5B12 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		96765933D97C4122AB9C5D647155B2FE /* DDXMLNode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDXMLNode.h; path = KissXML/DDXMLNode.h; sourceTree = "<group>"; };
+		967FEB2F69E96926FE475DF67BDAD15C /* FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FMDB.xcconfig; sourceTree = "<group>"; };
+		96CFDF8DB5CC97AA205FE0C94626D370 /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
+		9ED36643A61159288BA1A8C373F7D580 /* Pods-ShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
+		A4890974CB73A5098C62417099134EFC /* KissXML-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KissXML-prefix.pch"; sourceTree = "<group>"; };
+		ACE536FE4E2687CA0ACD07C51260DEFE /* LastFm-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "LastFm-Private.xcconfig"; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BDAA6AA758283FF6B6DEF8387B4B27BA /* KissXML-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KissXML-dummy.m"; sourceTree = "<group>"; };
+		C889D9E3E871E0F848814AB70C6AAE0F /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
+		D6621D938599EC9EF96CD7A0B59E04A9 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
+		E1364EE63DC8E4A69BD509EFA6FA93F4 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		E40F6A86FCC974962E09433553BCCEB9 /* Pods-ShazamScrobbler-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ShazamScrobbler-acknowledgements.plist"; sourceTree = "<group>"; };
+		E7AA6241CF995E50F290C8B164449DDC /* Pods-ShazamScrobbler-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ShazamScrobbler-resources.sh"; sourceTree = "<group>"; };
+		ED94D7D5A0257C4D6DAEDC3C64AB7106 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F101C47246721F8345DC42500DC7F133 /* DDXMLElement.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLElement.m; path = KissXML/DDXMLElement.m; sourceTree = "<group>"; };
+		FFB39A308C842FBB5D6CB165CBF6046A /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDXMLElementAdditions.m; path = KissXML/Additions/DDXMLElementAdditions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2EBDC24456DE0CE88599DD11 /* Frameworks */ = {
+		394FD8B2B7F6C229496E0326EAC61A7B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C8E19270D0E949B6B924DDE /* Cocoa.framework in Frameworks */,
+				C19A73E668D5B1932E656A58504D257D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42C96F64DF680B4076F4D3C4 /* Frameworks */ = {
+		9FFBCB41B88F677C9AE676E73E37542C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C80E331BCEAD48E14DBF7077 /* Cocoa.framework in Frameworks */,
+				E122754FDA048D8BA2E6E3B7BE6D0384 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7B9C87947AE0C927B088785F /* Frameworks */ = {
+		B2920502C5BF25B2D927E5DDE37B6C95 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED96ABBAA820FE5AD3CE1631 /* Cocoa.framework in Frameworks */,
+				8A508D4988C7525868AEC6D104561788 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		99F32231B9F803361B5B6242 /* Frameworks */ = {
+		E583A1467BFB3A4AF394A29EE909AF15 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE341FFBE1822429241722BB /* Cocoa.framework in Frameworks */,
+				F65812937834307EB8D942D20FD21D1B /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		16CB25AE8EA4D25D500C6EDC /* KissXML */ = {
+		2BCCF9E7DC08FAEC719B6A6C0F7D57AD /* OS X */ = {
 			isa = PBXGroup;
 			children = (
-				345170AA3CFCFB2F79DE75A7 /* DDXML.h */,
-				A560B13DD79F2DCC153EB13D /* DDXMLDocument.h */,
-				84F6ACF8AD9358CCA44C3BE8 /* DDXMLDocument.m */,
-				1C8E97D0E5EEF2AE2014E808 /* DDXMLElement.h */,
-				98CD4AA3718E0695462B156A /* DDXMLElement.m */,
-				3E04BF268ED4C35B38EF7ACA /* DDXMLElementAdditions.h */,
-				32E3124E7AA49730A03E9A95 /* DDXMLElementAdditions.m */,
-				542A84E01E830DDEA9DF9914 /* DDXMLNode.h */,
-				9FF9ED81AC9D12CAC7356084 /* DDXMLNode.m */,
-				DEC3D223A5EDA3581C2DEDBB /* DDXMLPrivate.h */,
-				92BBA854F37A29A7E9196575 /* NSString+DDXML.h */,
-				36BEA2A51446D5F8F570CB04 /* NSString+DDXML.m */,
-				6F79B8FA32C992B6D659ECAA /* Support Files */,
-			);
-			path = KissXML;
-			sourceTree = "<group>";
-		};
-		34F9B6FD5373E2FACF89351B = {
-			isa = PBXGroup;
-			children = (
-				F64A293C55ED211147F41845 /* Podfile */,
-				7871FEA74B6122BE41D15756 /* Frameworks */,
-				7DA006D46FD5F40DE2AE9B50 /* Pods */,
-				DE1842136D541A3900576ED3 /* Products */,
-				41709A8B46D45DB558572FF7 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		41709A8B46D45DB558572FF7 /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				C9DC6DAC3D6DAB29FE88EAAC /* Pods-SBShazamScrobbler */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		5DF9D5B983CED16EA06F411D /* common */ = {
-			isa = PBXGroup;
-			children = (
-				7445602F5C0A54A9048C63BF /* FMDB.h */,
-				C362457AD6AB1DF6528A3BB1 /* FMDatabase.h */,
-				959F7990ABF776D374C0C21B /* FMDatabase.m */,
-				440712D55E474347734CF07E /* FMDatabaseAdditions.h */,
-				54195CC7822161BB6AF70CE9 /* FMDatabaseAdditions.m */,
-				03F9DE7545E095B2E70DD692 /* FMDatabasePool.h */,
-				3C574960629D8B1970BD0F83 /* FMDatabasePool.m */,
-				59A20F5008D81A5FC922B7CA /* FMDatabaseQueue.h */,
-				109958CCC04C7CF8CBDE4DBF /* FMDatabaseQueue.m */,
-				7B14E88519CE365E55E9468B /* FMResultSet.h */,
-				1F40FAD49110F82955855BF2 /* FMResultSet.m */,
-			);
-			name = common;
-			sourceTree = "<group>";
-		};
-		6EDBDA7661D44ADC6E8E1D5B /* LastFm */ = {
-			isa = PBXGroup;
-			children = (
-				244129F91060FD2D45557087 /* LastFm.h */,
-				606D15806602742FF45A8BEB /* LastFm.m */,
-				D5C105A65AD221D53DB99693 /* Support Files */,
-			);
-			path = LastFm;
-			sourceTree = "<group>";
-		};
-		6F79B8FA32C992B6D659ECAA /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				B40A3541C4588A77103562FC /* Pods-SBShazamScrobbler-KissXML.xcconfig */,
-				99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */,
-				BED05BAC75431BD09AD54079 /* Pods-SBShazamScrobbler-KissXML-dummy.m */,
-				A5987FBFBCC85D4FB3BCCCA6 /* Pods-SBShazamScrobbler-KissXML-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-SBShazamScrobbler-KissXML";
-			sourceTree = "<group>";
-		};
-		7871FEA74B6122BE41D15756 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				80B309AFFD221177304A2B1F /* OS X */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		7DA006D46FD5F40DE2AE9B50 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EF4D76407CA63BC3E6D17CC3 /* FMDB */,
-				16CB25AE8EA4D25D500C6EDC /* KissXML */,
-				6EDBDA7661D44ADC6E8E1D5B /* LastFm */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		80B309AFFD221177304A2B1F /* OS X */ = {
-			isa = PBXGroup;
-			children = (
-				073AA75EAB7C4A7234913571 /* Cocoa.framework */,
+				08809096CF5E2A96D4C9B0AEE71E704E /* Cocoa.framework */,
 			);
 			name = "OS X";
 			sourceTree = "<group>";
 		};
-		C40256D572CE5CA5EDAE40B1 /* Support Files */ = {
+		39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B116360E62C04D44167F8954 /* Pods-SBShazamScrobbler-FMDB.xcconfig */,
-				6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */,
-				05098645652217BBD1737388 /* Pods-SBShazamScrobbler-FMDB-dummy.m */,
-				7781CC9998C1F7E84BBCD372 /* Pods-SBShazamScrobbler-FMDB-prefix.pch */,
+				2BCCF9E7DC08FAEC719B6A6C0F7D57AD /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */,
+				9DC5B54BA8BE81B6E302B671B8F8DA02 /* Pods */,
+				CCA510CFBEA2D207524CDA0D73C3B561 /* Products */,
+				DAEFD92BCCFF4032588771AB7638B8C0 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		8317528F0255DE4FB11208EEDF97A224 /* Pods-ShazamScrobbler */ = {
+			isa = PBXGroup;
+			children = (
+				020C3AC21340C551C58BFB3F596F0E62 /* Pods-ShazamScrobbler-acknowledgements.markdown */,
+				E40F6A86FCC974962E09433553BCCEB9 /* Pods-ShazamScrobbler-acknowledgements.plist */,
+				1888EE72EC2014F081FFE36EE48AC1A8 /* Pods-ShazamScrobbler-dummy.m */,
+				E7AA6241CF995E50F290C8B164449DDC /* Pods-ShazamScrobbler-resources.sh */,
+				7B0F6756E4CA829798F73F4B6C4DDD41 /* Pods-ShazamScrobbler.debug.xcconfig */,
+				9ED36643A61159288BA1A8C373F7D580 /* Pods-ShazamScrobbler.release.xcconfig */,
+			);
+			name = "Pods-ShazamScrobbler";
+			path = "Target Support Files/Pods-ShazamScrobbler";
+			sourceTree = "<group>";
+		};
+		8D4509A2B7123FBC004819C9333F1EB3 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				E545FFDB2D10CCC543ADA210DA0640BA /* Support Files */,
+				E49E897761D01956F04E8BA8E91B6D5C /* common */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
+		9DC5B54BA8BE81B6E302B671B8F8DA02 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8D4509A2B7123FBC004819C9333F1EB3 /* FMDB */,
+				DB70200E2C08C9F52C08E665188DABD6 /* KissXML */,
+				CB91C916BE6227DBF19DBBC86837DEE5 /* LastFm */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A99BFC859844C37D9D5F9BCC6C640EC5 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0694E1F9CE67F19198BF4550D364A8B7 /* KissXML.xcconfig */,
+				68EDB43BB6E81B604448D74F182CB921 /* KissXML-Private.xcconfig */,
+				BDAA6AA758283FF6B6DEF8387B4B27BA /* KissXML-dummy.m */,
+				A4890974CB73A5098C62417099134EFC /* KissXML-prefix.pch */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/Pods-SBShazamScrobbler-FMDB";
+			path = "../Target Support Files/KissXML";
 			sourceTree = "<group>";
 		};
-		C9DC6DAC3D6DAB29FE88EAAC /* Pods-SBShazamScrobbler */ = {
+		CB91C916BE6227DBF19DBBC86837DEE5 /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
-				58196DE7676C46B4AC25811B /* Pods-SBShazamScrobbler-acknowledgements.markdown */,
-				C1F3565D7247531FAB9C80C8 /* Pods-SBShazamScrobbler-acknowledgements.plist */,
-				5CC2A2DC79ADE4C97A75AC4F /* Pods-SBShazamScrobbler-dummy.m */,
-				7BCFA37A5215BA5B15698D4E /* Pods-SBShazamScrobbler-environment.h */,
-				0C5345232C4FA2EFF5CEE0DE /* Pods-SBShazamScrobbler-resources.sh */,
-				ABCBCF69468ABF1892B4292B /* Pods-SBShazamScrobbler.debug.xcconfig */,
-				263B52C29C8FCDCF4762C3CB /* Pods-SBShazamScrobbler.release.xcconfig */,
+				5E6A44A059FC0EB23906DBFEDAB9CE46 /* LastFm.h */,
+				4282C7DBF9191680A1AD6B3F1D881C0E /* LastFm.m */,
+				E1EFC1EB1D99F4F1E509D5F247C42824 /* Support Files */,
 			);
-			name = "Pods-SBShazamScrobbler";
-			path = "Target Support Files/Pods-SBShazamScrobbler";
+			path = LastFm;
 			sourceTree = "<group>";
 		};
-		D5C105A65AD221D53DB99693 /* Support Files */ = {
+		CCA510CFBEA2D207524CDA0D73C3B561 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E4A9C30D13BD2525595EDB64 /* Pods-SBShazamScrobbler-LastFm.xcconfig */,
-				5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */,
-				6DD023FB08D755F4ABA80300 /* Pods-SBShazamScrobbler-LastFm-dummy.m */,
-				34109C684CC3D3485BCFF212 /* Pods-SBShazamScrobbler-LastFm-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-SBShazamScrobbler-LastFm";
-			sourceTree = "<group>";
-		};
-		DE1842136D541A3900576ED3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3D88393170E94B81FCAB85E0 /* libPods-SBShazamScrobbler.a */,
-				7F80DBDA983349B2ED97815B /* libPods-SBShazamScrobbler-FMDB.a */,
-				8B9E3F46EE02CCFCB7CDA02F /* libPods-SBShazamScrobbler-KissXML.a */,
-				FF4113CFAAA1104974D1E738 /* libPods-SBShazamScrobbler-LastFm.a */,
+				ED94D7D5A0257C4D6DAEDC3C64AB7106 /* libFMDB.a */,
+				4A7F79CC89F50AEE030D0D915D51DC72 /* libKissXML.a */,
+				85873CFBAE8A91072361C2681AD5FB34 /* libLastFm.a */,
+				900120D18BE0956F0E90F01625AE1D97 /* libPods-ShazamScrobbler.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EF4D76407CA63BC3E6D17CC3 /* FMDB */ = {
+		DAEFD92BCCFF4032588771AB7638B8C0 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				C40256D572CE5CA5EDAE40B1 /* Support Files */,
-				5DF9D5B983CED16EA06F411D /* common */,
+				8317528F0255DE4FB11208EEDF97A224 /* Pods-ShazamScrobbler */,
 			);
-			path = FMDB;
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		DB70200E2C08C9F52C08E665188DABD6 /* KissXML */ = {
+			isa = PBXGroup;
+			children = (
+				90E9CB10820C5BF2C1685F8517237BC5 /* DDXML.h */,
+				5D94A760E9F655067512ACF5F062338B /* DDXMLDocument.h */,
+				84B7E1D07A004D99C6FBE5A5CC949B09 /* DDXMLDocument.m */,
+				8921B2FCD346B8AEEFE195261F0606FD /* DDXMLElement.h */,
+				F101C47246721F8345DC42500DC7F133 /* DDXMLElement.m */,
+				37F25516C065D4B434440B8096F6D56E /* DDXMLElementAdditions.h */,
+				FFB39A308C842FBB5D6CB165CBF6046A /* DDXMLElementAdditions.m */,
+				96765933D97C4122AB9C5D647155B2FE /* DDXMLNode.h */,
+				25D9BC75A7A51EAE05433AE582936868 /* DDXMLNode.m */,
+				7E5DA2430B3EFDA5C546C873236C2A32 /* DDXMLPrivate.h */,
+				1268A77FF5F40B4C18E793437AC8EE45 /* NSString+DDXML.h */,
+				8147F7792CCD9D4742C682FA0E367B64 /* NSString+DDXML.m */,
+				A99BFC859844C37D9D5F9BCC6C640EC5 /* Support Files */,
+			);
+			path = KissXML;
+			sourceTree = "<group>";
+		};
+		E1EFC1EB1D99F4F1E509D5F247C42824 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				530705462AC0DF08C666E60879530CD6 /* LastFm.xcconfig */,
+				ACE536FE4E2687CA0ACD07C51260DEFE /* LastFm-Private.xcconfig */,
+				91F8B75CF1D12FDECA14C31E9B5B9CCA /* LastFm-dummy.m */,
+				86E4C922995268B7C68EF609D7D18270 /* LastFm-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/LastFm";
+			sourceTree = "<group>";
+		};
+		E49E897761D01956F04E8BA8E91B6D5C /* common */ = {
+			isa = PBXGroup;
+			children = (
+				0A0BE7C7F2CF122781336638148AF63B /* FMDB.h */,
+				3C0FAB30F29909485474982DE6848844 /* FMDatabase.h */,
+				2BF5E6E3C25A5D2F87D5BB22D5207C11 /* FMDatabase.m */,
+				96149AB45935F159EC9FF4A41EBE5B12 /* FMDatabaseAdditions.h */,
+				E1364EE63DC8E4A69BD509EFA6FA93F4 /* FMDatabaseAdditions.m */,
+				1573170DB543C36CB8095CD247D9E3B8 /* FMDatabasePool.h */,
+				2E2BBA70655E6D330A94113F0AB0D94B /* FMDatabasePool.m */,
+				2955ADB49611601832B147945B2E89A5 /* FMDatabaseQueue.h */,
+				60B2824C49D08F7D2912FEDCA84F1AF1 /* FMDatabaseQueue.m */,
+				41795FC53238024238C61C425976B956 /* FMResultSet.h */,
+				D6621D938599EC9EF96CD7A0B59E04A9 /* FMResultSet.m */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
+		E545FFDB2D10CCC543ADA210DA0640BA /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				967FEB2F69E96926FE475DF67BDAD15C /* FMDB.xcconfig */,
+				23C689CF2D4B8D948537045A7C94B347 /* FMDB-Private.xcconfig */,
+				C889D9E3E871E0F848814AB70C6AAE0F /* FMDB-dummy.m */,
+				96CFDF8DB5CC97AA205FE0C94626D370 /* FMDB-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FMDB";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		0571FD1FA8C72AA88BB5DB96 /* Headers */ = {
+		4D9D726CA669EEAAC8C8E265757DEC85 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CAD0D4D87786C669911D6BD /* DDXML.h in Headers */,
-				EADE30AD5F0CB296A012B272 /* DDXMLDocument.h in Headers */,
-				9430476A78884C20CB6290DC /* DDXMLElement.h in Headers */,
-				A37A9C5F4E6876E924240F8F /* DDXMLElementAdditions.h in Headers */,
-				F30660FCC324E88F7304805A /* DDXMLNode.h in Headers */,
-				48402B76032C546787E6F62A /* DDXMLPrivate.h in Headers */,
-				C22AE081C925AF16BB4B2F92 /* NSString+DDXML.h in Headers */,
+				D77DF500AC73D50197E27236CA18C055 /* LastFm.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC243448F0FF9167728165ED /* Headers */ = {
+		8A078B72DD05C8E3E2E2DC4B52E871D1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				995898CF54AC0AF59ECA3F8C /* LastFm.h in Headers */,
+				5D304408BA4883BDAC04445FBA80BE3E /* DDXML.h in Headers */,
+				6983780F30F2E57C7395A31762F1B48C /* DDXMLDocument.h in Headers */,
+				88013CD7CA0827563AF5BCD73F2D82B2 /* DDXMLElement.h in Headers */,
+				DBE09AD1CC875D42907217E1B291048A /* DDXMLElementAdditions.h in Headers */,
+				97226E0E189684948F74927F4ED24DB6 /* DDXMLNode.h in Headers */,
+				3FB223F9E07AE0772E1314F6DAA22FD0 /* DDXMLPrivate.h in Headers */,
+				9921B0C77BF0F9B43544E6405ED32039 /* NSString+DDXML.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ECF4DD5818D9B733F4E848D6 /* Headers */ = {
+		9ECDA13DF85B1FB9630ADAA7904E23A4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DABB96CA18C51636CA2616AE /* FMDB.h in Headers */,
-				16C2414DAACD2F4FCD757963 /* FMDatabase.h in Headers */,
-				3EF808075896EB9CD883210B /* FMDatabaseAdditions.h in Headers */,
-				C7E86F6EBAEB847B4FB869F9 /* FMDatabasePool.h in Headers */,
-				E32E2F616200A36647A67891 /* FMDatabaseQueue.h in Headers */,
-				D0F950A343B78788FD7350F3 /* FMResultSet.h in Headers */,
+				0EC9E279EBFC82CF79ACC34FB2E5B1FB /* FMDB.h in Headers */,
+				ABA6991163367A9AE2460D8311EC6F54 /* FMDatabase.h in Headers */,
+				FBCBED8B54BA1323C2D820A0F1DA9D92 /* FMDatabaseAdditions.h in Headers */,
+				28C74D2DC5A0765B3F52E58C451F2B90 /* FMDatabasePool.h in Headers */,
+				48973A310313C7CC7101090F48A89805 /* FMDatabaseQueue.h in Headers */,
+				48C0597B644FFD8829AE1602AB54C43D /* FMResultSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		23B64FF1671121845ECFDECE /* Pods-SBShazamScrobbler-FMDB */ = {
+		46CA0D495E70157CD38307FB9EA7B7B5 /* FMDB */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 157527BE9F085257CDAB8E7E /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-FMDB" */;
+			buildConfigurationList = 89C168DE49CC49E4F01E76C85FF07B72 /* Build configuration list for PBXNativeTarget "FMDB" */;
 			buildPhases = (
-				BA11E724AC72088793C9F474 /* Sources */,
-				42C96F64DF680B4076F4D3C4 /* Frameworks */,
-				ECF4DD5818D9B733F4E848D6 /* Headers */,
+				382F878824909BE172EE8624380DDD6B /* Sources */,
+				9FFBCB41B88F677C9AE676E73E37542C /* Frameworks */,
+				9ECDA13DF85B1FB9630ADAA7904E23A4 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Pods-SBShazamScrobbler-FMDB";
-			productName = "Pods-SBShazamScrobbler-FMDB";
-			productReference = 7F80DBDA983349B2ED97815B /* libPods-SBShazamScrobbler-FMDB.a */;
+			name = FMDB;
+			productName = FMDB;
+			productReference = ED94D7D5A0257C4D6DAEDC3C64AB7106 /* libFMDB.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3F40EFA49B48A4AF3C6E634E /* Pods-SBShazamScrobbler-LastFm */ = {
+		5B85F012BCCB10FA6A57428DFC78D85A /* Pods-ShazamScrobbler */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F3D87DCE9D5BA5D142803A2D /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-LastFm" */;
+			buildConfigurationList = 99354D153FF53971882FEE477C371268 /* Build configuration list for PBXNativeTarget "Pods-ShazamScrobbler" */;
 			buildPhases = (
-				9E3DC5FDB56FDEC8BD1234C3 /* Sources */,
-				2EBDC24456DE0CE88599DD11 /* Frameworks */,
-				DC243448F0FF9167728165ED /* Headers */,
+				AF2889EFBDF626553A83CAE51012090A /* Sources */,
+				E583A1467BFB3A4AF394A29EE909AF15 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E11893BCC999EECCB160BD4B /* PBXTargetDependency */,
+				1CC7D14BE6031ECA7AFEB35C957F0644 /* PBXTargetDependency */,
+				99D3B8D601E6CE55903E514702AE4EE5 /* PBXTargetDependency */,
+				0629309C4E974F997421EF8ED284B878 /* PBXTargetDependency */,
 			);
-			name = "Pods-SBShazamScrobbler-LastFm";
-			productName = "Pods-SBShazamScrobbler-LastFm";
-			productReference = FF4113CFAAA1104974D1E738 /* libPods-SBShazamScrobbler-LastFm.a */;
+			name = "Pods-ShazamScrobbler";
+			productName = "Pods-ShazamScrobbler";
+			productReference = 900120D18BE0956F0E90F01625AE1D97 /* libPods-ShazamScrobbler.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		770E4853B62CEEEC5AC3BE50 /* Pods-SBShazamScrobbler-KissXML */ = {
+		7D2D89031D52CD8C6165B16ACAF40DF1 /* KissXML */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E09CDEFEF2D47BE5C5E5EA0D /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-KissXML" */;
+			buildConfigurationList = DB69F1EB202F8889FD734FA4559A60F5 /* Build configuration list for PBXNativeTarget "KissXML" */;
 			buildPhases = (
-				D70C2D49A4C6AF9065E8C556 /* Sources */,
-				7B9C87947AE0C927B088785F /* Frameworks */,
-				0571FD1FA8C72AA88BB5DB96 /* Headers */,
+				8659A09C220EF1D8922CCDC39764EC03 /* Sources */,
+				394FD8B2B7F6C229496E0326EAC61A7B /* Frameworks */,
+				8A078B72DD05C8E3E2E2DC4B52E871D1 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Pods-SBShazamScrobbler-KissXML";
-			productName = "Pods-SBShazamScrobbler-KissXML";
-			productReference = 8B9E3F46EE02CCFCB7CDA02F /* libPods-SBShazamScrobbler-KissXML.a */;
+			name = KissXML;
+			productName = KissXML;
+			productReference = 4A7F79CC89F50AEE030D0D915D51DC72 /* libKissXML.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		DA1353D4EDE71688478ABBD5 /* Pods-SBShazamScrobbler */ = {
+		F96F310B035ADB82B769D63DE78E01DA /* LastFm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 360F6F2D9DD38227A53EC036 /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler" */;
+			buildConfigurationList = 3038971C022D8E7459444ECDF64F40EF /* Build configuration list for PBXNativeTarget "LastFm" */;
 			buildPhases = (
-				730A5540D60323779FD59574 /* Sources */,
-				99F32231B9F803361B5B6242 /* Frameworks */,
+				4657EDBCEDD0C62178C9D3B2CB2144C2 /* Sources */,
+				B2920502C5BF25B2D927E5DDE37B6C95 /* Frameworks */,
+				4D9D726CA669EEAAC8C8E265757DEC85 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				234709F75A019279FEC90E19 /* PBXTargetDependency */,
-				812B98CA538C8348F5681662 /* PBXTargetDependency */,
-				B2622EF6AF82D248767C8E43 /* PBXTargetDependency */,
+				9F27785AD6A1F3FAD90A60F9F36F8DF1 /* PBXTargetDependency */,
 			);
-			name = "Pods-SBShazamScrobbler";
-			productName = "Pods-SBShazamScrobbler";
-			productReference = 3D88393170E94B81FCAB85E0 /* libPods-SBShazamScrobbler.a */;
+			name = LastFm;
+			productName = LastFm;
+			productReference = 85873CFBAE8A91072361C2681AD5FB34 /* libLastFm.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		CA8342AF9FD5640FB299DB28 /* Project object */ = {
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 			};
-			buildConfigurationList = A87DF770963F20323E512F54 /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 34F9B6FD5373E2FACF89351B;
-			productRefGroup = DE1842136D541A3900576ED3 /* Products */;
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = CCA510CFBEA2D207524CDA0D73C3B561 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DA1353D4EDE71688478ABBD5 /* Pods-SBShazamScrobbler */,
-				23B64FF1671121845ECFDECE /* Pods-SBShazamScrobbler-FMDB */,
-				770E4853B62CEEEC5AC3BE50 /* Pods-SBShazamScrobbler-KissXML */,
-				3F40EFA49B48A4AF3C6E634E /* Pods-SBShazamScrobbler-LastFm */,
+				46CA0D495E70157CD38307FB9EA7B7B5 /* FMDB */,
+				7D2D89031D52CD8C6165B16ACAF40DF1 /* KissXML */,
+				F96F310B035ADB82B769D63DE78E01DA /* LastFm */,
+				5B85F012BCCB10FA6A57428DFC78D85A /* Pods-ShazamScrobbler */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		730A5540D60323779FD59574 /* Sources */ = {
+		382F878824909BE172EE8624380DDD6B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A702759995036F748DA32040 /* Pods-SBShazamScrobbler-dummy.m in Sources */,
+				254C6D8313CF901C290930AF313952FC /* FMDB-dummy.m in Sources */,
+				A0C6EAD9E60FE26195D71776978FD787 /* FMDatabase.m in Sources */,
+				66F371AE394897C7FD4C925D4D61F62A /* FMDatabaseAdditions.m in Sources */,
+				94C185D4222FF625457B27A5FADBAFCB /* FMDatabasePool.m in Sources */,
+				402E1420A83B79169A2D8753630397F8 /* FMDatabaseQueue.m in Sources */,
+				240DE3A792AA8A4AACFFE389E0AEFC93 /* FMResultSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9E3DC5FDB56FDEC8BD1234C3 /* Sources */ = {
+		4657EDBCEDD0C62178C9D3B2CB2144C2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4E1D4E3C917CE9FE8E5ECAC /* LastFm.m in Sources */,
-				DB6AD8FC4D99D50EE5FA8249 /* Pods-SBShazamScrobbler-LastFm-dummy.m in Sources */,
+				8A3A13EF73071FA0DDDAF5D0D6E2D4F0 /* LastFm-dummy.m in Sources */,
+				D30F7E1F31D148F5A771C45B4EBA79D0 /* LastFm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BA11E724AC72088793C9F474 /* Sources */ = {
+		8659A09C220EF1D8922CCDC39764EC03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32DA48F29FFEF453269AB30A /* FMDatabase.m in Sources */,
-				A1DA7A15641F556E03799A03 /* FMDatabaseAdditions.m in Sources */,
-				34B0A6E89EE08DD5A72E5FB9 /* FMDatabasePool.m in Sources */,
-				E6BA6B14CE3AC6BC7A847690 /* FMDatabaseQueue.m in Sources */,
-				420760DE6A05F6CFF5681763 /* FMResultSet.m in Sources */,
-				BC33C5270E24CBF99CF28E77 /* Pods-SBShazamScrobbler-FMDB-dummy.m in Sources */,
+				ADAE4532C1EC2DA3B39CF3E6761D65CE /* DDXMLDocument.m in Sources */,
+				CCE9B13F4E767EBC0621CB937C379D56 /* DDXMLElement.m in Sources */,
+				6A4ACF31FABAD8FDD2D1EF5930831AD5 /* DDXMLElementAdditions.m in Sources */,
+				F8E202294CBF3F2BE32821A2974E792C /* DDXMLNode.m in Sources */,
+				4892806FC0833F0DEA3FFBE0D8764BB6 /* KissXML-dummy.m in Sources */,
+				A0ACD15EAADAD53F3757C4CEB921F390 /* NSString+DDXML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D70C2D49A4C6AF9065E8C556 /* Sources */ = {
+		AF2889EFBDF626553A83CAE51012090A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F419C1D6F405E71F841764A /* DDXMLDocument.m in Sources */,
-				C834365959CF873C8FB5C291 /* DDXMLElement.m in Sources */,
-				4B23EE029293C754D13D0A7D /* DDXMLElementAdditions.m in Sources */,
-				832860A2C965E0EB6B034915 /* DDXMLNode.m in Sources */,
-				F944D31D02B3C43975D6D434 /* NSString+DDXML.m in Sources */,
-				E0147E730BA080B9A5EF5635 /* Pods-SBShazamScrobbler-KissXML-dummy.m in Sources */,
+				313F7528FD1CBDD8EA525AFCB3610555 /* Pods-ShazamScrobbler-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		234709F75A019279FEC90E19 /* PBXTargetDependency */ = {
+		0629309C4E974F997421EF8ED284B878 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-SBShazamScrobbler-FMDB";
-			target = 23B64FF1671121845ECFDECE /* Pods-SBShazamScrobbler-FMDB */;
-			targetProxy = E54C20F16CD3A90EE4DC5089 /* PBXContainerItemProxy */;
+			name = LastFm;
+			target = F96F310B035ADB82B769D63DE78E01DA /* LastFm */;
+			targetProxy = 361580D593F3CF30EFBDAD0CD010B908 /* PBXContainerItemProxy */;
 		};
-		812B98CA538C8348F5681662 /* PBXTargetDependency */ = {
+		1CC7D14BE6031ECA7AFEB35C957F0644 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-SBShazamScrobbler-KissXML";
-			target = 770E4853B62CEEEC5AC3BE50 /* Pods-SBShazamScrobbler-KissXML */;
-			targetProxy = D99D72E8A16899459B2993AE /* PBXContainerItemProxy */;
+			name = FMDB;
+			target = 46CA0D495E70157CD38307FB9EA7B7B5 /* FMDB */;
+			targetProxy = DC17733A1DCB4FAF3E9C1DF1359623D3 /* PBXContainerItemProxy */;
 		};
-		B2622EF6AF82D248767C8E43 /* PBXTargetDependency */ = {
+		99D3B8D601E6CE55903E514702AE4EE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-SBShazamScrobbler-LastFm";
-			target = 3F40EFA49B48A4AF3C6E634E /* Pods-SBShazamScrobbler-LastFm */;
-			targetProxy = EA2CAB7271BA4EAD827BF4F5 /* PBXContainerItemProxy */;
+			name = KissXML;
+			target = 7D2D89031D52CD8C6165B16ACAF40DF1 /* KissXML */;
+			targetProxy = 67F370711941E5EA0F97A923F90848F6 /* PBXContainerItemProxy */;
 		};
-		E11893BCC999EECCB160BD4B /* PBXTargetDependency */ = {
+		9F27785AD6A1F3FAD90A60F9F36F8DF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-SBShazamScrobbler-KissXML";
-			target = 770E4853B62CEEEC5AC3BE50 /* Pods-SBShazamScrobbler-KissXML */;
-			targetProxy = 79E01C68A070ED0BC05F988A /* PBXContainerItemProxy */;
+			name = KissXML;
+			target = 7D2D89031D52CD8C6165B16ACAF40DF1 /* KissXML */;
+			targetProxy = 9D2B488DE5C2794DA8D243F27996EE63 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		010C6617905A2CB8B87A2CEC /* Release */ = {
+		08A7264DD30C69FE7F590B046787659D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */;
+			baseConfigurationReference = 68EDB43BB6E81B604448D74F182CB921 /* KissXML-Private.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-FMDB/Pods-SBShazamScrobbler-FMDB-prefix.pch";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		08A952E2191523CD268F7A40 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-LastFm/Pods-SBShazamScrobbler-LastFm-prefix.pch";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		1ACAC0D4B2F355D0EAA34D0B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-KissXML/Pods-SBShazamScrobbler-KissXML-prefix.pch";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		5EAB13520FF455C4AA257AF1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6AD159A48D2FCF0715657E54 /* Pods-SBShazamScrobbler-FMDB-Private.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-FMDB/Pods-SBShazamScrobbler-FMDB-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/KissXML/KissXML-prefix.pch";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -611,11 +555,82 @@
 			};
 			name = Debug;
 		};
-		7EA44D85512469FEDA9FDE81 /* Debug */ = {
+		1B50D8BD8FF2E5CEDB5AB737F544314D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABCBCF69468ABF1892B4292B /* Pods-SBShazamScrobbler.debug.xcconfig */;
+			baseConfigurationReference = ACE536FE4E2687CA0ACD07C51260DEFE /* LastFm-Private.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/LastFm/LastFm-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		27E81058CF691F8A9F84EA4E70D71115 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68EDB43BB6E81B604448D74F182CB921 /* KissXML-Private.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/KissXML/KissXML-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		52D4ECB745D1C035F94BD060EE7F6605 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		5FE3DDCBEB68299F3007E2F2669027B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B0F6756E4CA829798F73F4B6C4DDD41 /* Pods-ShazamScrobbler.debug.xcconfig */;
+			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -629,60 +644,7 @@
 			};
 			name = Debug;
 		};
-		A499A2BDADBEAF26687AD02D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F839EC2463E15789C7486E8 /* Pods-SBShazamScrobbler-LastFm-Private.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-LastFm/Pods-SBShazamScrobbler-LastFm-prefix.pch";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		AC33C15758A8B0B2FD76C0E7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 263B52C29C8FCDCF4762C3CB /* Pods-SBShazamScrobbler.release.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		B8D4ADDD5D153C9D2ABEE7C0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99011EE415A89853AED5DB92 /* Pods-SBShazamScrobbler-KissXML-Private.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SBShazamScrobbler-KissXML/Pods-SBShazamScrobbler-KissXML-prefix.pch";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		D7B395F7C50921A5F647AAB6 /* Release */ = {
+		A070F153A04DD66F4E492261894B37FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -716,95 +678,123 @@
 			};
 			name = Release;
 		};
-		F5089E8716E04E0069CBAEE6 /* Debug */ = {
+		DE96BE4F586807E6B8250005F2FEA2C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23C689CF2D4B8D948537045A7C94B347 /* FMDB-Private.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
+		};
+		E0EC5D358BF13F11972493B682C58228 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23C689CF2D4B8D948537045A7C94B347 /* FMDB-Private.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E8AA5F4478BBAFEDCB7FE0E32EB9D141 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9ED36643A61159288BA1A8C373F7D580 /* Pods-ShazamScrobbler.release.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F9508388C756EDA12EC0575EFC588318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACE536FE4E2687CA0ACD07C51260DEFE /* LastFm-Private.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/LastFm/LastFm-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		157527BE9F085257CDAB8E7E /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-FMDB" */ = {
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5EAB13520FF455C4AA257AF1 /* Debug */,
-				010C6617905A2CB8B87A2CEC /* Release */,
+				52D4ECB745D1C035F94BD060EE7F6605 /* Debug */,
+				A070F153A04DD66F4E492261894B37FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		360F6F2D9DD38227A53EC036 /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler" */ = {
+		3038971C022D8E7459444ECDF64F40EF /* Build configuration list for PBXNativeTarget "LastFm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7EA44D85512469FEDA9FDE81 /* Debug */,
-				AC33C15758A8B0B2FD76C0E7 /* Release */,
+				1B50D8BD8FF2E5CEDB5AB737F544314D /* Debug */,
+				F9508388C756EDA12EC0575EFC588318 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A87DF770963F20323E512F54 /* Build configuration list for PBXProject "Pods" */ = {
+		89C168DE49CC49E4F01E76C85FF07B72 /* Build configuration list for PBXNativeTarget "FMDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F5089E8716E04E0069CBAEE6 /* Debug */,
-				D7B395F7C50921A5F647AAB6 /* Release */,
+				DE96BE4F586807E6B8250005F2FEA2C3 /* Debug */,
+				E0EC5D358BF13F11972493B682C58228 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E09CDEFEF2D47BE5C5E5EA0D /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-KissXML" */ = {
+		99354D153FF53971882FEE477C371268 /* Build configuration list for PBXNativeTarget "Pods-ShazamScrobbler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B8D4ADDD5D153C9D2ABEE7C0 /* Debug */,
-				1ACAC0D4B2F355D0EAA34D0B /* Release */,
+				5FE3DDCBEB68299F3007E2F2669027B1 /* Debug */,
+				E8AA5F4478BBAFEDCB7FE0E32EB9D141 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F3D87DCE9D5BA5D142803A2D /* Build configuration list for PBXNativeTarget "Pods-SBShazamScrobbler-LastFm" */ = {
+		DB69F1EB202F8889FD734FA4559A60F5 /* Build configuration list for PBXNativeTarget "KissXML" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A499A2BDADBEAF26687AD02D /* Debug */,
-				08A952E2191523CD268F7A40 /* Release */,
+				08A7264DD30C69FE7F590B046787659D /* Debug */,
+				27E81058CF691F8A9F84EA4E70D71115 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = CA8342AF9FD5640FB299DB28 /* Project object */;
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 }

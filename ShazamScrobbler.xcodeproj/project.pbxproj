@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */; };
+		88057F99C098F9FCF7662C09 /* libPods-ShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */; };
 		F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */; settings = {ASSET_TAGS = (); }; };
+		F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C95F21BB33F67004B1254 /* LoginViewController.xib */; };
 		F47C95EB1BB33F50004B1254 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95E91BB33F50004B1254 /* icon.png */; settings = {ASSET_TAGS = (); }; };
 		F47C95EC1BB33F50004B1254 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95EA1BB33F50004B1254 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
 		F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95EE1BB33F5E004B1254 /* AppDelegate.m */; settings = {ASSET_TAGS = (); }; };
 		F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F11BB33F67004B1254 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
-		F47C95F41BB33F67004B1254 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C95F21BB33F67004B1254 /* LoginViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		F47C95F71BB33F75004B1254 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F61BB33F75004B1254 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
 		F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F91BB33F85004B1254 /* ShazamController.m */; settings = {ASSET_TAGS = (); }; };
 		F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */; settings = {ASSET_TAGS = (); }; };
@@ -21,7 +21,6 @@
 		F47C96031BB33F95004B1254 /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96011BB33F95004B1254 /* LastFmController.m */; settings = {ASSET_TAGS = (); }; };
 		F47C96061BB33FA4004B1254 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96051BB33FA4004B1254 /* Song.m */; settings = {ASSET_TAGS = (); }; };
 		F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47C96071BB33FAD004B1254 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
-		F47C960B1BB33FBB004B1254 /* ShazamScrobbler-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F47C96091BB33FBB004B1254 /* ShazamScrobbler-Info.plist */; settings = {ASSET_TAGS = (); }; };
 		F47C960D1BB33FC1004B1254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C960C1BB33FC1004B1254 /* main.m */; settings = {ASSET_TAGS = (); }; };
 		F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C960E1BB3415B004B1254 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
 		F47C96151BB34171004B1254 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F47C96111BB34171004B1254 /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
@@ -43,9 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
-		4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
+		4B9E27D7E31129FA39066262 /* Pods-ShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShazamScrobbler.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShazamScrobbler/Pods-ShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
+		4BCA43A90BC62D978160565B /* Pods-ShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShazamScrobbler/Pods-ShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
+		F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamScrobblerTests.m; sourceTree = "<group>"; };
 		F47C95E91BB33F50004B1254 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ShazamScrobbler/icon.png; sourceTree = SOURCE_ROOT; };
 		F47C95EA1BB33F50004B1254 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon2.png; path = ShazamScrobbler/icon2.png; sourceTree = SOURCE_ROOT; };
@@ -90,7 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */,
-				CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */,
+				88057F99C098F9FCF7662C09 /* libPods-ShazamScrobbler.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,11 +105,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		563690269C0DB7780323EDF6 /* Pods */ = {
+		69762544D2C3DF87E17D4C77 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */,
-				4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */,
+				4B9E27D7E31129FA39066262 /* Pods-ShazamScrobbler.debug.xcconfig */,
+				4BCA43A90BC62D978160565B /* Pods-ShazamScrobbler.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -200,7 +199,7 @@
 				F48D997219C8B0A90062A5FA /* ShazamScrobblerTests */,
 				F48D994D19C8B0A80062A5FA /* Frameworks */,
 				F48D994C19C8B0A80062A5FA /* Products */,
-				563690269C0DB7780323EDF6 /* Pods */,
+				69762544D2C3DF87E17D4C77 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,7 +218,7 @@
 				F48D994E19C8B0A80062A5FA /* Cocoa.framework */,
 				F48D996D19C8B0A90062A5FA /* XCTest.framework */,
 				F48D995019C8B0A80062A5FA /* Other Frameworks */,
-				19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */,
+				F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -287,11 +286,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F48D997C19C8B0A90062A5FA /* Build configuration list for PBXNativeTarget "ShazamScrobbler" */;
 			buildPhases = (
-				F230C1ED27CB433FA1A6F71E /* Check Pods Manifest.lock */,
+				8274896D46C5065FD94A2D2B /* Check Pods Manifest.lock */,
 				F48D994719C8B0A80062A5FA /* Sources */,
 				F48D994819C8B0A80062A5FA /* Frameworks */,
 				F48D994919C8B0A80062A5FA /* Resources */,
-				8CDC010E86884012896F1104 /* Copy Pods Resources */,
+				4E2365EB37C8C03A30A2DDFA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -358,11 +357,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F47C95F41BB33F67004B1254 /* LoginViewController.xib in Resources */,
+				F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */,
 				F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */,
 				F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */,
 				F47C95EB1BB33F50004B1254 /* icon.png in Resources */,
-				F47C960B1BB33FBB004B1254 /* ShazamScrobbler-Info.plist in Resources */,
 				F47C95EC1BB33F50004B1254 /* icon2.png in Resources */,
 				F47C96151BB34171004B1254 /* Credits.rtf in Resources */,
 				F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */,
@@ -380,7 +378,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8CDC010E86884012896F1104 /* Copy Pods Resources */ = {
+		4E2365EB37C8C03A30A2DDFA /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -392,10 +390,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShazamScrobbler/Pods-ShazamScrobbler-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F230C1ED27CB433FA1A6F71E /* Check Pods Manifest.lock */ = {
+		8274896D46C5065FD94A2D2B /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -556,7 +554,7 @@
 		};
 		F48D997D19C8B0A90062A5FA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */;
+			baseConfigurationReference = 4B9E27D7E31129FA39066262 /* Pods-ShazamScrobbler.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -571,7 +569,7 @@
 		};
 		F48D997E19C8B0A90062A5FA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */;
+			baseConfigurationReference = 4BCA43A90BC62D978160565B /* Pods-ShazamScrobbler.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
