@@ -18,9 +18,6 @@ extern NSString* const SECRET;
 extern NSString* const USERNAME;
 extern NSString* const PASSWORD;
 
-//extern NSString* const PREFS_SESSION_KEY;
-//extern NSString* const PREFS_USERNAME_KEY;
-
 @end
 
 #endif

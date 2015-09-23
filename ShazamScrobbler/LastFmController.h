@@ -14,7 +14,7 @@
 @interface LastFmController : NSObject
 
 + (void)init;
-+ (void)scrobble:(Song*) song;
++ (void)scrobble:(Song*)song withTag:(NSInteger)tag;
 + (bool)login:(NSString*)username withPassword:(NSString*)password;
 + (bool)logout;
 

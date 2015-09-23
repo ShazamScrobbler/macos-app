@@ -58,7 +58,7 @@
     [app.window makeKeyAndOrderFront:nil];
 }
 
--(void)insert:(FMResultSet*)rs withIndex:(int)i {
+-(NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i {
     NSString *artist;
     NSString *track;
     
@@ -66,7 +66,9 @@
     artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
     track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
     menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(open:) keyEquivalent:@""];
+    menuItem.tag = [rs intForColumn:@"ZID"];
     [_main insertItem:menuItem atIndex:i];
+    return menuItem;
 }
 
 - (void)insert:(FMResultSet*)rs {

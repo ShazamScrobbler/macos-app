@@ -45,7 +45,6 @@
         [menu updateAccountItem];
         [loginController loginSuccess];
     } failureHandler:^(NSError *error) {
-        //NSLog(@"Couldn't make Last.fm session %@", error);
         [loginController loginFail];
         [self logout];
     }];
@@ -61,10 +60,13 @@
     return TRUE;
 }
 
-+ (void)scrobble:(Song*) song {
++ (void)scrobble:(Song*)song withTag:(NSInteger)tag {
     // Scrobble a track
     [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
         NSLog(@"New scrobble: %@ ", [song description]);
+        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+        NSMenuItem* item = [menu.main itemWithTag:tag];
+        [item setState:NSOnState];
         [song setScrobbled];
     } failureHandler:^(NSError *error) {
         NSLog(@"Scrobble error: %@", error);

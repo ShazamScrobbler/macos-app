@@ -30,7 +30,8 @@
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         int i = 3;
         while ([rs next]) {
-            [menu insert:rs withIndex:i++];
+            NSMenuItem* item = [menu insert:rs withIndex:i++];
+            [item setState:NSMixedState];
         }
         [database close];
     }
@@ -95,9 +96,7 @@
                 Song *song = [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
                                                  artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
                                                    date:newDate];
-                
-                //ADD ARGUMENT TO CHANGE MENUITEM STATE? [menu insert:rs];
-                [LastFmController scrobble:song];
+                [LastFmController scrobble:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
                 lastScrobblePosition++;
                 [prefs setInteger:lastScrobblePosition forKey:@"lastScrobble"];
             } else {

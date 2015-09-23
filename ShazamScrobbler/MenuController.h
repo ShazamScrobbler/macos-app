@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSMenuItem *scrobblingItem;
 
 - (id)init;
-- (void)insert:(FMResultSet*)rs withIndex:(int)i;
+- (NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i;
 - (void)insert:(FMResultSet*)rs;
 
 - (IBAction)negateScrobbling:(id)sender;
