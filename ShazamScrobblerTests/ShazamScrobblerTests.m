@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface SBShazamScrobblerTests : XCTestCase
+@interface ShazamScrobblerTests : XCTestCase
 
 @end
 
-@implementation SBShazamScrobblerTests
+@implementation ShazamScrobblerTests
 
 - (void)setUp
 {

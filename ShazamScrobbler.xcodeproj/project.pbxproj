@@ -8,27 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		CC37679FB88A422A86C38D3D /* libPods-SBShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */; };
-		F469F3351BAE01DF00C1B352 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F469F3331BAE01DF00C1B352 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
-		F469F3361BAE01DF00C1B352 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F469F3341BAE01DF00C1B352 /* LoginViewController.xib */; settings = {ASSET_TAGS = (); }; };
-		F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2719E722B6003F57AF /* LastFmConstants.m */; };
-		F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2C19E729B6003F57AF /* LastFmController.m */; };
-		F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D2F19E72C56003F57AF /* ShazamController.m */; };
-		F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F46C5D3419E72F14003F57AF /* ShazamConstants.m */; };
+		F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */; settings = {ASSET_TAGS = (); }; };
+		F47C95EB1BB33F50004B1254 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95E91BB33F50004B1254 /* icon.png */; settings = {ASSET_TAGS = (); }; };
+		F47C95EC1BB33F50004B1254 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95EA1BB33F50004B1254 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
+		F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95EE1BB33F5E004B1254 /* AppDelegate.m */; settings = {ASSET_TAGS = (); }; };
+		F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F11BB33F67004B1254 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F47C95F41BB33F67004B1254 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C95F21BB33F67004B1254 /* LoginViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		F47C95F71BB33F75004B1254 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F61BB33F75004B1254 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
+		F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F91BB33F85004B1254 /* ShazamController.m */; settings = {ASSET_TAGS = (); }; };
+		F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */; settings = {ASSET_TAGS = (); }; };
+		F47C96021BB33F95004B1254 /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FF1BB33F95004B1254 /* LastFmConstants.m */; settings = {ASSET_TAGS = (); }; };
+		F47C96031BB33F95004B1254 /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96011BB33F95004B1254 /* LastFmController.m */; settings = {ASSET_TAGS = (); }; };
+		F47C96061BB33FA4004B1254 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96051BB33FA4004B1254 /* Song.m */; settings = {ASSET_TAGS = (); }; };
+		F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47C96071BB33FAD004B1254 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
+		F47C960B1BB33FBB004B1254 /* ShazamScrobbler-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F47C96091BB33FBB004B1254 /* ShazamScrobbler-Info.plist */; settings = {ASSET_TAGS = (); }; };
+		F47C960D1BB33FC1004B1254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C960C1BB33FC1004B1254 /* main.m */; settings = {ASSET_TAGS = (); }; };
+		F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C960E1BB3415B004B1254 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
+		F47C96151BB34171004B1254 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F47C96111BB34171004B1254 /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
+		F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F47C96131BB34171004B1254 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
-		F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D995719C8B0A90062A5FA /* InfoPlist.strings */; };
-		F48D995B19C8B0A90062A5FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D995A19C8B0A90062A5FA /* main.m */; };
-		F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F48D995D19C8B0A90062A5FA /* Credits.rtf */; };
-		F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D996119C8B0A90062A5FA /* AppDelegate.m */; };
-		F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F48D996619C8B0A90062A5FA /* Images.xcassets */; };
 		F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D996D19C8B0A90062A5FA /* XCTest.framework */; };
 		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
-		F48D997919C8B0A90062A5FA /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F48D997819C8B0A90062A5FA /* ShazamScrobblerTests.m */; };
-		F49B0C7419E4792C005B2357 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F49B0C7319E4792C005B2357 /* Song.m */; };
-		F4ABE0EE1BADCBF100704B75 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4ABE0EC1BADCBF100704B75 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
-		F4B4F53E1BB2D3DB002487E7 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4B4F53D1BB2D3DB002487E7 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
-		F4B617991B9E514A00A47D31 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4B617981B9E514A00A47D31 /* icon.png */; };
-		F4FC1AEC1BADD3B400716F50 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FC1AEB1BADD3B400716F50 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,42 +46,42 @@
 		19ADBAE9053A465E908D1DB8 /* libPods-SBShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F139F874A00238348275F04 /* Pods-SBShazamScrobbler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.debug.xcconfig"; sourceTree = "<group>"; };
 		4BCAE7C6BE342BC7A4DFB465 /* Pods-SBShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-SBShazamScrobbler/Pods-SBShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
-		F469F3321BAE01DF00C1B352 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		F469F3331BAE01DF00C1B352 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		F469F3341BAE01DF00C1B352 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		F46C5D2719E722B6003F57AF /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmConstants.m; sourceTree = "<group>"; };
-		F46C5D2919E722C2003F57AF /* LastFmConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmConstants.h; sourceTree = "<group>"; };
-		F46C5D2C19E729B6003F57AF /* LastFmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmController.m; sourceTree = "<group>"; };
-		F46C5D2E19E729C3003F57AF /* LastFmController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastFmController.h; sourceTree = "<group>"; };
-		F46C5D2F19E72C56003F57AF /* ShazamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamController.m; sourceTree = "<group>"; };
-		F46C5D3119E72C67003F57AF /* ShazamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamController.h; sourceTree = "<group>"; };
-		F46C5D3319E72F04003F57AF /* ShazamConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShazamConstants.h; sourceTree = "<group>"; };
-		F46C5D3419E72F14003F57AF /* ShazamConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamConstants.m; sourceTree = "<group>"; };
+		F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamScrobblerTests.m; sourceTree = "<group>"; };
+		F47C95E91BB33F50004B1254 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ShazamScrobbler/icon.png; sourceTree = SOURCE_ROOT; };
+		F47C95EA1BB33F50004B1254 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon2.png; path = ShazamScrobbler/icon2.png; sourceTree = SOURCE_ROOT; };
+		F47C95ED1BB33F5E004B1254 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ShazamScrobbler/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		F47C95EE1BB33F5E004B1254 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ShazamScrobbler/AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		F47C95F01BB33F67004B1254 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = ShazamScrobbler/LoginViewController.h; sourceTree = SOURCE_ROOT; };
+		F47C95F11BB33F67004B1254 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = ShazamScrobbler/LoginViewController.m; sourceTree = SOURCE_ROOT; };
+		F47C95F21BB33F67004B1254 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = ShazamScrobbler/LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		F47C95F51BB33F75004B1254 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuController.h; path = ShazamScrobbler/MenuController.h; sourceTree = SOURCE_ROOT; };
+		F47C95F61BB33F75004B1254 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuController.m; path = ShazamScrobbler/MenuController.m; sourceTree = SOURCE_ROOT; };
+		F47C95F81BB33F85004B1254 /* ShazamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShazamController.h; path = ShazamScrobbler/ShazamController.h; sourceTree = SOURCE_ROOT; };
+		F47C95F91BB33F85004B1254 /* ShazamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShazamController.m; path = ShazamScrobbler/ShazamController.m; sourceTree = SOURCE_ROOT; };
+		F47C95FB1BB33F8A004B1254 /* ShazamConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShazamConstants.h; path = ShazamScrobbler/ShazamConstants.h; sourceTree = SOURCE_ROOT; };
+		F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShazamConstants.m; path = ShazamScrobbler/ShazamConstants.m; sourceTree = SOURCE_ROOT; };
+		F47C95FE1BB33F95004B1254 /* LastFmConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastFmConstants.h; path = ShazamScrobbler/LastFmConstants.h; sourceTree = SOURCE_ROOT; };
+		F47C95FF1BB33F95004B1254 /* LastFmConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastFmConstants.m; path = ShazamScrobbler/LastFmConstants.m; sourceTree = SOURCE_ROOT; };
+		F47C96001BB33F95004B1254 /* LastFmController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastFmController.h; path = ShazamScrobbler/LastFmController.h; sourceTree = SOURCE_ROOT; };
+		F47C96011BB33F95004B1254 /* LastFmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastFmController.m; path = ShazamScrobbler/LastFmController.m; sourceTree = SOURCE_ROOT; };
+		F47C96041BB33FA4004B1254 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Song.h; path = ShazamScrobbler/Song.h; sourceTree = SOURCE_ROOT; };
+		F47C96051BB33FA4004B1254 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Song.m; path = ShazamScrobbler/Song.m; sourceTree = SOURCE_ROOT; };
+		F47C96071BB33FAD004B1254 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ShazamScrobbler/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		F47C96091BB33FBB004B1254 /* ShazamScrobbler-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShazamScrobbler-Info.plist"; path = "ShazamScrobbler/ShazamScrobbler-Info.plist"; sourceTree = SOURCE_ROOT; };
+		F47C960A1BB33FBB004B1254 /* ShazamScrobbler-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ShazamScrobbler-Prefix.pch"; path = "ShazamScrobbler/ShazamScrobbler-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		F47C960C1BB33FC1004B1254 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ShazamScrobbler/main.m; sourceTree = SOURCE_ROOT; };
+		F47C960F1BB3415B004B1254 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ShazamScrobbler/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		F47C96121BB34171004B1254 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = ShazamScrobbler/en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
+		F47C96141BB34171004B1254 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ShazamScrobbler/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		F48D994B19C8B0A80062A5FA /* ShazamScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShazamScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48D994E19C8B0A80062A5FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F48D995119C8B0A80062A5FA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		F48D995219C8B0A80062A5FA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F48D995319C8B0A80062A5FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobbler-Info.plist"; sourceTree = "<group>"; };
-		F48D995819C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F48D995A19C8B0A90062A5FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBShazamScrobbler-Prefix.pch"; sourceTree = "<group>"; };
-		F48D995E19C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		F48D996019C8B0A90062A5FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		F48D996119C8B0A90062A5FA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F48D996619C8B0A90062A5FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F48D996C19C8B0A90062A5FA /* ShazamScrobblerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShazamScrobblerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48D996D19C8B0A90062A5FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
+		F48D997419C8B0A90062A5FA /* ShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
 		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F48D997819C8B0A90062A5FA /* ShazamScrobblerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShazamScrobblerTests.m; sourceTree = "<group>"; };
-		F49B0C7319E4792C005B2357 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
-		F49B0C7519E47937005B2357 /* Song.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
-		F4ABE0ED1BADCBF100704B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		F4B4F53D1BB2D3DB002487E7 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
-		F4B617981B9E514A00A47D31 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		F4FC1AEA1BADD3B400716F50 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
-		F4FC1AEB1BADD3B400716F50 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +118,8 @@
 		F40A38D11BAAF04F001CE3AD /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				F4FC1AEB1BADD3B400716F50 /* MenuController.m */,
-				F4FC1AEA1BADD3B400716F50 /* MenuController.h */,
+				F47C95F51BB33F75004B1254 /* MenuController.h */,
+				F47C95F61BB33F75004B1254 /* MenuController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -126,9 +127,9 @@
 		F469F3311BAE01BB00C1B352 /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F469F3331BAE01DF00C1B352 /* LoginViewController.m */,
-				F469F3321BAE01DF00C1B352 /* LoginViewController.h */,
-				F469F3341BAE01DF00C1B352 /* LoginViewController.xib */,
+				F47C95F01BB33F67004B1254 /* LoginViewController.h */,
+				F47C95F11BB33F67004B1254 /* LoginViewController.m */,
+				F47C95F21BB33F67004B1254 /* LoginViewController.xib */,
 			);
 			name = LoginViewController;
 			sourceTree = "<group>";
@@ -136,10 +137,10 @@
 		F46C5D2A19E728F1003F57AF /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
-				F46C5D2C19E729B6003F57AF /* LastFmController.m */,
-				F46C5D2E19E729C3003F57AF /* LastFmController.h */,
-				F46C5D2719E722B6003F57AF /* LastFmConstants.m */,
-				F46C5D2919E722C2003F57AF /* LastFmConstants.h */,
+				F47C95FE1BB33F95004B1254 /* LastFmConstants.h */,
+				F47C95FF1BB33F95004B1254 /* LastFmConstants.m */,
+				F47C96001BB33F95004B1254 /* LastFmController.h */,
+				F47C96011BB33F95004B1254 /* LastFmController.m */,
 			);
 			name = LastFm;
 			sourceTree = "<group>";
@@ -147,8 +148,8 @@
 		F46C5D2B19E728FC003F57AF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F49B0C7319E4792C005B2357 /* Song.m */,
-				F49B0C7519E47937005B2357 /* Song.h */,
+				F47C96041BB33FA4004B1254 /* Song.h */,
+				F47C96051BB33FA4004B1254 /* Song.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -156,10 +157,10 @@
 		F46C5D3219E72C79003F57AF /* Shazam */ = {
 			isa = PBXGroup;
 			children = (
-				F46C5D2F19E72C56003F57AF /* ShazamController.m */,
-				F46C5D3119E72C67003F57AF /* ShazamController.h */,
-				F46C5D3419E72F14003F57AF /* ShazamConstants.m */,
-				F46C5D3319E72F04003F57AF /* ShazamConstants.h */,
+				F47C95F81BB33F85004B1254 /* ShazamController.h */,
+				F47C95F91BB33F85004B1254 /* ShazamController.m */,
+				F47C95FB1BB33F8A004B1254 /* ShazamConstants.h */,
+				F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */,
 			);
 			name = Shazam;
 			sourceTree = "<group>";
@@ -167,7 +168,7 @@
 		F46C5D3619E743E6003F57AF /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				F4ABE0EC1BADCBF100704B75 /* MainMenu.xib */,
+				F47C960E1BB3415B004B1254 /* MainMenu.xib */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -175,6 +176,7 @@
 		F46C5D4119E74459003F57AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F469F3311BAE01BB00C1B352 /* LoginViewController */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -182,9 +184,8 @@
 		F46C5D4B19E744B3003F57AF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F48D996119C8B0A90062A5FA /* AppDelegate.m */,
-				F48D996019C8B0A90062A5FA /* AppDelegate.h */,
-				F469F3311BAE01BB00C1B352 /* LoginViewController */,
+				F47C95ED1BB33F5E004B1254 /* AppDelegate.h */,
+				F47C95EE1BB33F5E004B1254 /* AppDelegate.m */,
 				F40A38D11BAAF04F001CE3AD /* Menu */,
 				F46C5D3219E72C79003F57AF /* Shazam */,
 				F46C5D2A19E728F1003F57AF /* LastFm */,
@@ -236,13 +237,13 @@
 		F48D995419C8B0A80062A5FA /* ShazamScrobbler */ = {
 			isa = PBXGroup;
 			children = (
-				F4B617981B9E514A00A47D31 /* icon.png */,
-				F4B4F53D1BB2D3DB002487E7 /* icon2.png */,
+				F47C95E91BB33F50004B1254 /* icon.png */,
+				F47C95EA1BB33F50004B1254 /* icon2.png */,
 				F46C5D4B19E744B3003F57AF /* Controllers */,
 				F46C5D4119E74459003F57AF /* Views */,
 				F46C5D2B19E728FC003F57AF /* Models */,
 				F46C5D3619E743E6003F57AF /* User Interface */,
-				F48D996619C8B0A90062A5FA /* Images.xcassets */,
+				F47C96071BB33FAD004B1254 /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
 			);
 			name = ShazamScrobbler;
@@ -252,11 +253,11 @@
 		F48D995519C8B0A90062A5FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F48D995619C8B0A90062A5FA /* SBShazamScrobbler-Info.plist */,
-				F48D995719C8B0A90062A5FA /* InfoPlist.strings */,
-				F48D995A19C8B0A90062A5FA /* main.m */,
-				F48D995C19C8B0A90062A5FA /* SBShazamScrobbler-Prefix.pch */,
-				F48D995D19C8B0A90062A5FA /* Credits.rtf */,
+				F47C96111BB34171004B1254 /* Credits.rtf */,
+				F47C96131BB34171004B1254 /* InfoPlist.strings */,
+				F47C96091BB33FBB004B1254 /* ShazamScrobbler-Info.plist */,
+				F47C960A1BB33FBB004B1254 /* ShazamScrobbler-Prefix.pch */,
+				F47C960C1BB33FC1004B1254 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -264,17 +265,16 @@
 		F48D997219C8B0A90062A5FA /* ShazamScrobblerTests */ = {
 			isa = PBXGroup;
 			children = (
-				F48D997819C8B0A90062A5FA /* ShazamScrobblerTests.m */,
+				F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */,
 				F48D997319C8B0A90062A5FA /* Supporting Files */,
 			);
-			name = ShazamScrobblerTests;
-			path = SBShazamScrobblerTests;
+			path = ShazamScrobblerTests;
 			sourceTree = "<group>";
 		};
 		F48D997319C8B0A90062A5FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F48D997419C8B0A90062A5FA /* SBShazamScrobblerTests-Info.plist */,
+				F48D997419C8B0A90062A5FA /* ShazamScrobblerTests-Info.plist */,
 				F48D997519C8B0A90062A5FA /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -316,7 +316,7 @@
 				F48D997119C8B0A90062A5FA /* PBXTargetDependency */,
 			);
 			name = ShazamScrobblerTests;
-			productName = SBShazamScrobblerTests;
+			productName = ShazamScrobblerTests;
 			productReference = F48D996C19C8B0A90062A5FA /* ShazamScrobblerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -358,13 +358,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F48D995919C8B0A90062A5FA /* InfoPlist.strings in Resources */,
-				F4B617991B9E514A00A47D31 /* icon.png in Resources */,
-				F469F3361BAE01DF00C1B352 /* LoginViewController.xib in Resources */,
-				F48D996719C8B0A90062A5FA /* Images.xcassets in Resources */,
-				F48D995F19C8B0A90062A5FA /* Credits.rtf in Resources */,
-				F4B4F53E1BB2D3DB002487E7 /* icon2.png in Resources */,
-				F4ABE0EE1BADCBF100704B75 /* MainMenu.xib in Resources */,
+				F47C95F41BB33F67004B1254 /* LoginViewController.xib in Resources */,
+				F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */,
+				F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */,
+				F47C95EB1BB33F50004B1254 /* icon.png in Resources */,
+				F47C960B1BB33FBB004B1254 /* ShazamScrobbler-Info.plist in Resources */,
+				F47C95EC1BB33F50004B1254 /* icon2.png in Resources */,
+				F47C96151BB34171004B1254 /* Credits.rtf in Resources */,
+				F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,15 +417,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F46C5D2819E722B6003F57AF /* LastFmConstants.m in Sources */,
-				F49B0C7419E4792C005B2357 /* Song.m in Sources */,
-				F46C5D3519E72F14003F57AF /* ShazamConstants.m in Sources */,
-				F48D996219C8B0A90062A5FA /* AppDelegate.m in Sources */,
-				F4FC1AEC1BADD3B400716F50 /* MenuController.m in Sources */,
-				F469F3351BAE01DF00C1B352 /* LoginViewController.m in Sources */,
-				F48D995B19C8B0A90062A5FA /* main.m in Sources */,
-				F46C5D2D19E729B6003F57AF /* LastFmController.m in Sources */,
-				F46C5D3019E72C56003F57AF /* ShazamController.m in Sources */,
+				F47C960D1BB33FC1004B1254 /* main.m in Sources */,
+				F47C96061BB33FA4004B1254 /* Song.m in Sources */,
+				F47C96021BB33F95004B1254 /* LastFmConstants.m in Sources */,
+				F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */,
+				F47C95F71BB33F75004B1254 /* MenuController.m in Sources */,
+				F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */,
+				F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */,
+				F47C96031BB33F95004B1254 /* LastFmController.m in Sources */,
+				F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F48D997919C8B0A90062A5FA /* ShazamScrobblerTests.m in Sources */,
+				F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,20 +448,28 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F48D995719C8B0A90062A5FA /* InfoPlist.strings */ = {
+		F47C960E1BB3415B004B1254 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F48D995819C8B0A90062A5FA /* en */,
+				F47C960F1BB3415B004B1254 /* Base */,
 			);
-			name = InfoPlist.strings;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		F48D995D19C8B0A90062A5FA /* Credits.rtf */ = {
+		F47C96111BB34171004B1254 /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F48D995E19C8B0A90062A5FA /* en */,
+				F47C96121BB34171004B1254 /* en */,
 			);
 			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		F47C96131BB34171004B1254 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F47C96141BB34171004B1254 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		F48D997519C8B0A90062A5FA /* InfoPlist.strings */ = {
@@ -469,14 +478,6 @@
 				F48D997619C8B0A90062A5FA /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		F4ABE0EC1BADCBF100704B75 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4ABE0ED1BADCBF100704B75 /* Base */,
-			);
-			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -560,8 +561,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
-				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				GCC_PREFIX_HEADER = "ShazamScrobbler/ShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "ShazamScrobbler/ShazamScrobbler-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = ShazamScrobbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -575,8 +576,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
-				INFOPLIST_FILE = "SBShazamScrobbler/SBShazamScrobbler-Info.plist";
+				GCC_PREFIX_HEADER = "ShazamScrobbler/ShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "ShazamScrobbler/ShazamScrobbler-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = ShazamScrobbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -593,12 +594,12 @@
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
+				GCC_PREFIX_HEADER = "ShazamScrobbler/ShazamScrobbler-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				INFOPLIST_FILE = "ShazamScrobblerTests/ShazamScrobblerTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "SB.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -609,15 +610,15 @@
 		F48D998119C8B0A90062A5FA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SBShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShazamScrobbler.app/Contents/MacOS/SBShazamScrobbler";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBShazamScrobbler/SBShazamScrobbler-Prefix.pch";
-				INFOPLIST_FILE = "SBShazamScrobblerTests/SBShazamScrobblerTests-Info.plist";
+				GCC_PREFIX_HEADER = "ShazamScrobbler/ShazamScrobbler-Prefix.pch";
+				INFOPLIST_FILE = "ShazamScrobblerTests/ShazamScrobblerTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "SB.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

@@ -1,12 +1,12 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
-target "SBShazamScrobbler" do
+target "ShazamScrobbler" do
 pod 'LastFm'
 pod 'FMDB'
 end
 
-target "SBShazamScrobblerTests" do
+target "ShazamScrobblerTests" do
 
 end
 
