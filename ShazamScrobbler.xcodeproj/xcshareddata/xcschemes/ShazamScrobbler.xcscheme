@@ -14,7 +14,49 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA1353D4EDE71688478ABBD5"
+               BlueprintIdentifier = "46CA0D495E70157CD38307FB9EA7B7B5"
+               BuildableName = "libFMDB.a"
+               BlueprintName = "FMDB"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7D2D89031D52CD8C6165B16ACAF40DF1"
+               BuildableName = "libKissXML.a"
+               BlueprintName = "KissXML"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F96F310B035ADB82B769D63DE78E01DA"
+               BuildableName = "libLastFm.a"
+               BlueprintName = "LastFm"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5B85F012BCCB10FA6A57428DFC78D85A"
                BuildableName = "libPods-ShazamScrobbler.a"
                BlueprintName = "Pods-ShazamScrobbler"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -42,16 +84,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F48D996B19C8B0A90062A5FA"
-               BuildableName = "ShazamScrobblerTests.xctest"
-               BlueprintName = "ShazamScrobblerTests"
-               ReferencedContainer = "container:ShazamScrobbler.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
