@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -31,10 +31,14 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014 Stéphane Bruckert. All rights reserved.</string>
+	<string>Copyright © 2015 Stéphane Bruckert. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>Product Homepage</key>
+	<string>https://github.com/stephanebruckert/ShazamScrobbler</string>
+	<key>Shazam Compatibility</key>
+	<string>1.1.1</string>
 </dict>
 </plist>

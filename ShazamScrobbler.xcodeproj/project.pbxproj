@@ -32,6 +32,8 @@
 		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
 		F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447761BB5C89300ABD578 /* MenuConstants.m */; settings = {ASSET_TAGS = (); }; };
+		F4E4477B1BB5EDBC00ABD578 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */; settings = {ASSET_TAGS = (); }; };
+		F4E4477C1BB5EDBC00ABD578 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,9 @@
 		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F4E447751BB5C89300ABD578 /* MenuConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuConstants.h; sourceTree = "<group>"; };
 		F4E447761BB5C89300ABD578 /* MenuConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuConstants.m; sourceTree = "<group>"; };
+		F4E447781BB5EDBC00ABD578 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
+		F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				F469F3311BAE01BB00C1B352 /* LoginViewController */,
+				F4E4477D1BB5EDC100ABD578 /* AboutWindowController */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -289,6 +295,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		F4E4477D1BB5EDC100ABD578 /* AboutWindowController */ = {
+			isa = PBXGroup;
+			children = (
+				F4E447781BB5EDBC00ABD578 /* AboutWindowController.h */,
+				F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */,
+				F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */,
+			);
+			name = AboutWindowController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -370,6 +386,7 @@
 				F46217BC1BB35FFA00D71FB7 /* NSOnState.png in Resources */,
 				F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */,
 				F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */,
+				F4E4477C1BB5EDBC00ABD578 /* AboutWindowController.xib in Resources */,
 				F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */,
 				F46217C61BB366EF00D71FB7 /* NSOffState.png in Resources */,
 				F47C95EB1BB33F50004B1254 /* icon.png in Resources */,
@@ -431,6 +448,7 @@
 				F47C96061BB33FA4004B1254 /* Song.m in Sources */,
 				F47C96021BB33F95004B1254 /* LastFmConstants.m in Sources */,
 				F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */,
+				F4E4477B1BB5EDBC00ABD578 /* AboutWindowController.m in Sources */,
 				F47C95F71BB33F75004B1254 /* MenuController.m in Sources */,
 				F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */,
 				F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */,

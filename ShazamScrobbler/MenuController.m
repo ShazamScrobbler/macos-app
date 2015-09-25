@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "ShazamController.h"
 #import "MenuConstants.h"
+#import "AboutWindowController.h"
 
 @interface MenuController ()
 
@@ -50,7 +51,14 @@
 
 - (IBAction)openAboutView:(id)sender
 {
-
+    //Call the windows controller
+    AboutWindowController *aboutWindow = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
+    
+    //Set the window to stay on top
+    [aboutWindow.window setLevel:NSFloatingWindowLevel];
+    
+    //Show the window
+    [aboutWindow showWindow:self];
 }
 
 -(NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i {
