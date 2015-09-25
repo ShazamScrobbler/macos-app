@@ -7,7 +7,7 @@ Shazam Scrobbler for Mac OS X.
 
 ### Status
 
-In development.
+Imminent firt release.
 
 ### If you would love to:
 
@@ -20,11 +20,15 @@ In development.
  
 the Shazam Scrobbler is for you!
 
+### Requirements
+
+Works on OS X Yosemite and with Shazam 1.1.1
+
 ### How does it work?
 
-It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shazam/id897118787?mt=12). When Shazam tags a song being played around you, the Shazam Scrobbler will take care of scrobbling them to [Last.fm](http://last.fm).
+It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shazam/id897118787?mt=12). When Shazam tags a song being played around you, the Shazam Scrobbler will take care of scrobbling it to [Last.fm](http://last.fm).
 
-### Problems & fixes
+### Main issues & fixes
 
 #### Problems w/o fixes
 
@@ -51,4 +55,10 @@ We would love having this for mobiles, we could:
  - Last.fm
  - Last.fm SDK by gangverk
  - FMDB
- - KissXML
+ - https://github.com/Mozketo/LaunchAtLoginController
+
+ Feel free to contribute!
+
+### Licence
+
+MIT

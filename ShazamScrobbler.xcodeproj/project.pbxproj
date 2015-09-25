@@ -34,6 +34,7 @@
 		F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447761BB5C89300ABD578 /* MenuConstants.m */; settings = {ASSET_TAGS = (); }; };
 		F4E4477B1BB5EDBC00ABD578 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */; settings = {ASSET_TAGS = (); }; };
 		F4E4477C1BB5EDBC00ABD578 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */; settings = {ASSET_TAGS = (); }; };
+		F4E447811BB600D700ABD578 /* LaunchAtLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447801BB600D700ABD578 /* LaunchAtLoginController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,8 @@
 		F4E447781BB5EDBC00ABD578 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
 		F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
+		F4E4477F1BB600D700ABD578 /* LaunchAtLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchAtLoginController.h; sourceTree = "<group>"; };
+		F4E447801BB600D700ABD578 /* LaunchAtLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchAtLoginController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +206,7 @@
 				F40A38D11BAAF04F001CE3AD /* Menu */,
 				F46C5D3219E72C79003F57AF /* Shazam */,
 				F46C5D2A19E728F1003F57AF /* LastFm */,
+				F4E4477E1BB600B000ABD578 /* LaunchAtLoginController */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -303,6 +307,15 @@
 				F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */,
 			);
 			name = AboutWindowController;
+			sourceTree = "<group>";
+		};
+		F4E4477E1BB600B000ABD578 /* LaunchAtLoginController */ = {
+			isa = PBXGroup;
+			children = (
+				F4E4477F1BB600D700ABD578 /* LaunchAtLoginController.h */,
+				F4E447801BB600D700ABD578 /* LaunchAtLoginController.m */,
+			);
+			name = LaunchAtLoginController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,6 +466,7 @@
 				F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */,
 				F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */,
 				F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */,
+				F4E447811BB600D700ABD578 /* LaunchAtLoginController.m in Sources */,
 				F47C96031BB33F95004B1254 /* LastFmController.m in Sources */,
 				F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */,
 			);

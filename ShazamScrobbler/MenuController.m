@@ -13,6 +13,7 @@
 #import "ShazamController.h"
 #import "MenuConstants.h"
 #import "AboutWindowController.h"
+#import "LaunchAtLoginController.h"
 
 @interface MenuController ()
 
@@ -36,6 +37,8 @@
     [_main addItem:[self createAccountsItem]];          //Account
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
                                                         // song list here
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItem:[self createLaunchAtLoginItem]];
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
     [_main addItemWithTitle:@"Quit ShazamScrobbler"     //Quit ShazamScrobbler
                      action:@selector(terminate:) keyEquivalent:@""];
@@ -99,14 +102,51 @@
     return _scrobblingItem;
 }
 
+- (NSMenuItem*) createLaunchAtLoginItem {
+    _launchAtLoginItem = [[NSMenuItem alloc] initWithTitle:@"Launch At Login" action:@selector(negateLaunchAtLogin:) keyEquivalent:@""];
+    LaunchAtLoginController *launchController = [[LaunchAtLoginController alloc] init];
+    BOOL launch = [launchController launchAtLogin];
+    NSInteger state = launch ? NSOnState : NSOffState;
+    [_launchAtLoginItem setTarget:self];
+    [_launchAtLoginItem setState:state];
+    [_launchAtLoginItem setEnabled:YES];
+    return _launchAtLoginItem;
+}
+
 - (NSMenuItem*) createEnableScrobblingItem {
     _scrobblingItem = [[NSMenuItem alloc] initWithTitle:@"Enable Scrobbling" action:@selector(negateScrobbling:) keyEquivalent:@""];
     NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
-    NSInteger state = scrobbling == NSOnState ? NSOnState : NSOffState;
+    NSInteger state = scrobbling ? NSOnState : NSOffState;
     [_scrobblingItem setTarget:self];
     [_scrobblingItem setState:state];
     [_scrobblingItem setEnabled:YES];
     return _scrobblingItem;
+}
+
+- (IBAction)negateLaunchAtLogin:(id)sender
+{
+    LaunchAtLoginController *launchController = [[LaunchAtLoginController alloc] init];
+    BOOL launch = [launchController launchAtLogin];
+    [launchController setLaunchAtLogin:!launch];
+    
+    NSInteger state = launch ? NSOffState : NSOnState;
+    [_launchAtLoginItem setState:state];
+    [_launchAtLoginItem setEnabled:state];
+    [_main itemChanged:_launchAtLoginItem];
+}
+
+- (IBAction)negateScrobbling:(id)sender
+{
+    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
+    NSInteger state = scrobbling ? NSOffState : NSOnState;
+    [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
+    
+    [_scrobblingItem setState:state];
+    [_scrobblingItem setEnabled:state];
+    [_main itemChanged:_scrobblingItem];
+    if (state == NSOnState) {
+        [ShazamController findNewTags];
+    }
 }
 
 - (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble
@@ -122,20 +162,6 @@
     // Save for next startup of the app
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setInteger:itemsToScrobble forKey:@"unscrobbledCount"];
-}
-
-- (IBAction)negateScrobbling:(id)sender
-{
-    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
-    NSInteger state = scrobbling != NSOnState ? NSOnState : NSOffState;
-    [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
-    
-    [_scrobblingItem setState:state];
-    [_scrobblingItem setEnabled:state];
-    [_main itemChanged:_scrobblingItem];
-    if (state == NSOnState) {
-        [ShazamController findNewTags];
-    }
 }
 
 - (NSMenuItem*)createAccountsItem {

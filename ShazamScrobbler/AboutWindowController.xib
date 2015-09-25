@@ -17,18 +17,18 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-            <rect key="contentRect" x="427" y="320" width="610" height="317"/>
+            <rect key="contentRect" x="427" y="320" width="548" height="285"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="610" height="317"/>
+                <rect key="frame" x="0.0" y="0.0" width="548" height="285"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <colorWell fixedFrame="YES" bordered="NO" continuous="NO" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AqQ-rN-3Xt">
-                        <rect key="frame" x="-8" y="40" width="626" height="299"/>
+                        <rect key="frame" x="-8" y="37" width="626" height="270"/>
                         <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </colorWell>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ACy-M7-Nhr">
-                        <rect key="frame" x="157" y="203" width="398" height="47"/>
+                        <rect key="frame" x="100" y="204" width="398" height="47"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Program Name and Tag Line" id="KYO-GS-EYy">
                             <font key="font" size="27" name=".HelveticaNeueDeskInterface-Bold"/>
                             <color key="textColor" name="selectedTextColor" catalog="System" colorSpace="catalog"/>
@@ -36,37 +36,15 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SdM-5G-yCq">
-                        <rect key="frame" x="157" y="194" width="277" height="17"/>
+                        <rect key="frame" x="189" y="172" width="277" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version" id="gJt-wU-JGY">
                             <font key="font" size="13" name="Helvetica"/>
                             <color key="textColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BB1-Je-vl5">
-                        <rect key="frame" x="495" y="4" width="108" height="32"/>
-                        <buttonCell key="cell" type="push" title="Homepage" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6JH-a5-qET">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="btnHomepage:" target="-2" id="KfL-BL-wmW"/>
-                        </connections>
-                    </button>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-OG-fUb">
-                        <rect key="frame" x="36" y="137" width="102" height="102"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon2" id="Psa-EX-LhD"/>
-                    </imageView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wwk-17-imr">
-                        <rect key="frame" x="157" y="140" width="366" height="46"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="justified" title="ShazamScrobbler scrobbles songs detected by Shazam for Mac OS X to your Last.fm music profile." id="KqW-mL-6Km">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XdL-OU-lFr">
-                        <rect key="frame" x="167" y="106" width="277" height="17"/>
+                        <rect key="frame" x="135" y="54" width="277" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Copyright" id="etH-c2-aXd">
                             <font key="font" size="8" name=".HelveticaNeueDeskInterface-Regular"/>
                             <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -80,12 +58,34 @@
                             </connections>
                         </textFieldCell>
                     </textField>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-OG-fUb">
+                        <rect key="frame" x="49" y="94" width="102" height="102"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon2" id="Psa-EX-LhD"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wwk-17-imr">
+                        <rect key="frame" x="189" y="102" width="287" height="60"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="justified" title="ShazamScrobbler scrobbles songs detected by Shazam for Mac OS X to your Last.fm music profile." id="KqW-mL-6Km">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BB1-Je-vl5">
+                        <rect key="frame" x="440" y="2" width="82" height="32"/>
+                        <buttonCell key="cell" type="push" title="Github" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6JH-a5-qET">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="btnHomepage:" target="-2" id="KfL-BL-wmW"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="390" y="393.5"/>
+            <point key="canvasLocation" x="359" y="377.5"/>
         </window>
     </objects>
     <resources>

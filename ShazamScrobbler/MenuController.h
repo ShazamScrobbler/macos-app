@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) NSMenuItem *accountsItem;
 @property (strong, nonatomic) NSMenuItem *scrobblingItem;
+@property (strong, nonatomic) NSMenuItem *launchAtLoginItem;
 @property NSInteger itemCount;
 
 - (id)init;
@@ -24,6 +25,7 @@
 - (void)insert:(FMResultSet*)rs;
 
 - (IBAction)negateScrobbling:(id)sender;
+- (IBAction)negateLaunchAtLogin:(id)sender;
 - (IBAction)openLoginView:(id)sender;
 - (IBAction)openAboutView:(id)sender;
 - (IBAction)logoutMenuAction:(id)sender;
@@ -32,6 +34,7 @@
 - (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble;
 
 - (NSMenuItem*)createAboutItem;
+- (NSMenuItem*)createLaunchAtLoginItem;
 - (NSMenuItem*)createEnableScrobblingItem;
 - (NSMenuItem*)createAccountsItem;
 

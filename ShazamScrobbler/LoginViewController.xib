@@ -71,10 +71,6 @@
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
                 </secureTextField>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fH9-Hr-j49">
-                    <rect key="frame" x="90" y="35" width="111" height="111"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon2" id="xEG-WR-mGX"/>
-                </imageView>
                 <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="5p6-el-mMc">
                     <rect key="frame" x="137" y="166" width="16" height="16"/>
                 </progressIndicator>
@@ -86,6 +82,9 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <progressIndicator fixedFrame="YES" maxValue="100" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="abW-9b-0TU">
+                    <rect key="frame" x="0.0" y="-6" width="291" height="20"/>
+                </progressIndicator>
             </subviews>
             <shadow key="shadow">
                 <color key="color" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -93,7 +92,4 @@
             <point key="canvasLocation" x="219.5" y="310.5"/>
         </customView>
     </objects>
-    <resources>
-        <image name="icon2" width="128" height="128"/>
-    </resources>
 </document>
