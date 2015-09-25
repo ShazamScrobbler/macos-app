@@ -33,22 +33,8 @@
     [_main addItem:[NSMenuItem separatorItem]]; // A thin grey line
     [_main addItem:[NSMenuItem separatorItem]];
     [_main addItemWithTitle:@"Quit ShazamScrobbler" action:@selector(terminate:) keyEquivalent:@""];
-
+    
     return self;
-}
-
-- (IBAction)negateScrobbling:(id)sender
-{
-    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
-    NSInteger state = scrobbling != NSOnState ? NSOnState : NSOffState;
-    [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
-
-    [_scrobblingItem setState:state];
-    [_scrobblingItem setEnabled:state];
-    [_main itemChanged:[_main itemAtIndex:0]];
-    if (state == 1) {
-        [ShazamController findNewTags:true];
-    }
 }
 
 - (IBAction)open:(id)sender
@@ -67,13 +53,28 @@
     track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
     menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(open:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
+    
+    NSImage* onState = [NSImage imageNamed:@"NSOnState.png"];
+    [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
+    [menuItem setOnStateImage:onState];
+    
+    NSImage* mixedState = [NSImage imageNamed:@"NSOffState.png"];
+    [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
+    [menuItem setMixedStateImage:mixedState];
+
     [_main insertItem:menuItem atIndex:i];
+    _itemCount++;
     return menuItem;
 }
 
 - (void)insert:(FMResultSet*)rs {
-    [self insert:rs withIndex:3];
-    [_main removeItemAtIndex:23];
+    if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
+        [self insert:rs withIndex:3];
+    };
+    if (_itemCount >= 20) {
+        [_main removeItemAtIndex:22];
+        _itemCount--;
+    }
 }
 
 - (NSMenuItem*) createEnableScrobblingItem {
@@ -94,7 +95,25 @@
     } else {
         [_scrobblingItem setTitle:[NSString stringWithFormat:@"Enable Scrobbling (%ld songs awaiting)", itemsToScrobble]];
     }
-    [_main itemChanged:[_main itemAtIndex:0]];
+    [_main itemChanged:_scrobblingItem];
+    
+    // Save for next startup of the app
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setInteger:itemsToScrobble forKey:@"unscrobbledCount"];
+}
+
+- (IBAction)negateScrobbling:(id)sender
+{
+    NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
+    NSInteger state = scrobbling != NSOnState ? NSOnState : NSOffState;
+    [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
+    
+    [_scrobblingItem setState:state];
+    [_scrobblingItem setEnabled:state];
+    [_main itemChanged:_scrobblingItem];
+    if (state == NSOnState) {
+        [ShazamController findNewTags];
+    }
 }
 
 - (NSMenuItem*)createAccountsItem {

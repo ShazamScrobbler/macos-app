@@ -13,6 +13,7 @@
 #import "MenuController.h"
 #import "Song.h"
 #import "AppDelegate.h"
+#import "ShazamController.h"
 
 @interface LastFmController ()
 
@@ -44,6 +45,7 @@
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
         [menu updateAccountItem];
         [loginController loginSuccess];
+        [ShazamController findNewTags];
     } failureHandler:^(NSError *error) {
         [loginController loginFail];
         [self logout];
@@ -66,6 +68,9 @@
         NSLog(@"New scrobble: %@ ", [song description]);
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         NSMenuItem* item = [menu.main itemWithTag:tag];
+        if (item == nil) {
+            NSLog(@"problemmm nil");
+        }
         [item setState:NSOnState];
         [song setScrobbled];
     } failureHandler:^(NSError *error) {

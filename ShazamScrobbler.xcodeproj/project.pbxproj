@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		88057F99C098F9FCF7662C09 /* libPods-ShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */; };
 		F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */; settings = {ASSET_TAGS = (); }; };
+		F46217BC1BB35FFA00D71FB7 /* NSOnState.png in Resources */ = {isa = PBXBuildFile; fileRef = F46217BB1BB35FFA00D71FB7 /* NSOnState.png */; settings = {ASSET_TAGS = (); }; };
+		F46217C41BB361FA00D71FB7 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F46217C31BB361FA00D71FB7 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
+		F46217C61BB366EF00D71FB7 /* NSOffState.png in Resources */ = {isa = PBXBuildFile; fileRef = F46217C51BB366EF00D71FB7 /* NSOffState.png */; settings = {ASSET_TAGS = (); }; };
 		F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C95F21BB33F67004B1254 /* LoginViewController.xib */; };
 		F47C95EB1BB33F50004B1254 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95E91BB33F50004B1254 /* icon.png */; settings = {ASSET_TAGS = (); }; };
-		F47C95EC1BB33F50004B1254 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C95EA1BB33F50004B1254 /* icon2.png */; settings = {ASSET_TAGS = (); }; };
 		F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95EE1BB33F5E004B1254 /* AppDelegate.m */; settings = {ASSET_TAGS = (); }; };
 		F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F11BB33F67004B1254 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
 		F47C95F71BB33F75004B1254 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F61BB33F75004B1254 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
@@ -46,8 +48,10 @@
 		4BCA43A90BC62D978160565B /* Pods-ShazamScrobbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShazamScrobbler.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShazamScrobbler/Pods-ShazamScrobbler.release.xcconfig"; sourceTree = "<group>"; };
 		F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShazamScrobbler.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShazamScrobblerTests.m; sourceTree = "<group>"; };
+		F46217BB1BB35FFA00D71FB7 /* NSOnState.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSOnState.png; sourceTree = "<group>"; };
+		F46217C31BB361FA00D71FB7 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
+		F46217C51BB366EF00D71FB7 /* NSOffState.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSOffState.png; sourceTree = "<group>"; };
 		F47C95E91BB33F50004B1254 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ShazamScrobbler/icon.png; sourceTree = SOURCE_ROOT; };
-		F47C95EA1BB33F50004B1254 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon2.png; path = ShazamScrobbler/icon2.png; sourceTree = SOURCE_ROOT; };
 		F47C95ED1BB33F5E004B1254 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ShazamScrobbler/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		F47C95EE1BB33F5E004B1254 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ShazamScrobbler/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		F47C95F01BB33F67004B1254 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = ShazamScrobbler/LoginViewController.h; sourceTree = SOURCE_ROOT; };
@@ -237,7 +241,9 @@
 			isa = PBXGroup;
 			children = (
 				F47C95E91BB33F50004B1254 /* icon.png */,
-				F47C95EA1BB33F50004B1254 /* icon2.png */,
+				F46217C31BB361FA00D71FB7 /* icon2.png */,
+				F46217BB1BB35FFA00D71FB7 /* NSOnState.png */,
+				F46217C51BB366EF00D71FB7 /* NSOffState.png */,
 				F46C5D4B19E744B3003F57AF /* Controllers */,
 				F46C5D4119E74459003F57AF /* Views */,
 				F46C5D2B19E728FC003F57AF /* Models */,
@@ -245,7 +251,6 @@
 				F47C96071BB33FAD004B1254 /* Images.xcassets */,
 				F48D995519C8B0A90062A5FA /* Supporting Files */,
 			);
-			name = ShazamScrobbler;
 			path = ShazamScrobbler;
 			sourceTree = "<group>";
 		};
@@ -357,11 +362,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F46217BC1BB35FFA00D71FB7 /* NSOnState.png in Resources */,
 				F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */,
 				F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */,
 				F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */,
+				F46217C61BB366EF00D71FB7 /* NSOffState.png in Resources */,
 				F47C95EB1BB33F50004B1254 /* icon.png in Resources */,
-				F47C95EC1BB33F50004B1254 /* icon2.png in Resources */,
+				F46217C41BB361FA00D71FB7 /* icon2.png in Resources */,
 				F47C96151BB34171004B1254 /* Credits.rtf in Resources */,
 				F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */,
 			);

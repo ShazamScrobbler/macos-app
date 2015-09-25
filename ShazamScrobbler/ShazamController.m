@@ -34,6 +34,12 @@
             [item setState:NSMixedState];
         }
         [database close];
+        
+        //Initialize previous session information
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        for(int j=3; j < 3+[prefs integerForKey:@"unscrobbledCount"];j++) {
+            [[menu.main itemAtIndex:j] setState:NSOffState];
+        }
     }
 }
 
@@ -50,7 +56,7 @@
         if (flags)
         {
             dispatch_source_cancel(source);
-            [self findNewTags:false];
+            [self findNewTags];
             [blockSelf watch:path];
         }
     });
@@ -61,7 +67,7 @@
 }
 
 //Find and scrobble new tags
-+ (void)findNewTags:(bool)scrobblingWasDisabled {
++ (void)findNewTags  {
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
@@ -84,14 +90,12 @@
         // While a new Shazam tag is found
         while ([shazamTagsSinceLastScrobble next]) {
 
-            // Because the tagged list can contain unscrobbled items,
-            // only add the song to the menubar if asked
-            if (!scrobblingWasDisabled) {
-                [menu insert:shazamTagsSinceLastScrobble];
-            }
+            // Add the item in any case and will scrobble it later
+            [menu insert:shazamTagsSinceLastScrobble];
             
             // Check if scrobbling is enabled
-            if ([prefs integerForKey:@"scrobbling"]) {
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
                 NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[shazamTagsSinceLastScrobble stringForColumn:@"ZDATE"] doubleValue]];
                 Song *song = [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
                                                  artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]

@@ -13,7 +13,7 @@
 
 + (void)init;
 + (void)watch:(NSString*)path;
-+ (void)findNewTags:(bool)scrobblingWasDisabled;
++ (void)findNewTags;
 
 @end
 

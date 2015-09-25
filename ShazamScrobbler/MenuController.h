@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) NSMenuItem *accountsItem;
 @property (strong, nonatomic) NSMenuItem *scrobblingItem;
+@property NSInteger itemCount;
 
 - (id)init;
 - (NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i;
