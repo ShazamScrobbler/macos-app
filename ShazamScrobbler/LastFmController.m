@@ -64,13 +64,9 @@
 
 + (void)scrobble:(Song*)song withTag:(NSInteger)tag {
     // Scrobble a track
-    [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:534 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-        NSLog(@"New scrobble: %@ ", [song description]);
+    [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:0 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         NSMenuItem* item = [menu.main itemWithTag:tag];
-        if (item == nil) {
-            NSLog(@"problemmm nil");
-        }
         [item setState:NSOnState];
         [song setScrobbled];
     } failureHandler:^(NSError *error) {

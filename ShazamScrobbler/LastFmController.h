@@ -18,7 +18,6 @@
 + (bool)login:(NSString*)username withPassword:(NSString*)password;
 + (bool)logout;
 
-
 @end
 
 #endif

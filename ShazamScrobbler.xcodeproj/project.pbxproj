@@ -31,6 +31,7 @@
 		F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D996D19C8B0A90062A5FA /* XCTest.framework */; };
 		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
+		F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447761BB5C89300ABD578 /* MenuConstants.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,8 @@
 		F48D996D19C8B0A90062A5FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		F48D997419C8B0A90062A5FA /* ShazamScrobblerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShazamScrobblerTests-Info.plist"; sourceTree = "<group>"; };
 		F48D997619C8B0A90062A5FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F4E447751BB5C89300ABD578 /* MenuConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuConstants.h; sourceTree = "<group>"; };
+		F4E447761BB5C89300ABD578 /* MenuConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuConstants.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +126,8 @@
 			children = (
 				F47C95F51BB33F75004B1254 /* MenuController.h */,
 				F47C95F61BB33F75004B1254 /* MenuController.m */,
+				F4E447751BB5C89300ABD578 /* MenuConstants.h */,
+				F4E447761BB5C89300ABD578 /* MenuConstants.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -140,10 +145,10 @@
 		F46C5D2A19E728F1003F57AF /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
-				F47C95FE1BB33F95004B1254 /* LastFmConstants.h */,
-				F47C95FF1BB33F95004B1254 /* LastFmConstants.m */,
 				F47C96001BB33F95004B1254 /* LastFmController.h */,
 				F47C96011BB33F95004B1254 /* LastFmController.m */,
+				F47C95FE1BB33F95004B1254 /* LastFmConstants.h */,
+				F47C95FF1BB33F95004B1254 /* LastFmConstants.m */,
 			);
 			name = LastFm;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 				F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */,
 				F47C95F71BB33F75004B1254 /* MenuController.m in Sources */,
 				F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */,
+				F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */,
 				F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */,
 				F47C96031BB33F95004B1254 /* LastFmController.m in Sources */,
 				F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */,

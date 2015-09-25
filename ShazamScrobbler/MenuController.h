@@ -24,12 +24,14 @@
 - (void)insert:(FMResultSet*)rs;
 
 - (IBAction)negateScrobbling:(id)sender;
-- (IBAction)open:(id)sender;
+- (IBAction)openLoginView:(id)sender;
+- (IBAction)openAboutView:(id)sender;
 - (IBAction)logoutMenuAction:(id)sender;
 
 - (void)updateAccountItem;
 - (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble;
 
+- (NSMenuItem*)createAboutItem;
 - (NSMenuItem*)createEnableScrobblingItem;
 - (NSMenuItem*)createAccountsItem;
 

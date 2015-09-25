@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "MenuConstants.h"
 
 @interface ShazamController ()
 
@@ -21,14 +22,14 @@
 
 @implementation ShazamController : NSObject
 
-//Fills the menu with last 20 shazamed songs
+//Fills the menu with last SONGS_LENGTH shazamed songs
 + (void)init {
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     
     if([database open]) {
-        FMResultSet *rs = [database executeQuery:@"select track.Z_PK as ZID, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT 20"];
+        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
-        int i = 3;
+        int i = SONGS_START_INDEX;
         while ([rs next]) {
             NSMenuItem* item = [menu insert:rs withIndex:i++];
             [item setState:NSMixedState];
@@ -37,7 +38,7 @@
         
         //Initialize previous session information
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        for(int j=3; j < 3+[prefs integerForKey:@"unscrobbledCount"];j++) {
+        for(int j=SONGS_START_INDEX; j < SONGS_START_INDEX + [prefs integerForKey:@"unscrobbledCount"];j++) {
             [[menu.main itemAtIndex:j] setState:NSOffState];
         }
     }

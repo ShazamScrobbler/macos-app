@@ -11,6 +11,7 @@
 #import "LastFmController.h"
 #import "AppDelegate.h"
 #import "ShazamController.h"
+#import "MenuConstants.h"
 
 @interface MenuController ()
 
@@ -28,20 +29,28 @@
     [_statusItem setHighlightMode:YES];
     [_statusItem setMenu:_main];
     
-    [_main addItem:[self createEnableScrobblingItem]];
-    [_main addItem:[self createAccountsItem]];
-    [_main addItem:[NSMenuItem separatorItem]]; // A thin grey line
-    [_main addItem:[NSMenuItem separatorItem]];
-    [_main addItemWithTitle:@"Quit ShazamScrobbler" action:@selector(terminate:) keyEquivalent:@""];
-    
+    [_main addItem:[self createAboutItem]];             //About Shazam Scrobbler
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItem:[self createEnableScrobblingItem]];  //Enable scrobbling
+    [_main addItem:[self createAccountsItem]];          //Account
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+                                                        // song list here
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItemWithTitle:@"Quit ShazamScrobbler"     //Quit ShazamScrobbler
+                     action:@selector(terminate:) keyEquivalent:@""];
     return self;
 }
 
-- (IBAction)open:(id)sender
+- (IBAction)openLoginView:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
     AppDelegate* app = (AppDelegate *)[NSApplication sharedApplication].delegate;
     [app.window makeKeyAndOrderFront:nil];
+}
+
+- (IBAction)openAboutView:(id)sender
+{
+
 }
 
 -(NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i {
@@ -51,7 +60,7 @@
     NSMenuItem *menuItem;
     artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
     track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
-    menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(open:) keyEquivalent:@""];
+    menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(openLoginView:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
     
     NSImage* onState = [NSImage imageNamed:@"NSOnState.png"];
@@ -69,12 +78,17 @@
 
 - (void)insert:(FMResultSet*)rs {
     if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
-        [self insert:rs withIndex:3];
+        [self insert:rs withIndex:SONGS_START_INDEX];
     };
-    if (_itemCount >= 20) {
-        [_main removeItemAtIndex:22];
-        _itemCount--;
+    if (_itemCount >= SONGS_LENGTH) {
+        [_main removeItemAtIndex:SONGS_END_INDEX-1];
     }
+}
+
+- (NSMenuItem*) createAboutItem {
+    _scrobblingItem = [[NSMenuItem alloc] initWithTitle:@"About ShazamScrobbler" action:@selector(openAboutView:) keyEquivalent:@""];
+    [_scrobblingItem setTarget:self];
+    return _scrobblingItem;
 }
 
 - (NSMenuItem*) createEnableScrobblingItem {
@@ -117,14 +131,14 @@
 }
 
 - (NSMenuItem*)createAccountsItem {
-    _accountsItem = [[NSMenuItem alloc] initWithTitle:@"Account" action:@selector(open:) keyEquivalent:@""];
+    _accountsItem = [[NSMenuItem alloc] initWithTitle:@"Account" action:@selector(openLoginView:) keyEquivalent:@""];
     [_accountsItem setTarget:self];
     [_accountsItem setEnabled:TRUE];
     NSMenu* accountMenu = [[NSMenu alloc] initWithTitle:@"Account"];
 
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if ([prefs stringForKey:@"session"] != nil) {
-        NSMenuItem* connectedAccount = [[NSMenuItem alloc] initWithTitle:[prefs valueForKey:@"username"] action:@selector(open:) keyEquivalent:@""];
+        NSMenuItem* connectedAccount = [[NSMenuItem alloc] initWithTitle:[prefs valueForKey:@"username"] action:@selector(openLoginView:) keyEquivalent:@""];
         [connectedAccount setState:NSOnState];
         [connectedAccount setEnabled:TRUE];
         [connectedAccount setTarget:self];
@@ -135,7 +149,7 @@
         [accountMenu addItem:[NSMenuItem separatorItem]];
         [accountMenu addItem:logout];
     } else {
-        NSMenuItem* login = [[NSMenuItem alloc] initWithTitle:@"Login" action:@selector(open:) keyEquivalent:@""];
+        NSMenuItem* login = [[NSMenuItem alloc] initWithTitle:@"Login" action:@selector(openLoginView:) keyEquivalent:@""];
         [login setTarget:self];
         [accountMenu addItem:login];
     }
