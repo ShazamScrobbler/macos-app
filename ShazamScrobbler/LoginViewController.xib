@@ -82,9 +82,10 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <progressIndicator fixedFrame="YES" maxValue="100" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="abW-9b-0TU">
-                    <rect key="frame" x="0.0" y="-6" width="291" height="20"/>
-                </progressIndicator>
+                <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e6u-td-WS8">
+                    <rect key="frame" x="81" y="30" width="128" height="128"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="logo" id="yxh-Yg-T78"/>
+                </imageView>
             </subviews>
             <shadow key="shadow">
                 <color key="color" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -92,4 +93,7 @@
             <point key="canvasLocation" x="219.5" y="310.5"/>
         </customView>
     </objects>
+    <resources>
+        <image name="logo" width="512" height="512"/>
+    </resources>
 </document>

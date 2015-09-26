@@ -24,7 +24,7 @@
 - (id)init {
     _main = [NSMenu new];
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    NSImage* icon = [NSImage imageNamed:@"icon.png"];
+    NSImage* icon = [NSImage imageNamed:@"icon"];
     [icon setSize:NSMakeSize(MIN(icon.size.width, 16), MIN(icon.size.height, 16))];
     [_statusItem setImage:icon];
     [_statusItem.image setTemplate:YES];
@@ -74,11 +74,11 @@
     menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(openLoginView:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
     
-    NSImage* onState = [NSImage imageNamed:@"NSOnState.png"];
+    NSImage* onState = [NSImage imageNamed:@"NSOnState"];
     [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
     [menuItem setOnStateImage:onState];
     
-    NSImage* mixedState = [NSImage imageNamed:@"NSOffState.png"];
+    NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
     [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
     [menuItem setMixedStateImage:mixedState];
 
@@ -90,10 +90,10 @@
 - (void)insert:(FMResultSet*)rs {
     if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
         [self insert:rs withIndex:SONGS_START_INDEX];
+        if (_itemCount >= SONGS_LENGTH) {
+            [_main removeItemAtIndex:SONGS_END_INDEX-1];
+        }
     };
-    if (_itemCount >= SONGS_LENGTH) {
-        [_main removeItemAtIndex:SONGS_END_INDEX-1];
-    }
 }
 
 - (NSMenuItem*) createAboutItem {
@@ -197,8 +197,8 @@
 }
 
 - (void)updateAccountItem {
-    [_main removeItemAtIndex:1];
-    [_main insertItem:[self createAccountsItem] atIndex:1];
+    [_main removeItemAtIndex:3];
+    [_main insertItem:[self createAccountsItem] atIndex:3];
 }
 
 

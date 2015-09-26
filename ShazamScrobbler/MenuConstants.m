@@ -11,7 +11,7 @@
 @implementation MenuConstants
 
 int const SONGS_START_INDEX = 5;
-int const SONGS_LENGTH = 30;
+int const SONGS_LENGTH = 2;
 int const SONGS_END_INDEX = SONGS_START_INDEX + SONGS_LENGTH;
 
 @end

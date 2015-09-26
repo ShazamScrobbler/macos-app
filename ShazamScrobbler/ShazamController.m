@@ -46,6 +46,7 @@
 
 // Wait for Shazam to tag a song
 // The function automatically detects changes happening on the Shazam SQLite file
+// TODO: what if Shazam not yet installed
 + (void)watch:(NSString*) path {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     int fildes = open([path UTF8String], O_EVTONLY);

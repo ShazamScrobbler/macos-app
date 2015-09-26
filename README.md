@@ -53,12 +53,18 @@ We would love having this for mobiles, we could:
 
  - Shazam
  - Last.fm
- - Last.fm SDK by gangverk
- - FMDB
- - https://github.com/Mozketo/LaunchAtLoginController
+ - [Last.fm](https://github.com/gangverk/LastFm) SDK by gangverk
+ - [FMDB](https://github.com/ccgus/fmdb)
+ - [LaunchAtLoginController](https://github.com/Mozketo/LaunchAtLoginController) by [Ben Clark-Robinson](https://github.com/Mozketo)
 
  Feel free to contribute!
 
+### Tools used
+
+ - Travis
+ - Cocoapod
+ - xctool
+ 
 ### Licence
 
 MIT

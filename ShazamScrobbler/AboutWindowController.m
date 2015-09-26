@@ -14,9 +14,6 @@
 
 @implementation AboutWindowController
 @synthesize aboutWindow;
-@synthesize appName;
-@synthesize appVersion;
-@synthesize appCopyright;
 
 NSDictionary *plistDict;
 
@@ -36,31 +33,6 @@ NSDictionary *plistDict;
     
     //Load the plist so we can get current info for the about box.
     plistDict = [[NSBundle mainBundle] infoDictionary];
-    
-    //Get the application name.
-    id applicationName = [plistDict objectForKey:@"CFBundleName"];
-    //Get the build version.
-    id applicationVersion = [plistDict objectForKey:@"CFBundleVersion"];
-    //Get the copyright.
-    id applicationCopyright = [plistDict objectForKey:@"NSHumanReadableCopyright"];
-    //Shazam Compatibility version.
-    NSString* compatibilityVersion = [plistDict objectForKey:@"Shazam Compatibility"];
-    
-    //Build the string for the windows title.
-    NSString *aboutTitle = [NSString stringWithFormat:@"%@%@", @"About ", applicationName];
-    [aboutWindow.window setTitle:aboutTitle];
-    
-    //Build the string for the application name. appName - tagline
-    NSString *progName = [NSString stringWithFormat:@"%@%@", applicationName, @" for OS X"];
-    [appName setStringValue:progName];
-    
-    //Build the string for the version. Version: $build
-    NSString *progVersion = [NSString stringWithFormat:@"%@%@%@%@", @"Scrobbler version ", applicationVersion, @" for Shazam ", compatibilityVersion];
-    [appVersion setStringValue:progVersion];
-    
-    //Make the copyright font smaller.
-    [appCopyright setFont:[NSFont systemFontOfSize:10]];
-    [appCopyright setStringValue:applicationCopyright];
     
     [super windowDidLoad];
 }

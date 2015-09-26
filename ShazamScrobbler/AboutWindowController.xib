@@ -7,9 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
             <connections>
-                <outlet property="appCopyright" destination="XdL-OU-lFr" id="oju-TU-xwK"/>
-                <outlet property="appName" destination="ACy-M7-Nhr" id="OcJ-3N-gRe"/>
-                <outlet property="appVersion" destination="SdM-5G-yCq" id="x2K-In-vW6"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -29,7 +26,7 @@
                     </colorWell>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ACy-M7-Nhr">
                         <rect key="frame" x="100" y="204" width="398" height="47"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Program Name and Tag Line" id="KYO-GS-EYy">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ShazamScrobbler for OS X" id="KYO-GS-EYy">
                             <font key="font" size="27" name=".HelveticaNeueDeskInterface-Bold"/>
                             <color key="textColor" name="selectedTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -37,31 +34,12 @@
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SdM-5G-yCq">
                         <rect key="frame" x="189" y="172" width="277" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version" id="gJt-wU-JGY">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Scrobbler version 1 for Shazam 1.1.1" id="gJt-wU-JGY">
                             <font key="font" size="13" name="Helvetica"/>
                             <color key="textColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XdL-OU-lFr">
-                        <rect key="frame" x="135" y="54" width="277" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Copyright" id="etH-c2-aXd">
-                            <font key="font" size="8" name=".HelveticaNeueDeskInterface-Regular"/>
-                            <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                            <connections>
-                                <binding destination="-2" name="displayPatternValue1" keyPath="self.appCopyright" id="tpn-am-hXQ">
-                                    <dictionary key="options">
-                                        <string key="NSDisplayPattern">%{value1}@</string>
-                                    </dictionary>
-                                </binding>
-                            </connections>
-                        </textFieldCell>
-                    </textField>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-OG-fUb">
-                        <rect key="frame" x="49" y="94" width="102" height="102"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon2" id="Psa-EX-LhD"/>
-                    </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wwk-17-imr">
                         <rect key="frame" x="189" y="102" width="287" height="60"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="justified" title="ShazamScrobbler scrobbles songs detected by Shazam for Mac OS X to your Last.fm music profile." id="KqW-mL-6Km">
@@ -80,6 +58,18 @@
                             <action selector="btnHomepage:" target="-2" id="KfL-BL-wmW"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jJ-4i-y2o">
+                        <rect key="frame" x="136" y="53" width="277" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2015 Stéphane Bruckert. All rights reserved." id="J5A-lt-eDn">
+                            <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
+                            <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-OG-fUb">
+                        <rect key="frame" x="35" y="82" width="121" height="121"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="Psa-EX-LhD"/>
+                    </imageView>
                 </subviews>
             </view>
             <connections>
@@ -89,6 +79,6 @@
         </window>
     </objects>
     <resources>
-        <image name="icon2" width="128" height="128"/>
+        <image name="logo" width="512" height="512"/>
     </resources>
 </document>
