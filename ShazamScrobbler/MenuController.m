@@ -22,26 +22,31 @@
 @implementation MenuController
 
 - (id)init {
-    _main = [NSMenu new];
-    _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    // menu bar icon
+    _statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     NSImage* icon = [NSImage imageNamed:@"icon"];
     [icon setSize:NSMakeSize(MIN(icon.size.width, 16), MIN(icon.size.height, 16))];
-    [_statusItem setImage:icon];
-    [_statusItem.image setTemplate:YES];
-    [_statusItem setHighlightMode:YES];
-    [_statusItem setMenu:_main];
+    [_statusBar setImage:icon];
+    [_statusBar.image setTemplate:YES];
+    [_statusBar setHighlightMode:YES];
     
-    [_main addItem:[self createAboutItem]];             //About Shazam Scrobbler
+    // menu
+    _main = [NSMenu new];
+    [_statusBar setMenu:_main];
+    
+    // menu items
+    [_main addItem:[self createAboutItem]];             // About Shazam Scrobbler
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-    [_main addItem:[self createEnableScrobblingItem]];  //Enable scrobbling
-    [_main addItem:[self createAccountsItem]];          //Account
+    [_main addItem:[self createEnableScrobblingItem]];  // Enable scrobbling
+    [_main addItem:[self createAccountsItem]];          // Account
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-                                                        // song list here
+                                                        //  ~song list here~
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-    [_main addItem:[self createLaunchAtLoginItem]];
+    [_main addItem:[self createLaunchAtLoginItem]];     // Launch on Startup
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-    [_main addItemWithTitle:@"Quit ShazamScrobbler"     //Quit ShazamScrobbler
-                     action:@selector(terminate:) keyEquivalent:@""];
+    [_main addItemWithTitle:@"Quit ShazamScrobbler"     // Quit ShazamScrobbler
+                     action:@selector(terminate:)
+              keyEquivalent:@""];
     return self;
 }
 
@@ -103,7 +108,7 @@
 }
 
 - (NSMenuItem*) createLaunchAtLoginItem {
-    _launchAtLoginItem = [[NSMenuItem alloc] initWithTitle:@"Launch At Login" action:@selector(negateLaunchAtLogin:) keyEquivalent:@""];
+    _launchAtLoginItem = [[NSMenuItem alloc] initWithTitle:@"Launch on Startup" action:@selector(negateLaunchAtLogin:) keyEquivalent:@""];
     LaunchAtLoginController *launchController = [[LaunchAtLoginController alloc] init];
     BOOL launch = [launchController launchAtLogin];
     NSInteger state = launch ? NSOnState : NSOffState;

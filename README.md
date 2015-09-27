@@ -7,7 +7,7 @@ Shazam Scrobbler for Mac OS X.
 
 ### Status
 
-Imminent firt release.
+Imminent first release.
 
 ### If you would love to:
 
@@ -57,7 +57,7 @@ We would love having this for mobiles, we could:
  - [FMDB](https://github.com/ccgus/fmdb)
  - [LaunchAtLoginController](https://github.com/Mozketo/LaunchAtLoginController) by [Ben Clark-Robinson](https://github.com/Mozketo)
 
- Feel free to contribute!
+Feel free to contribute!
 
 ### Tools used
 

@@ -11,7 +11,7 @@
 
 @interface ShazamController : NSObject
 
-+ (void)init;
++ (bool)init;
 + (void)watch:(NSString*)path;
 + (void)findNewTags;
 

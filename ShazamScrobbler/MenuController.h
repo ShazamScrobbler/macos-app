@@ -14,7 +14,7 @@
 @interface MenuController : NSObject
 
 @property (strong, nonatomic) NSMenu *main;
-@property (strong, nonatomic) NSStatusItem *statusItem;
+@property (strong, nonatomic) NSStatusItem *statusBar;
 @property (strong, nonatomic) NSMenuItem *accountsItem;
 @property (strong, nonatomic) NSMenuItem *scrobblingItem;
 @property (strong, nonatomic) NSMenuItem *launchAtLoginItem;

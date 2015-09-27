@@ -23,25 +23,50 @@
 @implementation ShazamController : NSObject
 
 //Fills the menu with last SONGS_LENGTH shazamed songs
-+ (void)init {
++ (bool)init {
+    // Does the database file exist?
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:[ShazamConstants getSqlitePath]]){
+        return false;
+    }
+    // Are we able to open the database?
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
+    if(![database open]) {
+        return false;
+    }
     
-    if([database open]) {
-        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
-        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
-        int i = SONGS_START_INDEX;
-        while ([rs next]) {
-            NSMenuItem* item = [menu insert:rs withIndex:i++];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSUInteger last = [database intForQuery:@"SELECT Z_PK FROM ZSHTAGRESULTMO ORDER BY Z_PK DESC LIMIT 1"];
+    
+    // First launch checks
+    // Check whether Shazam has been reinstalled
+    // Shazam has been reinstalled if lastScrobbleId is higher than last tag id on shazam
+    if ([prefs integerForKey:@"lastScrobble"] < 0 || [prefs integerForKey:@"lastScrobble"] > last) {
+        // re-init preference
+        [prefs setInteger:0 forKey:@"lastScrobble"];
+        
+        // Find number of unscrobbled items
+        NSUInteger count = [database intForQuery:@"SELECT COUNT(Z_PK) FROM ZSHTAGRESULTMO"];
+        [prefs setInteger:count forKey:@"unscrobbledCount"];
+    };
+    
+    FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
+    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+    
+    int i = SONGS_START_INDEX;
+    
+    // insert all items
+    while  ([rs next]) {
+        NSMenuItem* item = [menu insert:rs withIndex:i++];
+        // set a special icon to unscrobbled items
+        if (SONGS_START_INDEX < SONGS_START_INDEX + [prefs integerForKey:@"unscrobbledCount"]) {
+            [item setState:NSOffState];
+        } else {
             [item setState:NSMixedState];
         }
-        [database close];
-        
-        //Initialize previous session information
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        for(int j=SONGS_START_INDEX; j < SONGS_START_INDEX + [prefs integerForKey:@"unscrobbledCount"];j++) {
-            [[menu.main itemAtIndex:j] setState:NSOffState];
-        }
     }
+    [database close];
+    return true;
 }
 
 // Wait for Shazam to tag a song
@@ -73,11 +98,6 @@
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
-    // Last scrobble to last.fm
-    if ([prefs integerForKey:@"lastScrobble"] < 0) {
-        [prefs setInteger:0 forKey:@"lastScrobble"];
-    };
-    
     // Connection to the DB
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     if([database open])
@@ -85,13 +105,13 @@
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         NSInteger unscrobbledCount = 0;
         NSInteger lastScrobblePosition = [prefs integerForKey:@"lastScrobble"];
-
+        
         // Get Shazam tags since the last Scrobble to last.fm
         FMResultSet *shazamTagsSinceLastScrobble = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", lastScrobblePosition]];
         
         // While a new Shazam tag is found
         while ([shazamTagsSinceLastScrobble next]) {
-
+            
             // Add the item in any case and will scrobble it later
             [menu insert:shazamTagsSinceLastScrobble];
             
