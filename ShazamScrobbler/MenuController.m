@@ -78,7 +78,7 @@
     track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
     menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(openLoginView:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
-    
+
     NSImage* onState = [NSImage imageNamed:@"NSOnState"];
     [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
     [menuItem setOnStateImage:onState];
@@ -163,10 +163,6 @@
         [_scrobblingItem setTitle:[NSString stringWithFormat:@"Enable Scrobbling (%ld songs awaiting)", itemsToScrobble]];
     }
     [_main itemChanged:_scrobblingItem];
-    
-    // Save for next startup of the app
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setInteger:itemsToScrobble forKey:@"unscrobbledCount"];
 }
 
 - (NSMenuItem*)createAccountsItem {
@@ -205,6 +201,5 @@
     [_main removeItemAtIndex:3];
     [_main insertItem:[self createAccountsItem] atIndex:3];
 }
-
 
 @end

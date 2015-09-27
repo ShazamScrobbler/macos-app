@@ -31,41 +31,34 @@
     }
     // Are we able to open the database?
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
-    if(![database open]) {
-        return false;
-    }
-    
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSUInteger last = [database intForQuery:@"SELECT Z_PK FROM ZSHTAGRESULTMO ORDER BY Z_PK DESC LIMIT 1"];
-    
-    // First launch checks
-    // Check whether Shazam has been reinstalled
-    // Shazam has been reinstalled if lastScrobbleId is higher than last tag id on shazam
-    if ([prefs integerForKey:@"lastScrobble"] < 0 || [prefs integerForKey:@"lastScrobble"] > last) {
-        // re-init preference
-        [prefs setInteger:0 forKey:@"lastScrobble"];
+    if([database open]) {
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSUInteger last = [database intForQuery:@"SELECT Z_MAX FROM Z_PRIMARYKEY WHERE Z_NAME='SHTagResultMO'"];
         
-        // Find number of unscrobbled items
-        NSUInteger count = [database intForQuery:@"SELECT COUNT(Z_PK) FROM ZSHTAGRESULTMO"];
-        [prefs setInteger:count forKey:@"unscrobbledCount"];
-    };
-    
-    FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
-    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
-    
-    int i = SONGS_START_INDEX;
-    
-    // insert all items
-    while  ([rs next]) {
-        NSMenuItem* item = [menu insert:rs withIndex:i++];
-        // set a special icon to unscrobbled items
-        if (SONGS_START_INDEX < SONGS_START_INDEX + [prefs integerForKey:@"unscrobbledCount"]) {
-            [item setState:NSOffState];
-        } else {
-            [item setState:NSMixedState];
+        // First launch checks
+        // Check whether Shazam has been reinstalled
+        // Shazam has been reinstalled if lastScrobbleId is higher than last tag id on shazam
+        if ([prefs integerForKey:@"lastScrobble"] < 0 || [prefs integerForKey:@"lastScrobble"] > last) {
+            // re-init preference
+            [prefs setInteger:0 forKey:@"lastScrobble"];
+        };
+        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
+        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+        
+        // Insert all items
+        int i = 0;
+        while  ([rs next]) {
+            NSMenuItem* item = [menu insert:rs withIndex:SONGS_START_INDEX + i];
+            // Set a special icon to unscrobbled items
+            if ([rs intForColumn:@"ZID"] > [prefs integerForKey:@"lastScrobble"]) {
+                [item setState:NSOffState];
+            } else {
+                [item setState:NSMixedState];
+            }
+            i++;
         }
+        [database close];
     }
-    [database close];
     return true;
 }
 
@@ -77,13 +70,14 @@
     int fildes = open([path UTF8String], O_EVTONLY);
     
     __block typeof(self) blockSelf = self;
-    __block dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fildes, DISPATCH_VNODE_ATTRIB, queue);
+    __block dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fildes, DISPATCH_VNODE_DELETE | DISPATCH_VNODE_WRITE | DISPATCH_VNODE_EXTEND | DISPATCH_VNODE_ATTRIB | DISPATCH_VNODE_LINK | DISPATCH_VNODE_RENAME | DISPATCH_VNODE_REVOKE, queue);
     dispatch_source_set_event_handler(source, ^{
         unsigned long flags = dispatch_source_get_data(source);
         if (flags)
         {
             dispatch_source_cancel(source);
             [self findNewTags];
+            //[self findNewTags];
             [blockSelf watch:path];
         }
     });
@@ -100,6 +94,7 @@
     
     // Connection to the DB
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
+    
     if([database open])
     {
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
@@ -122,6 +117,7 @@
                 Song *song = [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
                                                  artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
                                                    date:newDate];
+                
                 [LastFmController scrobble:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
                 lastScrobblePosition++;
                 [prefs setInteger:lastScrobblePosition forKey:@"lastScrobble"];
@@ -133,8 +129,8 @@
         // Will update to 0 if scrobbling ENABLED or no new songs
         // To > 0 if scrobbling disabled
         [menu updateScrobblingItemWith:unscrobbledCount];
+        [database close];
     }
-    [database close];
 }
 
 @end

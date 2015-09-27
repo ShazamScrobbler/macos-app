@@ -18,5 +18,6 @@
 @property (strong, nonatomic) MenuController* menu;
 
 - (void) loadView;
+- (void) alert;
 
 @end
