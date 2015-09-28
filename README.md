@@ -5,7 +5,7 @@ Shazam Scrobbler for Mac OS X.
 
 [![Build Status](https://travis-ci.org/stephanebruckert/ShazamScrobbler.svg?branch=master)](https://travis-ci.org/stephanebruckert/ShazamScrobbler)
 
-[ [If you would love to...](#if-you-would-love-to) &bull; [Features](#features) &bull; [Requirements](#requirements) &bull; [Installation](#installation) &bull; [How does it work?](#how-does-it-work) &bull; [Main issues & fixes](#main-issues--fixes) &bull; [Next](#next) &bull; [CHANGELOG](#changelog) &bull; [Thanks](#thanks) &bull; [Licence](#licence) ]
+[ [If you would love to...](#if-you-would-love-to) &bull; [Features](#features) &bull; [Requirements](#requirements) &bull; [Installation](#installation) &bull; [How does it work?](#how-does-it-work) &bull; [Main issues & fixes](#main-issues--fixes) &bull; [CHANGELOG](#changelog) &bull; [Thanks](#thanks) &bull; [Next](#next) &bull; [Licence](#licence) ]
 
 ## If you would love to...
 
@@ -34,8 +34,8 @@ Works on OS X Yosemite with Shazam 1.1.1 (get it from the [App Store](https://it
 ## Installation
 
  - Make sure you meet the requirements,
- - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (<500KB),
- - Before using ShazamScrobbler, Shazam must have been launched at least once.
+ - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (~600KB),
+ - Before launching ShazamScrobbler, Shazam must have tagged at least one song.
 
 ## How does it work?
 
@@ -51,16 +51,10 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 #### Problems w/ fixes
 
 - What to do when Shazam detects a song being scrobbled by another scrobbler?
- - TODO: we check if Last.fm is already "Scrobbling from X",
- - TODO: or if the song has already been scrobbled in the last 5 minutes.
+  - TODO: we check if Last.fm is already "Scrobbling from X",
+  - TODO: or if the song has already been scrobbled in the last 5 minutes.
 - How to make sure that the song tagged by Shazam were played longer than 30 seconds?
- - TODO: reset Shazam tags after each tag, then get the same tag again and again until we know if the song were played long enough.
- 
-## Next
-
-We would love to have this for mobiles, we could:
- - scrobble from a live concert or a bar,
- - scrobble from the radio and in your car,
+  - TODO: reset Shazam tags after each tag, then get the same tag again and again until we know if the song were played long enough.
 
 ## CHANGELOG
 
@@ -77,6 +71,12 @@ We would love to have this for mobiles, we could:
  - [LaunchAtLoginController](https://github.com/Mozketo/LaunchAtLoginController) by [Ben Clark-Robinson](https://github.com/Mozketo)
 
 Feel free to contribute!
+
+## Next
+
+We would love to have this for mobiles, we could:
+ - scrobble from a live concert or a bar,
+ - scrobble from the radio and in your car.
  
 ## Licence
 
