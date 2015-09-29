@@ -58,6 +58,10 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ## CHANGELOG
 
+#### v1.0.1 (2015/30/09)
+
+ - **[critical]** fixed [#13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)
+
 #### v1 (2015/28/09)
 
  - support for Shazam 1.1.1
