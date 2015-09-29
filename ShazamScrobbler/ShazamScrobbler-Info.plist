@@ -40,5 +40,10 @@
 	<string>https://github.com/stephanebruckert/ShazamScrobbler</string>
 	<key>Shazam Compatibility</key>
 	<string>1.1.1</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
