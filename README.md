@@ -11,7 +11,7 @@ Shazam Scrobbler for Mac OS X.
 
  - scrobble songs played at your place by your roommates, family or girlfriend,
  - scrobble songs from a mix,
- - scrobble your vinyles (finally!),
+ - scrobble your vinyl (finally!),
  - scrobble the radio,
  - scrobble the OST of a movie,
  - scrobble music from a game (think of the radio in GTA).
@@ -45,7 +45,7 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 #### Problems w/o fixes
 
-- The Shazam Mac app won't always tag songs being played on your earphone/headphone,
+- The Shazam Mac app won't always tag songs being played on your earphones/headphones,
 - Shazam doesn't always find the right tag for a song (depending on the genre).
 
 #### Problems w/ fixes
@@ -53,7 +53,7 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 - What to do when Shazam detects a song being scrobbled by another scrobbler?
   - TODO: we check if Last.fm is already "Scrobbling from X",
   - TODO: or if the song has already been scrobbled in the last 5 minutes.
-- How to make sure that the song tagged by Shazam were played longer than 30 seconds?
+- How to make sure that the song tagged by Shazam was longer than 30 seconds?
   - TODO: reset Shazam tags after each tag, then get the same tag again and again until we know if the song were played long enough.
 
 ## CHANGELOG
