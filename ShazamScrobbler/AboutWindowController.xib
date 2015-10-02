@@ -67,7 +67,7 @@
                         </textFieldCell>
                     </textField>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-OG-fUb">
-                        <rect key="frame" x="35" y="82" width="121" height="121"/>
+                        <rect key="frame" x="41" y="82" width="121" height="121"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="Psa-EX-LhD"/>
                     </imageView>
                 </subviews>
@@ -79,6 +79,6 @@
         </window>
     </objects>
     <resources>
-        <image name="logo" width="512" height="512"/>
+        <image name="logo" width="256" height="256"/>
     </resources>
 </document>
