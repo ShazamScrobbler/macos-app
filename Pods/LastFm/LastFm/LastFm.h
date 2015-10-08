@@ -148,4 +148,10 @@ typedef void (^LastFmReturnBlockWithError)(NSError *error);
 
 - (NSOperation *)getEventsForLocation:(NSString *)location successHandler:(LastFmReturnBlockWithArray)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler;
 
+///----------------------------------
+/// @name Library methods
+///----------------------------------
+
+- (NSOperation *)removeScrobble:(NSString *)track byArtist:(NSString *)artist atTimestamp:(NSTimeInterval)timestamp successHandler:(LastFmReturnBlockWithDictionary)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler;
+
 @end

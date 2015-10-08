@@ -33,6 +33,7 @@
     // menu
     _main = [NSMenu new];
     [_statusBar setMenu:_main];
+    NSMenuItem *itemsTitle = [[NSMenuItem alloc] initWithTitle:@"Last items" action:nil keyEquivalent:@""];
     
     // menu items
     [_main addItem:[self createAboutItem]];             // About Shazam Scrobbler
@@ -40,7 +41,8 @@
     [_main addItem:[self createEnableScrobblingItem]];  // Enable scrobbling
     [_main addItem:[self createAccountsItem]];          // Account
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-                                                        //  ~song list here~
+    [_main addItem:itemsTitle];                         // Last Items
+    //  ~song list here~
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
     [_main addItem:[self createLaunchAtLoginItem]];     // Launch on Startup
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
@@ -70,26 +72,42 @@
 }
 
 -(NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i {
-    NSString *artist;
-    NSString *track;
+    NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
+    NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
     
-    NSMenuItem *menuItem;
-    artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
-    track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
-    menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(openLoginView:) keyEquivalent:@""];
+    NSMenuItem * menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(negateItem:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
-
+    
+    // state pictures
     NSImage* onState = [NSImage imageNamed:@"NSOnState"];
     [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
     [menuItem setOnStateImage:onState];
+    [menuItem setTarget:self];
+    [menuItem setEnabled:TRUE];
     
-    NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
-    [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
-    [menuItem setMixedStateImage:mixedState];
-
     [_main insertItem:menuItem atIndex:i];
     _itemCount++;
     return menuItem;
+}
+
+- (IBAction)negateItem:(id)sender
+{
+//    This code is commented because we are waiting for last.fm
+//    to fix the issue with the "library.removeScrobble" API endpoint
+//
+//    NSMenuItem *clickedItem = sender;
+//    NSInteger state = clickedItem.state;
+//    
+//    Song *song = [ShazamController createSongFromTag:clickedItem.tag];
+//    NSInteger newState = state == 0 ? -1 : 0;
+//    if (newState) {
+//        //scrobble
+//        [LastFmController scrobble:song withTag:clickedItem.tag];
+//    } else {
+//        //unscrobble
+//        [LastFmController unscrobble:song withTag:clickedItem.tag];
+//    }
+//    clickedItem.state = newState;
 }
 
 - (void)insert:(FMResultSet*)rs {
@@ -124,7 +142,7 @@
     NSInteger state = scrobbling ? NSOnState : NSOffState;
     [_scrobblingItem setTarget:self];
     [_scrobblingItem setState:state];
-    [_scrobblingItem setEnabled:YES];
+    [_scrobblingItem setEnabled:NO];
     return _scrobblingItem;
 }
 
@@ -170,7 +188,7 @@
     [_accountsItem setTarget:self];
     [_accountsItem setEnabled:TRUE];
     NSMenu* accountMenu = [[NSMenu alloc] initWithTitle:@"Account"];
-
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if ([prefs stringForKey:@"session"] != nil) {
         NSMenuItem* connectedAccount = [[NSMenuItem alloc] initWithTitle:[prefs valueForKey:@"username"] action:@selector(openLoginView:) keyEquivalent:@""];

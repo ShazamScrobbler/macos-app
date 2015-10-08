@@ -9,11 +9,16 @@
 #ifndef ShazamScrobbler_Shazam_h
 #define ShazamScrobbler_Shazam_h
 
+#import "Song.h"
+#import "FMDatabase.h"
+
 @interface ShazamController : NSObject
 
 + (bool)init;
 + (void)watch:(NSString*)path;
 + (void)findNewTags;
++ (Song*)createSongFromResultSet:(FMResultSet *)shazamTagsSinceLastScrobble;
++ (Song*)createSongFromTag:(NSInteger)tag;
 
 @end
 

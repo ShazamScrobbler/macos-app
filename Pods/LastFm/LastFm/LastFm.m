@@ -1222,4 +1222,23 @@
                           failureHandler:failureHandler];
 }
 
+#pragma mark Library methods
+
+- (NSOperation *)removeScrobble:(NSString *)track byArtist:(NSString *)artist atTimestamp:(NSTimeInterval)timestamp successHandler:(LastFmReturnBlockWithDictionary)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler {
+    NSDictionary *params = @{
+                             @"track": [self forceString:track],
+                             @"artist": [self forceString:artist],
+                             @"timestamp": @((int)timestamp)
+                             };
+    
+    return [self performApiCallForMethod:@"library.removeScrobble"
+                                useCache:[self useCache]
+                              withParams:params
+                               rootXpath:@"."
+                        returnDictionary:YES
+                           mappingObject:@{}
+                          successHandler:successHandler
+                          failureHandler:failureHandler];
+}
+
 @end

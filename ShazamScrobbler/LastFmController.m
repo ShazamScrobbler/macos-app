@@ -69,8 +69,21 @@
         NSMenuItem* item = [menu.main itemWithTag:tag];
         [item setState:NSOnState];
         [song setScrobbled];
+        
+        NSMutableArray *scrobbledItems = [[NSUserDefaults standardUserDefaults] valueForKey:@"scrobbledItems"];
+        //[scrobbledItems addObject:tag];
+        [[NSUserDefaults standardUserDefaults] setObject:scrobbledItems forKey:@"scrobbledItems"];
     } failureHandler:^(NSError *error) {
         NSLog(@"Scrobble error: %@", error);
+    }];
+}
+
++ (void)unscrobble:(Song*)song withTag:(NSInteger)tag {
+    // Uncrobble a track
+    [[LastFm sharedInstance] removeScrobble:song.song byArtist:song.artist atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+        //todo
+    } failureHandler:^(NSError *error) {
+        NSLog(@"Unscrobble error %@", error);
     }];
 }
 

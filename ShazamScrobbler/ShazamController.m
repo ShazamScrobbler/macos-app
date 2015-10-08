@@ -53,7 +53,7 @@
             if ([rs intForColumn:@"ZID"] > [prefs integerForKey:@"lastScrobble"]) {
                 [item setState:NSOffState];
             } else {
-                [item setState:NSMixedState];
+                [item setState:NSOnState];
             }
             i++;
         }
@@ -113,11 +113,7 @@
             // Check if scrobbling is enabled
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
-                NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[shazamTagsSinceLastScrobble stringForColumn:@"ZDATE"] doubleValue]];
-                Song *song = [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
-                                                 artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
-                                                   date:newDate];
-                
+                Song *song = [self createSongFromResultSet:shazamTagsSinceLastScrobble];
                 [LastFmController scrobble:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
                 lastScrobblePosition++;
                 [prefs setInteger:lastScrobblePosition forKey:@"lastScrobble"];
@@ -131,6 +127,27 @@
         [menu updateScrobblingItemWith:unscrobbledCount];
         [database close];
     }
+}
+
++ (Song*)createSongFromResultSet:(FMResultSet *)shazamTagsSinceLastScrobble {
+    NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[shazamTagsSinceLastScrobble stringForColumn:@"ZDATE"] doubleValue]];
+    return [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
+                               artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
+                                 date:newDate];
+}
+
++ (Song*)createSongFromTag:(NSInteger)tag {
+    FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
+    if([database open])
+    {
+        FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where ZID = %ld", tag]];
+        NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[songWithGivenTag stringForColumn:@"ZDATE"] doubleValue]];
+        [database close];
+        return [[Song alloc] initWithSong:[songWithGivenTag stringForColumn:@"ZTRACKNAME"]
+                                   artist:[songWithGivenTag stringForColumn:@"ZNAME"]
+                                     date:newDate];
+    }
+    return nil;
 }
 
 @end
