@@ -14,12 +14,15 @@
 #import "Song.h"
 #import "AppDelegate.h"
 #import "ShazamController.h"
+#import "NowPlayingOperation.h"
 
 @interface LastFmController ()
 
 @end
 
 @implementation LastFmController : NSObject
+
+static NSOperationQueue* operationQueue;
 
 + (void)init {
     // Set the Last.fm session info
@@ -31,6 +34,9 @@
     [LastFm sharedInstance].apiSecret = SECRET;
     [LastFm sharedInstance].session = [prefs valueForKey:@"session"];
     [LastFm sharedInstance].username = [prefs valueForKey:@"username"];
+    
+    operationQueue = [[NSOperationQueue alloc] init];
+    [operationQueue setMaxConcurrentOperationCount: 1];
 }
 
 + (bool)login:(NSString*)username withPassword:(NSString*)password {
@@ -63,19 +69,45 @@
 }
 
 + (void)scrobble:(Song*)song withTag:(NSInteger)tag {
-    // Scrobble a track
-    [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:0 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+    if (lastShazamTag == tag) {
+        // This restricts the previous song to be scrobbled
+        // if not played more than 'PLAYTIME' seconds
+        if ([operationQueue operationCount] > 0) {
+            [operationQueue cancelAllOperations];
+        }
+        
+        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
+        NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
+        [[LastFm sharedInstance] sendNowPlayingTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds successHandler:^(NSDictionary *result) {} failureHandler:^(NSError *error) {
+            NSLog(@"Now playing error: %@", error);
+        }];
+        
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         NSMenuItem* item = [menu.main itemWithTag:tag];
-        [item setState:NSOnState];
-        [song setScrobbled];
         
-        NSMutableArray *scrobbledItems = [[NSUserDefaults standardUserDefaults] valueForKey:@"scrobbledItems"];
-        //[scrobbledItems addObject:tag];
-        [[NSUserDefaults standardUserDefaults] setObject:scrobbledItems forKey:@"scrobbledItems"];
-    } failureHandler:^(NSError *error) {
-        NSLog(@"Scrobble error: %@", error);
-    }];
+        // This scrobbles the song if played more than 'PLAYTIME' seconds
+        // Will be cancelled if another song is played before
+        NowPlayingOperation *operation = [[NowPlayingOperation alloc] initWithSong:song successHandler:^() {
+            // Scrobble a track
+            [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+                
+                // TODO We should re-check if user is there or scrobbling enabled
+                // in the case of the user disabling scrobbling during the 30 seconds
+                
+                // Save last scrobble position
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                [prefs setInteger:song.tag forKey:@"lastScrobble"];
+                [item setState:NSOnState];
+            } failureHandler:^(NSError *error) {
+                NSLog(@"Scrobble error: %@", error);
+            }];
+        } failureHandler:^() {
+            // Song can't be scrobbled because it wasn't played more than 30 seconds
+            [item setState:NSMixedState];
+        }];
+        [operationQueue addOperation:operation];
+    }
+    
 }
 
 + (void)unscrobble:(Song*)song withTag:(NSInteger)tag {

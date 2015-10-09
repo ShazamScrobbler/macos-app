@@ -15,12 +15,15 @@
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 #import "MenuConstants.h"
+#import "LastFmConstants.h"
 
 @interface ShazamController ()
 
 @end
 
 @implementation ShazamController : NSObject
+
+int lastShazamTag;
 
 //Fills the menu with last SONGS_LENGTH shazamed songs
 + (bool)init {
@@ -36,26 +39,49 @@
         NSUInteger last = [database intForQuery:@"SELECT Z_MAX FROM Z_PRIMARYKEY WHERE Z_NAME='SHTagResultMO'"];
         
         // First launch checks
-        // Check whether Shazam has been reinstalled
-        // Shazam has been reinstalled if lastScrobbleId is higher than last tag id on shazam
+        // Shazam preferences were lost if i.e. lastScrobble is higher than last tag id on Shazam
         if ([prefs integerForKey:@"lastScrobble"] < 0 || [prefs integerForKey:@"lastScrobble"] > last) {
-            // re-init preference
-            [prefs setInteger:0 forKey:@"lastScrobble"];
+            [prefs setInteger:last forKey:@"lastScrobble"];
         };
-        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
+        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+        
+        NSMutableArray* lastSongsArray = [[NSMutableArray alloc] initWithCapacity:SONGS_LENGTH];
+        Song* previousSong;
+        while  ([rs next]) {
+            Song* song = [[Song alloc] initWithResultSet:rs];
+            [lastSongsArray addObject:song];
+            previousSong = song;
+        }
         
         // Insert all items
         int i = 0;
-        while  ([rs next]) {
-            NSMenuItem* item = [menu insert:rs withIndex:SONGS_START_INDEX + i];
-            // Set a special icon to unscrobbled items
-            if ([rs intForColumn:@"ZID"] > [prefs integerForKey:@"lastScrobble"]) {
-                [item setState:NSOffState];
+        NSEnumerator *e = [lastSongsArray objectEnumerator];
+        Song* currentSong;
+        Song* followingSong;
+        while (currentSong = [e nextObject]) {
+            // Deal with time interval between songs. Has every song been played 'PLAYTIME' seconds?
+            NSInteger index = [lastSongsArray indexOfObject:currentSong];
+            NSTimeInterval timeIntervalWithFollowing;
+            if (index == 0) {
+                timeIntervalWithFollowing = [[NSDate new] timeIntervalSinceDate:currentSong.date];
             } else {
+                timeIntervalWithFollowing = [followingSong.date timeIntervalSinceDate:currentSong.date];
+            }
+            followingSong = currentSong;
+            
+            // Set a different icon depending on the song status
+            NSMenuItem* item = [menu insertSong:currentSong withIndex:SONGS_START_INDEX + i++];
+            if (currentSong.tag > [prefs integerForKey:@"lastScrobble"]) {
+                // unscrobbled
+                [item setState:NSOffState];
+            } else if (timeIntervalWithFollowing < PLAYTIME) {
+                // not played long enough
+                [item setState:NSMixedState];
+            } else {
+                // scrobbled
                 [item setState:NSOnState];
             }
-            i++;
         }
         [database close];
     }
@@ -77,7 +103,6 @@
         {
             dispatch_source_cancel(source);
             [self findNewTags];
-            //[self findNewTags];
             [blockSelf watch:path];
         }
     });
@@ -86,6 +111,7 @@
     });
     dispatch_resume(source);
 }
+
 
 //Find and scrobble new tags
 + (void)findNewTags  {
@@ -101,6 +127,12 @@
         NSInteger unscrobbledCount = 0;
         NSInteger lastScrobblePosition = [prefs integerForKey:@"lastScrobble"];
         
+        // Get last Shazam tag
+        // Get Shazam tags since the last Scrobble to last.fm
+        FMResultSet *shazamLastTag = [database executeQuery:@"SELECT Z_PK FROM ZSHTAGRESULTMO ORDER BY Z_PK DESC LIMIT 1"];
+        [shazamLastTag next];
+        lastShazamTag = [shazamLastTag intForColumn:@"Z_PK"];
+        
         // Get Shazam tags since the last Scrobble to last.fm
         FMResultSet *shazamTagsSinceLastScrobble = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", lastScrobblePosition]];
         
@@ -110,13 +142,11 @@
             // Add the item in any case and will scrobble it later
             [menu insert:shazamTagsSinceLastScrobble];
             
-            // Check if scrobbling is enabled
+            // Check if scrobbling is enabled and user connected
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
-                Song *song = [self createSongFromResultSet:shazamTagsSinceLastScrobble];
+                Song *song = [[Song alloc] initWithResultSet:shazamTagsSinceLastScrobble];
                 [LastFmController scrobble:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
-                lastScrobblePosition++;
-                [prefs setInteger:lastScrobblePosition forKey:@"lastScrobble"];
             } else {
                 unscrobbledCount++;
             }
@@ -129,23 +159,13 @@
     }
 }
 
-+ (Song*)createSongFromResultSet:(FMResultSet *)shazamTagsSinceLastScrobble {
-    NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[shazamTagsSinceLastScrobble stringForColumn:@"ZDATE"] doubleValue]];
-    return [[Song alloc] initWithSong:[shazamTagsSinceLastScrobble stringForColumn:@"ZTRACKNAME"]
-                               artist:[shazamTagsSinceLastScrobble stringForColumn:@"ZNAME"]
-                                 date:newDate];
-}
-
 + (Song*)createSongFromTag:(NSInteger)tag {
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     if([database open])
     {
         FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where ZID = %ld", tag]];
-        NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:[[songWithGivenTag stringForColumn:@"ZDATE"] doubleValue]];
         [database close];
-        return [[Song alloc] initWithSong:[songWithGivenTag stringForColumn:@"ZTRACKNAME"]
-                                   artist:[songWithGivenTag stringForColumn:@"ZNAME"]
-                                     date:newDate];
+        return [[Song alloc] initWithResultSet:songWithGivenTag];
     }
     return nil;
 }

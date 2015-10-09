@@ -10,6 +10,7 @@
 
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "Song.h"
 
 @interface MenuController : NSObject
 
@@ -21,7 +22,8 @@
 @property NSInteger itemCount;
 
 - (id)init;
-- (NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i;
+- (NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i;
+- (NSMenuItem*)insertSong:(Song*)song withIndex:(int)i;
 - (void)insert:(FMResultSet*)rs;
 
 - (IBAction)negateScrobbling:(id)sender;

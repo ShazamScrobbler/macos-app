@@ -14,10 +14,11 @@
 
 @interface ShazamController : NSObject
 
+extern int lastShazamTag;
+
 + (bool)init;
 + (void)watch:(NSString*)path;
 + (void)findNewTags;
-+ (Song*)createSongFromResultSet:(FMResultSet *)shazamTagsSinceLastScrobble;
 + (Song*)createSongFromTag:(NSInteger)tag;
 
 @end

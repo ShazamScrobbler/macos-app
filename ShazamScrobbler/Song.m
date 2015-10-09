@@ -11,27 +11,39 @@
 
 static NSString *_defaultModel;
 
-@implementation Song {
-    // Private instance variables
-    double _odometer;
-}
+@implementation Song
 
-- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date {
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date tag:(NSInteger)tag{
     self = [super init];
     if (self) {
-        // Any custom setup work goes here
         _song = [song copy];
-        _odometer = 0;
         _artist = artist;
         _scrobbled = NO;
         _date = date;
+        _tag = tag;
+    }
+    return self;
+}
+
+- (id)initWithResultSet:(FMResultSet *)rs {
+    self = [super init];
+    NSInteger tag = [rs intForColumn:@"ZID"];
+    NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
+    NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"ZDATE"] doubleValue]];
+    if (self) {
+        _song = [track copy];
+        _artist = [artist copy];
+        _scrobbled = NO;
+        _date = [date copy];
+        _tag = tag;
     }
     return self;
 }
 
 - (id)init {
     // Forward to the "designated" initialization method
-    return [self initWithSong:_defaultModel artist:nil date:nil];
+    return [self initWithSong:_defaultModel artist:nil date:nil tag:0];
 }
 
 + (void)setDefaultModel:(NSString *)aModel {
@@ -44,10 +56,6 @@ static NSString *_defaultModel;
 
 - (void)setDate:(NSDate *)aDate {
     _date = [aDate copy];
-}
-
-- (void)setScrobbled {
-    _scrobbled = YES;
 }
 
 - (NSString *)description {

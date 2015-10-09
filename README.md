@@ -22,14 +22,17 @@ the Shazam Scrobbler is for you!
 
 ![menubar-preview](https://cloud.githubusercontent.com/assets/1932338/10127413/89a1b8ce-65a1-11e5-8fd7-479ad0eca604.png)
  
- - displays your last 20 Shazamed items and their status,
+ - displays your last 20 Shazamed items and their status:
+   - now playing or scrobbling not enabled 
+   - scrobbled (> 30 seconds)
+   - not scrobbled (< 30 seconds)
  - enable/disable scrobbling and queue unscrobbled items,
  - safe login to Last.fm,
  - launch on startup.
 
 ## Requirements
 
-Works on OS X Yosemite with Shazam 1.1.1 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12)).
+Works on OS X Yosemite/El Capitan with Shazam 1.1.1 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12)).
 
 ## Installation
 
@@ -58,9 +61,14 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ## CHANGELOG
 
+#### Next version
+
+ - new logo
+ - [FEATURE [#16](https://github.com/stephanebruckert/ShazamScrobbler/issues/16)] send now playing and only scrobble if played at least 30 seconds
+
 #### v1.0.1 (2015/30/09)
 
- - **[critical]** fixed [#13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)
+ - [BUG [#13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)] SSL error 
 
 #### v1 (2015/28/09)
 

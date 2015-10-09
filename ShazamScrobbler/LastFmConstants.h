@@ -12,11 +12,11 @@
 #import <Foundation/Foundation.h>
 
 @interface LastFmConstants : NSObject
+
 extern NSString* const APPNAME;
 extern NSString* const APIKEY;
 extern NSString* const SECRET;
-extern NSString* const USERNAME;
-extern NSString* const PASSWORD;
+extern NSInteger const PLAYTIME;
 
 @end
 

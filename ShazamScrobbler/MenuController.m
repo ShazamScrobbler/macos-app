@@ -71,7 +71,7 @@
     [aboutWindow showWindow:self];
 }
 
--(NSMenuItem*)insert:(FMResultSet*)rs withIndex:(int)i {
+-(NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i {
     NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
     NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
     
@@ -84,6 +84,30 @@
     [menuItem setOnStateImage:onState];
     [menuItem setTarget:self];
     [menuItem setEnabled:TRUE];
+    
+    NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
+    [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
+    [menuItem setMixedStateImage:mixedState];
+    
+    [_main insertItem:menuItem atIndex:i];
+    _itemCount++;
+    return menuItem;
+}
+
+-(NSMenuItem*)insertSong:(Song*)song withIndex:(int)i {
+    NSMenuItem * menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", song.artist, song.song] action:@selector(negateItem:) keyEquivalent:@""];
+    menuItem.tag = song.tag;
+    
+    // state pictures
+    NSImage* onState = [NSImage imageNamed:@"NSOnState"];
+    [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
+    [menuItem setOnStateImage:onState];
+    [menuItem setTarget:self];
+    [menuItem setEnabled:TRUE];
+    
+    NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
+    [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
+    [menuItem setMixedStateImage:mixedState];
     
     [_main insertItem:menuItem atIndex:i];
     _itemCount++;
@@ -112,7 +136,7 @@
 
 - (void)insert:(FMResultSet*)rs {
     if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
-        [self insert:rs withIndex:SONGS_START_INDEX];
+        [self insertResultSet:rs withIndex:SONGS_START_INDEX];
         if (_itemCount >= SONGS_LENGTH) {
             [_main removeItemAtIndex:SONGS_END_INDEX-1];
         }

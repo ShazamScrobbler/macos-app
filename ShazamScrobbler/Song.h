@@ -10,6 +10,8 @@
 #define ShazamScrobbler_Song_h
 
 #import <Foundation/Foundation.h>
+#import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
 
 @interface Song : NSObject {
     // Protected instance variables (not recommended)
@@ -18,14 +20,15 @@
 @property (copy, nonatomic) NSString *artist;
 @property (copy, nonatomic) NSString *song;
 @property (copy, nonatomic) NSDate *date;
+@property NSInteger tag;
+
 @property (nonatomic) bool scrobbled;
 
-
-- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date;
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date tag:(NSInteger)tag;
+- (id)initWithResultSet:(FMResultSet *)rs;
 + (void)setDefaultModel:(NSString *)aModel;
 - (void)setArtist:(NSString *)aArtist;
 - (void)setDate:(NSDate *)aDate;
-- (void)setScrobbled;
 - (NSString *)description;
 
 @end
