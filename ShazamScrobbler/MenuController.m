@@ -243,13 +243,13 @@ static NSMenuItem* separator;
         [connectedAccount setEnabled:TRUE];
         [connectedAccount setTarget:self];
         
-        NSMenuItem* logout = [[NSMenuItem alloc] initWithTitle:@"Logout" action:@selector(logoutMenuAction:) keyEquivalent:@""];
+        NSMenuItem* logout = [[NSMenuItem alloc] initWithTitle:@"Log out" action:@selector(logoutMenuAction:) keyEquivalent:@""];
         [logout setTarget:self];
         [accountMenu addItem:connectedAccount];
         [accountMenu addItem:[NSMenuItem separatorItem]];
         [accountMenu addItem:logout];
     } else {
-        NSMenuItem* login = [[NSMenuItem alloc] initWithTitle:@"Login" action:@selector(openLoginView:) keyEquivalent:@""];
+        NSMenuItem* login = [[NSMenuItem alloc] initWithTitle:@"Log in" action:@selector(openLoginView:) keyEquivalent:@""];
         [login setTarget:self];
         [accountMenu addItem:login];
     }
