@@ -56,8 +56,6 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 - What to do when Shazam detects a song being scrobbled by another scrobbler?
   - TODO: we check if Last.fm is already "Scrobbling from X",
   - TODO: or if the song has already been scrobbled in the last 5 minutes.
-- How to make sure that the song tagged by Shazam was longer than 30 seconds?
-  - TODO: reset Shazam tags after each tag, then get the same tag again and again until we know if the song were played long enough.
 
 ## CHANGELOG
 

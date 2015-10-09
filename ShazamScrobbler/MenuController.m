@@ -21,6 +21,8 @@
 
 @implementation MenuController
 
+static NSMenuItem* separator;
+
 - (id)init {
     // menu bar icon
     _statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -33,7 +35,7 @@
     // menu
     _main = [NSMenu new];
     [_statusBar setMenu:_main];
-    NSMenuItem *itemsTitle = [[NSMenuItem alloc] initWithTitle:@"Last items" action:nil keyEquivalent:@""];
+    _itemsTitle = [[NSMenuItem alloc] initWithTitle:LAST_ITEMS_TITLE action:nil keyEquivalent:@""];
     
     // menu items
     [_main addItem:[self createAboutItem]];             // About Shazam Scrobbler
@@ -41,7 +43,7 @@
     [_main addItem:[self createEnableScrobblingItem]];  // Enable scrobbling
     [_main addItem:[self createAccountsItem]];          // Account
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
-    [_main addItem:itemsTitle];                         // Last Items
+    [_main addItem:_itemsTitle];                         // Last Items
     //  ~song list here~
     [_main addItem:[NSMenuItem separatorItem]];         //----------------------
     [_main addItem:[self createLaunchAtLoginItem]];     // Launch on Startup
@@ -49,6 +51,8 @@
     [_main addItemWithTitle:@"Quit ShazamScrobbler"     // Quit ShazamScrobbler
                      action:@selector(terminate:)
               keyEquivalent:@""];
+    separator = [NSMenuItem separatorItem];
+
     return self;
 }
 
@@ -77,14 +81,13 @@
     
     NSMenuItem * menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(negateItem:) keyEquivalent:@""];
     menuItem.tag = [rs intForColumn:@"ZID"];
-    
+
     // state pictures
     NSImage* onState = [NSImage imageNamed:@"NSOnState"];
     [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
     [menuItem setOnStateImage:onState];
     [menuItem setTarget:self];
-    [menuItem setEnabled:TRUE];
-    
+
     NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
     [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
     [menuItem setMixedStateImage:mixedState];
@@ -132,6 +135,16 @@
 //        [LastFmController unscrobble:song withTag:clickedItem.tag];
 //    }
 //    clickedItem.state = newState;
+}
+
+- (void)setNowPlaying:(bool)isNowPlaying {
+    if (isNowPlaying) {
+        _itemsTitle.title = NOW_PLAYING_TITLE;
+        [_main insertItem:separator atIndex:SONGS_START_INDEX+1];
+    } else {
+        _itemsTitle.title = LAST_ITEMS_TITLE;
+        [_main removeItemAtIndex:[_main indexOfItem:separator]];
+    }
 }
 
 - (void)insert:(FMResultSet*)rs {

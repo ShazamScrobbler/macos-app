@@ -27,15 +27,15 @@
     // Check if the operation wasn't cancelled every second for 'PLAYTIME' seconds
     // 408 represents the timeout in seconds
     for (unsigned i = 0; i < 408; i++) {
-        NSTimeInterval interval = [[NSDate new] timeIntervalSinceDate:self.song.date];
-        if (interval > PLAYTIME) {
-            break;
-        }
         if ([self isCancelled]) {
             if (self.operationFailure) {
                 self.operationFailure();
             }
             return;
+        }
+        NSTimeInterval interval = [[NSDate new] timeIntervalSinceDate:self.song.date];
+        if (interval > PLAYTIME) {
+            break;
         }
         sleep(1);
     }

@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSMenuItem *accountsItem;
 @property (strong, nonatomic) NSMenuItem *scrobblingItem;
 @property (strong, nonatomic) NSMenuItem *launchAtLoginItem;
+@property (strong, nonatomic) NSMenuItem *itemsTitle;
+
 @property NSInteger itemCount;
 
 - (id)init;
@@ -28,6 +30,8 @@
 
 - (IBAction)negateScrobbling:(id)sender;
 - (IBAction)negateLaunchAtLogin:(id)sender;
+- (void)setNowPlaying:(bool)isNowPlaying;
+
 - (IBAction)openLoginView:(id)sender;
 - (IBAction)openAboutView:(id)sender;
 - (IBAction)logoutMenuAction:(id)sender;
