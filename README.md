@@ -20,12 +20,14 @@ the Shazam Scrobbler is for you!
 
 ## Features
 
-![menubar-preview](https://cloud.githubusercontent.com/assets/1932338/10127413/89a1b8ce-65a1-11e5-8fd7-479ad0eca604.png)
+![menubar-preview](https://cloud.githubusercontent.com/assets/1932338/10404677/7d1ffe58-6ed4-11e5-99d0-c29480a0bfda.png)
+
+* Red icons show songs which have been scrobbles whereas the grey icon tells that the song hasn't been played for more than 30 seconds *
  
  - displays your last 20 Shazamed items and their status:
-   - now playing or scrobbling not enabled 
-   - scrobbled (> 30 seconds)
-   - not scrobbled (< 30 seconds)
+   - now playing or scrobbling not enabled (no icon)
+   - scrobbled for more than 30 seconds (red icon)
+   - not scrobbled (< 30 seconds) (grey icon)
  - enable/disable scrobbling and queue unscrobbled items,
  - safe login to Last.fm,
  - launch on startup.
@@ -53,9 +55,9 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 #### Problems w/ fixes
 
-- What to do when Shazam detects a song being scrobbled by another scrobbler?
-  - TODO: we check if Last.fm is already "Scrobbling from X",
-  - TODO: or if the song has already been scrobbled in the last 5 minutes.
+- TODO: what to do when Shazam detects a song being scrobbled by another scrobbler?
+  - check if Last.fm is already "Scrobbling from X",
+  - or check if the song has already been scrobbled in the last 5 minutes.
 
 ## CHANGELOG
 
