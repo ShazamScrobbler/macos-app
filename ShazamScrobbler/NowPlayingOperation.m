@@ -46,7 +46,7 @@
 
 + (NSInteger)secondsBeforeNowPlayingEnds:(NSDate*)startPlayingDate {
     NSDate *addPlayTimeSeconds = [startPlayingDate dateByAddingTimeInterval:(PLAYTIME)];
-    return [[NSDate new] timeIntervalSinceDate:addPlayTimeSeconds];
+    return [addPlayTimeSeconds timeIntervalSinceNow];
 }
 
 @end
