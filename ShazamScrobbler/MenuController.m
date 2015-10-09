@@ -138,7 +138,8 @@ static NSMenuItem* separator;
 }
 
 - (void)setNowPlaying:(bool)isNowPlaying {
-    if (isNowPlaying) {
+    _isNowPlaying = isNowPlaying;
+    if (_isNowPlaying) {
         _itemsTitle.title = NOW_PLAYING_TITLE;
         [_main insertItem:separator atIndex:SONGS_START_INDEX+1];
     } else {
@@ -151,7 +152,8 @@ static NSMenuItem* separator;
     if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
         [self insertResultSet:rs withIndex:SONGS_START_INDEX];
         if (_itemCount >= SONGS_LENGTH) {
-            [_main removeItemAtIndex:SONGS_END_INDEX-1];
+            // If a song is "now playing", the list has one more element
+            [_main removeItemAtIndex:SONGS_END_INDEX + _isNowPlaying];
         }
     };
 }

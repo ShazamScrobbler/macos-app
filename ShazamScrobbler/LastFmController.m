@@ -70,9 +70,12 @@ static NSOperationQueue* operationQueue;
 
 + (void)scrobble:(Song*)song withTag:(NSInteger)tag {
     if (lastShazamTag == tag) {
+        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+
         // This restricts the previous song to be scrobbled
         // if not played more than 'PLAYTIME' seconds
         if ([operationQueue operationCount] > 0) {
+            [menu setNowPlaying:false];
             [operationQueue cancelAllOperations];
         }
         
@@ -82,7 +85,6 @@ static NSOperationQueue* operationQueue;
             NSLog(@"Now playing error: %@", error);
         }];
         
-        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
         NSMenuItem* item = [menu.main itemWithTag:tag];
         
         // This scrobbles the song if played more than 'PLAYTIME' seconds
@@ -109,7 +111,6 @@ static NSOperationQueue* operationQueue;
         } failureHandler:^() {
             // Song can't be scrobbled because it wasn't played more than 30 seconds
             [item setState:NSMixedState];
-            [menu setNowPlaying:false];
         }];
         [operationQueue addOperation:operation];
         [menu setNowPlaying:true];

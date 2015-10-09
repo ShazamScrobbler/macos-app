@@ -59,18 +59,19 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ## CHANGELOG
 
-#### Next version
+#### v1.1 (2015/10/09)
 
- - new logo
- - [FEATURE [#16](https://github.com/stephanebruckert/ShazamScrobbler/issues/16)] send now playing and only scrobble if played at least 30 seconds
+ - New app logo.
+ - Added a feature to send "now playing" request and only scrobble songs if played more than 30 seconds ([issue #16](https://github.com/stephanebruckert/ShazamScrobbler/issues/16)).
+ - Confirmed compatibility with El Capitan.
 
-#### v1.0.1 (2015/30/09)
+#### v1.0.1 (2015/09/30)
 
- - [BUG [#13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)] SSL error 
+ - Fixed a major issue making it impossible for some users to connect ([issue #13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)).
 
-#### v1 (2015/28/09)
+#### v1 (2015/09/28)
 
- - support for Shazam 1.1.1
+ - Support for Shazam 1.1.1.
 
 ## Thanks
 
@@ -86,7 +87,7 @@ Feel free to contribute!
 
 We would love to have this for mobiles, we could:
  - scrobble from a live concert or a bar,
- - scrobble from the radio and in your car.
+ - scrobble the radio in your car.
  
 ## Licence
 

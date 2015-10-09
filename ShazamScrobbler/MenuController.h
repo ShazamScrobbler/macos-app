@@ -23,6 +23,7 @@
 
 @property NSInteger itemCount;
 @property NSInteger songsAwaiting;
+@property bool isNowPlaying;
 
 - (id)init;
 - (NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i;
