@@ -22,7 +22,7 @@ the Shazam Scrobbler is for you!
 
 ![menubar-preview](https://cloud.githubusercontent.com/assets/1932338/10404677/7d1ffe58-6ed4-11e5-99d0-c29480a0bfda.png)
 
-* Red icons show songs which have been scrobbles whereas the grey icon tells that the song hasn't been played for more than 30 seconds *
+*Red icons show songs which have been scrobbles whereas the grey icon tells that the song hasn't been played for more than 30 seconds*
  
  - displays your last 20 Shazamed items and their status:
    - now playing or scrobbling not enabled (no icon)
@@ -39,7 +39,7 @@ Works on OS X Yosemite/El Capitan with Shazam 1.1.1 (get it from the [App Store]
 ## Installation
 
  - Make sure you meet the requirements,
- - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (~600KB),
+ - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (~1MB),
  - Before launching ShazamScrobbler, Shazam must have tagged at least one song.
 
 ## How does it work?
