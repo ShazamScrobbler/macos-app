@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSMenuItem *itemsTitle;
 
 @property NSInteger itemCount;
+@property NSInteger songsAwaiting;
 
 - (id)init;
 - (NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i;
@@ -38,6 +39,7 @@
 
 - (void)updateAccountItem;
 - (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble;
+- (void)incrementScrobblingItem;
 
 - (NSMenuItem*)createAboutItem;
 - (NSMenuItem*)createLaunchAtLoginItem;

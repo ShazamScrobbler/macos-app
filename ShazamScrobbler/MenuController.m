@@ -215,9 +215,17 @@ static NSMenuItem* separator;
     if (itemsToScrobble == 0) {
         [_scrobblingItem setTitle:@"Enable Scrobbling"];
     } else {
-        [_scrobblingItem setTitle:[NSString stringWithFormat:@"Enable Scrobbling (%ld songs awaiting)", itemsToScrobble]];
+        NSString *plural = itemsToScrobble > 1 ? @"s" : @"";
+        [_scrobblingItem setTitle:[NSString stringWithFormat:@"Enable Scrobbling (%ld song%@ awaiting)", itemsToScrobble, plural]];
     }
+    _songsAwaiting = itemsToScrobble;
     [_main itemChanged:_scrobblingItem];
+}
+
+- (void)incrementScrobblingItem
+{
+    _songsAwaiting++;
+    [self updateScrobblingItemWith:_songsAwaiting];
 }
 
 - (NSMenuItem*)createAccountsItem {

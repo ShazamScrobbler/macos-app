@@ -91,13 +91,17 @@ static NSOperationQueue* operationQueue;
             // Scrobble a track
             [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
                 
-                // TODO We should re-check if user is there or scrobbling enabled
-                // in the case of the user disabling scrobbling during the 30 seconds
-                
-                // Save last scrobble position
+                // We need to re-check if the user is connected and the scrobbling is enabled
+                // in case the configuration changed during the last 30 seconds
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                [prefs setInteger:song.tag forKey:@"lastScrobble"];
-                [item setState:NSOnState];
+                if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
+                    // Save last scrobble position
+                    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                    [prefs setInteger:song.tag forKey:@"lastScrobble"];
+                    [item setState:NSOnState];
+                } else {
+                    [menu incrementScrobblingItem];
+                }
             } failureHandler:^(NSError *error) {
                 NSLog(@"Scrobble error: %@", error);
             }];
