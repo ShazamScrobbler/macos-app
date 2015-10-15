@@ -1,0 +1,63 @@
+---
+layout: default
+---
+
+<section class="concept">
+    <div class="inner">
+        <div class="row">
+            <div class="col-sm-5 col-md-5 col-centered">
+                <h3>What does ShazamScrobbler do?</h3>
+                <p>It provides a way to <b>scrobble</b> songs being played around you, thanks to the official <a href="#">Shazam Mac app.</a></p>
+            </div>
+            <div class="col-sm-2 col-md-2" id="icon">
+            </div>
+            <div class="col-sm-5 col-md-5 col-centered">
+                <h3>What's scrobbling<br />anyway?</h3>
+                <p>It's the action of tracking and publishing all your <b>listening habits</b> to your <a href="#">Last.fm music profile</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="usecase">
+    <div class="inner container">
+        <header>
+            <h2>Examples of use</h2>
+        </header>
+        <div class="row row-centered">
+            {% for use in site.md-usecases %}
+            <div class="col-xs-4 col-centered col-min">
+                <img height="150" src="{{ use.picture }}" />
+                <h3>{{ use.title }}</h3>
+                <p>{{ use.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="install">
+    <div class="inner">
+        <div class="row">
+            <div class="col-sm-6 col-md-6" id="picture">
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <header>
+                    <h2>Installation</h2>
+                </header>
+                <ol>
+                    <li>If you don't already have a last.fm account, create one.</li>
+                    <li>If you don't already have the Shazam app, download it for free. You need to let the app identify at least 1 song.</li>
+                    <li>Open ShazamScrobbler, connect it to last.fm and... happy scrobbling!</li>
+                </ol>
+            </div>
+        </div>
+        <div class="faq">
+            <h2>FAQ</h2> {% for faq in site.md-faq %}
+            <p>{{ faq.q }}</p>
+            <footer>
+                <cite>{{ faq.a }}</cite>
+                <small>Otherwise open an issue <a href="{{ faq.discuss }}">here</a>.</small>
+            </footer>
+            {% endfor %}
+        </div>
+    </div>
+</section>
