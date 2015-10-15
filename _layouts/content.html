@@ -1,7 +1,4 @@
----
-layout: default
----
-
+--- layout: default ---
 <section class="concept">
     <div class="inner container">
         <div class="row row-centered">
@@ -52,10 +49,13 @@ layout: default
         </div>
         <div class="faq">
             <h2>FAQ</h2> {% for faq in site.md-faq %}
-            <p>{{ faq.q }}</p>
+            <p>{{ faq.q }} <small>
+                {% if faq.issue %}
+                    Github <a href="https://github.com/stephanebruckert/ShazamScrobbler/issues/{{ faq.issue }}">issue #{{ faq.issue }}</a>.
+                {% endif %}
+                </small></p>
             <footer>
                 <cite>{{ faq.a }}</cite>
-                <small>Otherwise open an issue <a href="{{ faq.discuss }}">here</a>.</small>
             </footer>
             {% endfor %}
         </div>
