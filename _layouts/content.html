@@ -3,17 +3,17 @@ layout: default
 ---
 
 <section class="concept">
-    <div class="inner">
-        <div class="row">
-            <div class="col-sm-5 col-md-5 col-centered">
+    <div class="inner container">
+        <div class="row row-centered">
+            <div class="col-sm-5 col-md-5">
                 <h3>What does ShazamScrobbler do?</h3>
-                <p>It provides a way to <b>scrobble</b> songs being played around you, thanks to the official <a href="#">Shazam Mac app.</a></p>
+                <p>It <b>scrobbles</b> songs being played around you, thanks to the official <a href="https://itunes.apple.com/en/app/shazam/id897118787?mt=12">Shazam Mac app.</a></p>
             </div>
             <div class="col-sm-2 col-md-2" id="icon">
             </div>
-            <div class="col-sm-5 col-md-5 col-centered">
+            <div class="col-sm-5 col-md-5">
                 <h3>What's scrobbling<br />anyway?</h3>
-                <p>It's the action of tracking and publishing all your <b>listening habits</b> to your <a href="#">Last.fm music profile</a>.</p>
+                <p>It's the action of tracking and publishing all your <b>listening habits</b> to your <a href="http://www.last.fm/about/getinvolved">Last.fm music profile</a>.</p>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@ layout: default
         </header>
         <div class="row row-centered">
             {% for use in site.md-usecases %}
-            <div class="col-xs-4 col-centered col-min">
+            <div class="col-xs-4 col-md-4 col-centered col-min">
                 <img height="150" src="{{ use.picture }}" />
                 <h3>{{ use.title }}</h3>
                 <p>{{ use.description }}</p>
@@ -35,11 +35,11 @@ layout: default
     </div>
 </section>
 <section class="install">
-    <div class="inner">
+    <div class="inner container">
         <div class="row">
-            <div class="col-sm-6 col-md-6" id="picture">
+            <div class="col-md-6 col-min" id="picture">
             </div>
-            <div class="col-sm-6 col-md-6">
+            <div class="col-md-6 col-min">
                 <header>
                     <h2>Installation</h2>
                 </header>
