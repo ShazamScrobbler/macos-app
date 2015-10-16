@@ -18,6 +18,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    #ifndef DEMO_MODE
     _menu = [[MenuController alloc] init];
     [LastFmController init];
     if ([ShazamController init]) {
@@ -27,6 +28,11 @@
         [self alert];
     }
     [self loadView];
+    #endif
+    
+    #ifdef DEMO_MODE
+    _menu = [[MenuController alloc] init2];
+    #endif
 }
 
 - (void) loadView {

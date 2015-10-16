@@ -56,6 +56,105 @@ static NSMenuItem* separator;
     return self;
 }
 
+- (id)init2 {
+    // menu bar icon
+    _statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    NSImage* icon = [NSImage imageNamed:@"icon"];
+    [icon setSize:NSMakeSize(MIN(icon.size.width, 16), MIN(icon.size.height, 16))];
+    [_statusBar setImage:icon];
+    [_statusBar.image setTemplate:YES];
+    [_statusBar setHighlightMode:YES];
+    
+    // menu
+    _main = [NSMenu new];
+    [_statusBar setMenu:_main];
+    _itemsTitle = [[NSMenuItem alloc] initWithTitle:LAST_ITEMS_TITLE action:nil keyEquivalent:@""];
+    
+    // state pictures
+    NSImage* onState = [NSImage imageNamed:@"NSOnState"];
+    [onState setSize:NSMakeSize(MIN(onState.size.width, 11), MIN(onState.size.height, 11))];
+    NSImage* mixedState = [NSImage imageNamed:@"NSOffState"];
+    [mixedState setSize:NSMakeSize(MIN(mixedState.size.width, 11), MIN(mixedState.size.height, 11))];
+    
+    // menu items
+    [_main addItem:[self createAboutItem]];             // About Shazam Scrobbler
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItem:[self createEnableScrobblingItem]];  // Enable scrobbling
+    [_main addItem:[self createAccountsItem]];          // Account
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItemWithTitle:@"Now playing..." action:nil keyEquivalent:@""];
+    [_main addItemWithTitle:@"Floating Points – Arp3" action:@selector(terminate:)
+              keyEquivalent:@""];
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+
+    NSMenuItem* menuItem ;
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Ludovico Einaudi – Divinere" action:@selector(terminate:)
+                                                                      keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Yann Tiersen – Comptine D'un Autre Été, L'après-Midi" action:@selector(terminate:)
+                                               keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Chapelier Fou – Les Métamorphoses Du Vide" action:@selector(terminate:)
+                                               keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Aphex Twin – Avril 14th" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Jazz Liberatorz – Clin D'oeil" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"DJ Okawari Feat. Brittany Campbell – Brown Eyes" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Nujabes – Sea Of Cloud" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"The Sounds Defects – Faded Soul" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Acqua – Barbie Girl" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:mixedState];
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"Emancipator – Nevergreen" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+
+    [_main addItem:menuItem];
+    
+    menuItem = [[NSMenuItem alloc] initWithTitle:@"The Streets – Blinded By The Lights" action:@selector(terminate:)
+                                   keyEquivalent:@""];
+    [menuItem setOffStateImage:onState];
+    [_main addItem:menuItem];
+    
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItem:[self createLaunchAtLoginItem]];     // Launch on Startup
+    [_main addItem:[NSMenuItem separatorItem]];         //----------------------
+    [_main addItemWithTitle:@"Quit ShazamScrobbler"     // Quit ShazamScrobbler
+                     action:@selector(terminate:)
+              keyEquivalent:@""];
+    separator = [NSMenuItem separatorItem];
+    
+    return self;
+}
+
 - (IBAction)openLoginView:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];

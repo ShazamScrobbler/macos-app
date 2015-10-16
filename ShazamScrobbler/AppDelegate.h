@@ -10,6 +10,8 @@
 #import "LoginViewController.h"
 #import "MenuController.h"
 
+#undef  DEMO_MODE
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;

@@ -26,6 +26,8 @@
 @property bool isNowPlaying;
 
 - (id)init;
+- (id)init2;
+
 - (NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i;
 - (NSMenuItem*)insertSong:(Song*)song withIndex:(int)i;
 - (void)insert:(FMResultSet*)rs;
