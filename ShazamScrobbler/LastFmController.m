@@ -68,7 +68,7 @@ static NSOperationQueue* operationQueue;
     return TRUE;
 }
 
-+ (void)scrobble:(Song*)song withTag:(NSInteger)tag {
++ (void)nowPlaying:(Song*)song withTag:(NSInteger)tag {
     if (lastShazamTag == tag) {
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
 
@@ -79,44 +79,55 @@ static NSOperationQueue* operationQueue;
             [operationQueue cancelAllOperations];
         }
         
-        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
         NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
+        
+        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
         [[LastFm sharedInstance] sendNowPlayingTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds successHandler:^(NSDictionary *result) {} failureHandler:^(NSError *error) {
             NSLog(@"Now playing error: %@", error);
         }];
-        
-        NSMenuItem* item = [menu.main itemWithTag:tag];
         
         // This scrobbles the song if played more than 'PLAYTIME' seconds
         // Will be cancelled if another song is played before
         NowPlayingOperation *operation = [[NowPlayingOperation alloc] initWithSong:song successHandler:^() {
             // Scrobble a track
-            [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-                
-                // We need to re-check if the user is connected and the scrobbling is enabled
-                // in case the configuration changed during the last 30 seconds
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
-                    // Save last scrobble position
-                    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                    [prefs setInteger:song.tag forKey:@"lastScrobble"];
-                    [item setState:NSOnState];
-                } else {
-                    [menu incrementScrobblingItem];
-                }
-            } failureHandler:^(NSError *error) {
-                NSLog(@"Scrobble error: %@", error);
-            }];
+            [LastFmController scrobble:song withTag:tag];
             [menu setNowPlaying:false];
         } failureHandler:^() {
             // Song can't be scrobbled because it wasn't played more than 30 seconds
+            NSMenuItem* item = [menu.main itemWithTag:tag];
             [item setState:NSMixedState];
         }];
         [operationQueue addOperation:operation];
         [menu setNowPlaying:true];
+    } else {
+        [LastFmController scrobble:song withTag:tag];
     }
-    
 }
+
++ (void)scrobble:(Song *)song withTag:(NSInteger)tag {
+    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+    NSMenuItem* item = [menu.main itemWithTag:tag];
+    NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
+
+    // Scrobble a track
+    [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+        
+        // We need to re-check if the user is connected and the scrobbling is enabled
+        // in case the configuration changed during the last 30 seconds
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
+            // Save last scrobble position
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs setInteger:song.tag forKey:@"lastScrobble"];
+            [item setState:NSOnState];
+        } else {
+            [menu incrementScrobblingItem];
+        }
+    } failureHandler:^(NSError *error) {
+        NSLog(@"Scrobble error: %@", error);
+    }];
+}
+
 
 + (void)unscrobble:(Song*)song withTag:(NSInteger)tag {
     // Uncrobble a track

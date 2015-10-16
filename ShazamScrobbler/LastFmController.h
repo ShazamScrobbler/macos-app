@@ -16,6 +16,7 @@
 + (void)init;
 + (bool)login:(NSString *)username withPassword:(NSString *)password;
 + (bool)logout;
++ (void)nowPlaying:(Song*)song withTag:(NSInteger)tag;
 + (void)scrobble:(Song *)song withTag:(NSInteger)tag;
 + (void)unscrobble:(Song *)song withTag:(NSInteger)tag;
 

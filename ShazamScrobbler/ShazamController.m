@@ -138,7 +138,6 @@ int lastShazamTag;
         
         // While a new Shazam tag is found
         while ([shazamTagsSinceLastScrobble next]) {
-            
             // Add the item in any case and will scrobble it later
             [menu insert:shazamTagsSinceLastScrobble];
             
@@ -146,7 +145,7 @@ int lastShazamTag;
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
                 Song *song = [[Song alloc] initWithResultSet:shazamTagsSinceLastScrobble];
-                [LastFmController scrobble:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
+                [LastFmController nowPlaying:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
             } else {
                 unscrobbledCount++;
             }
