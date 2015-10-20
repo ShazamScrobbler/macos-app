@@ -24,21 +24,21 @@
 
 - (void)main
 {    
-    // Check if the operation wasn't cancelled every second for 'PLAYTIME' seconds
-    // 408 represents the timeout in seconds
-    for (unsigned i = 0; i < 408; i++) {
+    // Check if the operation wasn't cancelled before 'PLAYTIME' seconds
+    NSTimeInterval interval = 0;
+    for (unsigned i = 0; interval < PLAYTIME; i++) {
         if ([self isCancelled]) {
+            // Break before PLAYTIME is up
             if (self.operationFailure) {
                 self.operationFailure();
             }
             return;
         }
-        NSTimeInterval interval = [[NSDate new] timeIntervalSinceDate:self.song.date];
-        if (interval > PLAYTIME) {
-            break;
-        }
         sleep(1);
+        interval = fabs([[NSDate new] timeIntervalSinceDate:self.song.date]);
     }
+    
+    // PLAYTIME is up
     if (self.operationCompletion) {
         self.operationCompletion();
     }

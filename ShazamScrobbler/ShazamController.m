@@ -64,9 +64,9 @@ int lastShazamTag;
             NSInteger index = [lastSongsArray indexOfObject:currentSong];
             NSTimeInterval timeIntervalWithFollowing;
             if (index == 0) {
-                timeIntervalWithFollowing = [[NSDate new] timeIntervalSinceDate:currentSong.date];
+                timeIntervalWithFollowing = fabs([[NSDate new] timeIntervalSinceDate:currentSong.date]);
             } else {
-                timeIntervalWithFollowing = [followingSong.date timeIntervalSinceDate:currentSong.date];
+                timeIntervalWithFollowing = fabs([followingSong.date timeIntervalSinceDate:currentSong.date]);
             }
             followingSong = currentSong;
             
