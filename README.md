@@ -1,7 +1,7 @@
 ShazamScrobbler for Mac [![Build Status](https://travis-ci.org/stephanebruckert/ShazamScrobbler.svg?branch=master)](https://travis-ci.org/stephanebruckert/ShazamScrobbler) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/stephanebruckert/ShazamScrobbler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 =================
 
-ShazamScrobbler was created for people who use Shazam to identify songs played around their Mac and would like to keep an updated playback history using [Last.fm](http://www.last.fm/)'s scrobbling service.
+[ShazamScrobbler](http://shazamscrobbler.com) was created for people who use Shazam to identify songs played around their Mac and would like to keep an updated playback history using [Last.fm](http://www.last.fm/)'s scrobbling service.
 
 ![menubar-preview](https://cloud.githubusercontent.com/assets/1932338/10404677/7d1ffe58-6ed4-11e5-99d0-c29480a0bfda.png)
 
@@ -13,28 +13,20 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ### Requirements
 
-Works on OS X Yosemite/El Capitan with Shazam 1.1.1 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12)).
+ - OS X Yosemite/El Capitan 
+ - Shazam 1.1.1 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12)).
 
 ### Installation
 
- - Make sure you meet the requirements,
  - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (~1MB),
- - Before launching ShazamScrobbler, Shazam must have tagged at least one song.
-
-## Main issues & fixes
-
-#### Problems w/o fixes
-
-- The Shazam Mac app won't always tag songs being played on your earphones/headphones,
-- Shazam doesn't always find the right tag for a song (depending on the genre).
-
-#### Problems w/ fixes
-
-- TODO: what to do when Shazam detects a song being scrobbled by another scrobbler?
-  - check if Last.fm is already "Scrobbling from X",
-  - or check if the song has already been scrobbled in the last 5 minutes.
+ - Before launching ShazamScrobbler, the Shazam app must have tagged at least one song.
 
 ## CHANGELOG
+
+#### v1.1.1 (2015/10/21)
+
+ - Fixed a minor issue causing the queued songs to not scrobble if the app has been restarted.
+ - Fixed a minor issue causing the time interval between two songs to be negative.
 
 #### v1.1 (2015/10/09)
 
