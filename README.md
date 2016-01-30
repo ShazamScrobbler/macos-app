@@ -27,7 +27,7 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
  - Enhanced the scrobbler to detect whether the user is currently playing a song. Shazam tags won't be scrobbled anymore if you are "now playing" from another player ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)),
  - Support for Shazam 1.1.2,
- - Removed "now playing" feature to be able to resolve ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)).
+ - Removed "now playing" feature to be able to resolve [issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22).
 
 #### v1.1.1 (2015/10/21)
 
