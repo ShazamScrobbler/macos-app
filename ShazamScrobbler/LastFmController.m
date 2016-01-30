@@ -69,8 +69,16 @@ static NSOperationQueue* operationQueue;
 }
 
 + (void)nowPlaying:(Song*)song withTag:(NSInteger)tag {
-    if (lastShazamTag == tag) {
-        MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
+    // We are going to need the not-to-scrobble list
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *notToScrobble = [[NSMutableArray alloc] initWithArray:[userDefaults objectForKey:@"notToScrobble"]];
+
+    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+    if ([notToScrobble containsObject: [NSNumber numberWithLong:tag]]){
+        NSMenuItem* item = [menu.main itemWithTag:tag];
+        [item setState:NSMixedState];
+    } else if (lastShazamTag == tag) {
+        // This is most likely the now playing song
 
         // This restricts the previous song to be scrobbled
         // if not played more than 'PLAYTIME' seconds
@@ -79,27 +87,47 @@ static NSOperationQueue* operationQueue;
             [operationQueue cancelAllOperations];
         }
         
-        NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
-        
-        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
-        [[LastFm sharedInstance] sendNowPlayingTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds successHandler:^(NSDictionary *result) {} failureHandler:^(NSError *error) {
+        // #ISSUE-22
+        [[LastFm sharedInstance] getRecentTracksForUserOrNil:[LastFm sharedInstance].username limit:1 successHandler:^(NSArray *result) {
+            // When we have 2 results it means that a song is currently playing on the last.fm user profile
+            if ((unsigned long)[result count] == 2) {
+                // A different scrobbler than ShazamScrobbler is "now playing"
+                // We don't want to scrobble the song detected by Shazam
+                // But will add the song to a list so that it will never be scrobbled
+                [notToScrobble addObject:[NSNumber numberWithLong:tag]];
+                [userDefaults setObject:notToScrobble forKey:@"notToScrobble"];
+                [userDefaults synchronize];
+
+                // Because the song was not scrobbled, we want to give it a grey icon
+                NSMenuItem* item = [menu.main itemWithTag:tag];
+                [item setState:NSMixedState];
+            } else {
+                // Scrobble the song if played more than 'PLAYTIME' seconds
+                // Will be cancelled if another song is played before
+                NowPlayingOperation *operation = [[NowPlayingOperation alloc] initWithSong:song successHandler:^() {
+                    [LastFmController scrobble:song withTag:tag];
+                    [menu setNowPlaying:false];
+                } failureHandler:^() {
+                    // Song can't be scrobbled because it wasn't played more than 30 seconds
+                    NSMenuItem* item = [menu.main itemWithTag:tag];
+                    [item setState:NSMixedState];
+                }];
+                [operationQueue addOperation:operation];
+                [menu setNowPlaying:true];
+            };
+        }  failureHandler:^(NSError *error) {
             NSLog(@"Now playing error: %@", error);
         }];
         
-        // This scrobbles the song if played more than 'PLAYTIME' seconds
-        // Will be cancelled if another song is played before
-        NowPlayingOperation *operation = [[NowPlayingOperation alloc] initWithSong:song successHandler:^() {
-            // Scrobble a track
-            [LastFmController scrobble:song withTag:tag];
-            [menu setNowPlaying:false];
-        } failureHandler:^() {
-            // Song can't be scrobbled because it wasn't played more than 30 seconds
-            NSMenuItem* item = [menu.main itemWithTag:tag];
-            [item setState:NSMixedState];
-        }];
-        [operationQueue addOperation:operation];
-        [menu setNowPlaying:true];
+//        // ROLLED BACK, we can't do this anymore (for now)
+//        NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
+//
+//        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
+//        [[LastFm sharedInstance] sendNowPlayingTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds successHandler:^(NSDictionary *result) {} failureHandler:^(NSError *error) {
+//            NSLog(@"Now playing error: %@", error);
+//        }];
     } else {
+        // This item was not in the not-to-scrobble list and could be scrobbled
         [LastFmController scrobble:song withTag:tag];
     }
 }

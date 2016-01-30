@@ -70,13 +70,16 @@ int lastShazamTag;
             }
             followingSong = currentSong;
             
+            NSMutableArray *notToScrobble = [[NSMutableArray alloc] initWithArray:[prefs objectForKey:@"notToScrobble"]];
+
             // Set a different icon depending on the song status
             NSMenuItem* item = [menu insertSong:currentSong withIndex:SONGS_START_INDEX + i++];
             if (currentSong.tag > [prefs integerForKey:@"lastScrobble"]) {
-                // unscrobbled
+                // unscrobbled (waiting status)
                 [item setState:NSOffState];
-            } else if (timeIntervalWithFollowing < PLAYTIME) {
-                // not played long enough
+            } else if (timeIntervalWithFollowing < PLAYTIME || [notToScrobble containsObject: [NSNumber numberWithLong:currentSong.tag]]) {
+                // not played long enough or appearing in the not-to-scrobble list
+                // (most probably because another song was "now playing" at the Shazam tag time)
                 [item setState:NSMixedState];
             } else {
                 // scrobbled
