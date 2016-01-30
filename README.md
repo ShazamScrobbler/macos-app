@@ -13,8 +13,8 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ### Requirements
 
- - OS X Yosemite/El Capitan 
- - Shazam 1.1.1 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12)).
+ - OS X Yosemite/El Capitan
+ - Shazam 1.1.2 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12))
 
 ### Installation
 
@@ -22,6 +22,12 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
  - Before launching ShazamScrobbler, the Shazam app must have tagged at least one song.
 
 ## CHANGELOG
+
+#### v1.2 (2016/01/30)
+
+ - Enhanced the scrobbler to detect whether the user is currently playing a song. Shazam tags won't be scrobbled anymore if you are "now playing" from another player ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)),
+ - Support for Shazam 1.1.2,
+ - Removed "now playing" feature to be able to resolve ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)).
 
 #### v1.1.1 (2015/10/21)
 

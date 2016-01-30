@@ -160,7 +160,7 @@ static NSOperationQueue* operationQueue;
 + (void)unscrobble:(Song*)song withTag:(NSInteger)tag {
     // Uncrobble a track
     [[LastFm sharedInstance] removeScrobble:song.song byArtist:song.artist atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-        //todo
+        // Waiting for Last.fm API
     } failureHandler:^(NSError *error) {
         NSLog(@"Unscrobble error %@", error);
     }];
