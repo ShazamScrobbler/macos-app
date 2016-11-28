@@ -76,7 +76,7 @@
 
     [_usernameField setEnabled:false];
     [_passwordField setEnabled:false];
-    [_passwordField setStringValue:@"amzingpwd"];
+    [_passwordField setStringValue:@""];
     _connectButton.enabled = true;
     [self.connectButton setTarget:self];
     [self.connectButton setTitle:@"Disconnect"];
