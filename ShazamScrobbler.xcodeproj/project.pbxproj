@@ -8,30 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		88057F99C098F9FCF7662C09 /* libPods-ShazamScrobbler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D54F44336C30EFCD2B7952 /* libPods-ShazamScrobbler.a */; };
-		F44FC8F61BC72CDE005B688A /* NowPlayingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F44FC8F51BC72CDE005B688A /* NowPlayingOperation.m */; settings = {ASSET_TAGS = (); }; };
-		F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */; settings = {ASSET_TAGS = (); }; };
+		F44FC8F61BC72CDE005B688A /* NowPlayingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F44FC8F51BC72CDE005B688A /* NowPlayingOperation.m */; };
+		F46159EB1BB343DA00AF80BC /* ShazamScrobblerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F46159EA1BB343DA00AF80BC /* ShazamScrobblerTests.m */; };
 		F46C01081BB34811007E4265 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C95F21BB33F67004B1254 /* LoginViewController.xib */; };
-		F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95EE1BB33F5E004B1254 /* AppDelegate.m */; settings = {ASSET_TAGS = (); }; };
-		F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F11BB33F67004B1254 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
-		F47C95F71BB33F75004B1254 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F61BB33F75004B1254 /* MenuController.m */; settings = {ASSET_TAGS = (); }; };
-		F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F91BB33F85004B1254 /* ShazamController.m */; settings = {ASSET_TAGS = (); }; };
-		F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */; settings = {ASSET_TAGS = (); }; };
-		F47C96021BB33F95004B1254 /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FF1BB33F95004B1254 /* LastFmConstants.m */; settings = {ASSET_TAGS = (); }; };
-		F47C96031BB33F95004B1254 /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96011BB33F95004B1254 /* LastFmController.m */; settings = {ASSET_TAGS = (); }; };
-		F47C96061BB33FA4004B1254 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96051BB33FA4004B1254 /* Song.m */; settings = {ASSET_TAGS = (); }; };
-		F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47C96071BB33FAD004B1254 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
-		F47C960D1BB33FC1004B1254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C960C1BB33FC1004B1254 /* main.m */; settings = {ASSET_TAGS = (); }; };
-		F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C960E1BB3415B004B1254 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
-		F47C96151BB34171004B1254 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F47C96111BB34171004B1254 /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
-		F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F47C96131BB34171004B1254 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		F47C95EF1BB33F5E004B1254 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95EE1BB33F5E004B1254 /* AppDelegate.m */; };
+		F47C95F31BB33F67004B1254 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F11BB33F67004B1254 /* LoginViewController.m */; };
+		F47C95F71BB33F75004B1254 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F61BB33F75004B1254 /* MenuController.m */; };
+		F47C95FA1BB33F85004B1254 /* ShazamController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95F91BB33F85004B1254 /* ShazamController.m */; };
+		F47C95FD1BB33F8A004B1254 /* ShazamConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FC1BB33F8A004B1254 /* ShazamConstants.m */; };
+		F47C96021BB33F95004B1254 /* LastFmConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C95FF1BB33F95004B1254 /* LastFmConstants.m */; };
+		F47C96031BB33F95004B1254 /* LastFmController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96011BB33F95004B1254 /* LastFmController.m */; };
+		F47C96061BB33FA4004B1254 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C96051BB33FA4004B1254 /* Song.m */; };
+		F47C96081BB33FAD004B1254 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47C96071BB33FAD004B1254 /* Images.xcassets */; };
+		F47C960D1BB33FC1004B1254 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F47C960C1BB33FC1004B1254 /* main.m */; };
+		F47C96101BB3415B004B1254 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47C960E1BB3415B004B1254 /* MainMenu.xib */; };
+		F47C96151BB34171004B1254 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F47C96111BB34171004B1254 /* Credits.rtf */; };
+		F47C96161BB34171004B1254 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F47C96131BB34171004B1254 /* InfoPlist.strings */; };
 		F48D994F19C8B0A80062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D996E19C8B0A90062A5FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D996D19C8B0A90062A5FA /* XCTest.framework */; };
 		F48D996F19C8B0A90062A5FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48D994E19C8B0A80062A5FA /* Cocoa.framework */; };
 		F48D997719C8B0A90062A5FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F48D997519C8B0A90062A5FA /* InfoPlist.strings */; };
-		F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447761BB5C89300ABD578 /* MenuConstants.m */; settings = {ASSET_TAGS = (); }; };
-		F4E4477B1BB5EDBC00ABD578 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */; settings = {ASSET_TAGS = (); }; };
-		F4E4477C1BB5EDBC00ABD578 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */; settings = {ASSET_TAGS = (); }; };
-		F4E447811BB600D700ABD578 /* LaunchAtLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447801BB600D700ABD578 /* LaunchAtLoginController.m */; settings = {ASSET_TAGS = (); }; };
+		F4E447771BB5C89300ABD578 /* MenuConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447761BB5C89300ABD578 /* MenuConstants.m */; };
+		F4E4477B1BB5EDBC00ABD578 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447791BB5EDBC00ABD578 /* AboutWindowController.m */; };
+		F4E4477C1BB5EDBC00ABD578 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4E4477A1BB5EDBC00ABD578 /* AboutWindowController.xib */; };
+		F4E447811BB600D700ABD578 /* LaunchAtLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E447801BB600D700ABD578 /* LaunchAtLoginController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

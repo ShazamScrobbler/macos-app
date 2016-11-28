@@ -13,8 +13,8 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ### Requirements
 
- - OS X Yosemite/El Capitan
- - Shazam 1.1.2 (get it from the [App Store](https://itunes.apple.com/en/app/shazam/id897118787?mt=12))
+ - macOS Yosemite/El Capitan/Sierra
+ - Shazam 1.2.0 (get it from the [App Store](https://itunes.apple.com/gb/app/shazam/id897118787?mt=12))
 
 ### Installation
 
@@ -23,30 +23,44 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ## CHANGELOG
 
-#### v1.2 (2016/01/30)
+#### 1.2.1 (2016/11/28)
 
- - Enhanced the scrobbler to detect whether the user is currently playing a song. Shazam tags won't be scrobbled anymore if you are "now playing" from another player ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)),
- - Support for Shazam 1.1.2,
- - Removed "now playing" feature to be able to resolve [issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22).
+##### Changed
+- Support for Shazam 1.2.0
+- Confirmed compatibility with MacOS Sierra
 
-#### v1.1.1 (2015/10/21)
+#### 1.2 (2016/01/30)
 
- - Fixed a minor issue causing the queued songs to not scrobble if the app has been restarted.
- - Fixed a minor issue causing the time interval between two songs to be negative.
+##### Added
+ - Enhanced the scrobbler to detect whether the user is currently playing a song. Shazam tags won't be scrobbled anymore if you are "now playing" from another player ([issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22))
+ - Support for Shazam 1.1.2
 
-#### v1.1 (2015/10/09)
+##### Removed
+ - Removed "now playing" feature to be able to resolve [issue #22](https://github.com/stephanebruckert/ShazamScrobbler/issues/22)
 
- - New app logo.
- - Added a feature to send "now playing" request and only scrobble songs if played more than 30 seconds ([issue #16](https://github.com/stephanebruckert/ShazamScrobbler/issues/16)).
- - Confirmed compatibility with El Capitan.
+#### 1.1.1 (2015/10/21)
 
-#### v1.0.1 (2015/09/30)
+##### Fixed
+ - Fixed a minor issue causing the queued songs to not scrobble if the app has been restarted
+ - Fixed a minor issue causing the time interval between two songs to be negative
 
- - Fixed a major issue making it impossible for some users to connect ([issue #13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13)).
+#### 1.1 (2015/10/09)
 
-#### v1 (2015/09/28)
+##### Added
+ - New app logo
+ - Added a feature to send "now playing" request and only scrobble songs if played more than 30 seconds ([issue #16](https://github.com/stephanebruckert/ShazamScrobbler/issues/16))
+ - Confirmed compatibility with OS X El Capitan
 
- - Support for Shazam 1.1.1.
+#### 1.0.1 (2015/09/30)
+
+##### Fixed
+
+ - Fixed a major issue making it impossible for some users to connect ([issue #13](https://github.com/stephanebruckert/ShazamScrobbler/issues/13))
+
+#### 1 (2015/09/28)
+
+##### Changed
+ - Support for Shazam 1.1.1
 
 ## Thanks
 
@@ -57,7 +71,7 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
  - [LaunchAtLoginController](https://github.com/Mozketo/LaunchAtLoginController) by [Ben Clark-Robinson](https://github.com/Mozketo)
 
 Feel free to contribute!
- 
+
 ## Licence
 
 MIT

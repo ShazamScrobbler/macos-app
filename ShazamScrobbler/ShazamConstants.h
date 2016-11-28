@@ -14,11 +14,9 @@
 extern NSString* const PATH;
 extern NSString* const FILENAME;
 extern NSString* const EXTENSION;
-extern NSString* const JOURNAL;
 
 + (NSString*)getSqlitePath;
 + (NSString*)getSqliteWalPath;
-+ (NSString*)getJournalPath;
 
 @end
 

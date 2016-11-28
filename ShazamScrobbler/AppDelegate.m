@@ -21,7 +21,7 @@
     _menu = [[MenuController alloc] init];
     [LastFmController init];
     if ([ShazamController init]) {
-        [ShazamController watch:[ShazamConstants getJournalPath]];
+        [ShazamController watch:[ShazamConstants getSqliteWalPath]];
         [ShazamController findNewTags];
     } else {
         [self alert];
@@ -38,7 +38,7 @@
 - (void) alert {
     NSAlert* msgBox = [[NSAlert alloc] init];
     [msgBox setAlertStyle:NSCriticalAlertStyle];
-    [msgBox setMessageText: @"The scrobbler could not find the Shazam library.\n\nMake sure of two things:\n\t- you are using Shazam 1.1.1,\n\t- Shazam found at least one song.\n\nRestart the scrobbler when that's done."];
+    [msgBox setMessageText: @"The scrobbler could not find the Shazam library.\n\nMake sure of two things:\n\t- you are using Shazam 1.2.0,\n\t- Shazam found at least one song.\n\nRestart the scrobbler when that's done."];
     [msgBox addButtonWithTitle: @"OK"];
     [msgBox runModal];
 }
