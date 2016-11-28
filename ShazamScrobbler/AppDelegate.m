@@ -21,7 +21,7 @@
     _menu = [[MenuController alloc] init];
     [LastFmController init];
     if ([ShazamController init]) {
-        [ShazamController watch:[ShazamConstants getJournalPath]];
+        [ShazamController watch:[ShazamConstants getSqliteWalPath]];
         [ShazamController findNewTags];
     } else {
         [self alert];
