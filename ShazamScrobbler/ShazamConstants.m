@@ -11,7 +11,7 @@
 
 @implementation ShazamConstants : NSObject
 
-NSString* const PATH = @"~/Library/Containers/com.shazam.mac.Shazam/Data/Documents";
+NSString* const PATH = @"~/Library/Group Containers/4GWDBCF5A4.group.com.shazam/com.shazam.mac.Shazam";
 NSString* const FILENAME = @"ShazamDataModel";
 NSString* const EXTENSION = @"sqlite";
 NSString* const EXTENSIONWAL = @"sqlite-wal";
