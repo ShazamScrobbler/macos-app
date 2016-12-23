@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.1</string>
+	<string>1.2.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.1</string>
+	<string>1.2.2</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.music</string>
 	<key>LSBackgroundOnly</key>
@@ -39,7 +39,7 @@
 	<key>Product Homepage</key>
 	<string>https://github.com/stephanebruckert/ShazamScrobbler</string>
 	<key>Shazam Compatibility</key>
-	<string>1.2.0</string>
+	<string>1.2.2</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

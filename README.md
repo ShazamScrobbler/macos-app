@@ -13,8 +13,8 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 
 ### Requirements
 
- - macOS Yosemite/El Capitan/Sierra
- - Shazam 1.2.0 (get it from the [App Store](https://itunes.apple.com/gb/app/shazam/id897118787?mt=12))
+- [Shazam](https://itunes.apple.com/gb/app/shazam/id897118787?mt=12)
+ - macOS Yosemite/Capitan/Sierra
 
 ### Installation
 
@@ -22,6 +22,9 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
  - Before launching ShazamScrobbler, the Shazam app must have tagged at least one song.
 
 ## CHANGELOG
+
+#### 1.2.2 (2016/12/23)
+- Support for Shazam 1.2.2
 
 #### 1.2.1 (2016/11/28)
 - Support for Shazam 1.2.0
