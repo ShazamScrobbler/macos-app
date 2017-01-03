@@ -1,6 +1,5 @@
 ---
 layout: content
-q: Shazam identifies songs which are already being scrobbled by my player (i.e. Spotify). Will Shazam scrobble these songs?
-a: Yes, for now. In a next release we will be able to check whether the song is already being scrobbled on your Last.fm profile.
-issue: 22
+q: If already scrobbling, will my songs be scrobbled twice?
+a: No, ShazamScrobbler detects when your last.fm profile is "now playing".
 ---

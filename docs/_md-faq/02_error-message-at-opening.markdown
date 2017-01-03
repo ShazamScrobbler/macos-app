@@ -1,5 +1,5 @@
 ---
 layout: content
-q: "I opened the app and got the message:"
-a: Make sure you've Shazam 1.1.1 and that it has identified at least one song.
+q: "I opened the app and got an error message."
+a: Make sure you've got Shazam {{ site.app.shazam-version }} and that it has identified at least one song.
 ---
