@@ -1,0 +1,66 @@
+---
+layout: default
+---
+
+<section class="concept">
+    <div class="inner container">
+        <div class="row row-centered">
+            <div class="col-sm-5 col-md-5">
+                <h3>What does ShazamScrobbler do?</h3>
+                <p>It <b>scrobbles</b> songs being played around you, thanks to the official <a href="https://itunes.apple.com/en/app/shazam/id897118787?mt=12">Shazam Mac app</a>.</p>
+            </div>
+            <div class="col-sm-2 col-md-2" id="icon">
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <h3>What's scrobbling<br />anyway?</h3>
+                <p>It's the action of tracking and publishing all your <b>listening habits</b> to your <a href="http://www.last.fm/about/getinvolved">Last.fm music profile</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="usecase">
+    <div class="inner container">
+        <header>
+            <h2>Examples of use</h2>
+        </header>
+        <div class="row row-centered">
+            {% for use in site.md-usecases %}
+            <div class="col-xs-4 col-md-4 col-centered col-min">
+                <img height="150" src="{{ use.picture }}" />
+                <h3>{{ use.title }}</h3>
+                <p>{{ use.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="install">
+    <div class="inner container">
+        <div class="row">
+            <div class="col-md-6 col-min" id="picture">
+            </div>
+            <div class="col-md-6 col-min">
+                <header>
+                    <h2>Installation</h2>
+                </header>
+                <ol>
+                    <li>If you don't already have a Last.fm account, <a href="https://secure.last.fm/join">create one</a>.</li>
+                    <li>If you don't already have the Shazam app, <a href="https://itunes.apple.com/en/app/shazam/id897118787?mt=12">download it</a> for free. <small>(You need to let the app identify at least one song.)</small></li>
+                    <li>Open ShazamScrobbler, connect it to Last.fm and... <b>happy scrobbling</b>!</li>
+                </ol>
+            </div>
+        </div>
+        <div class="faq">
+            <h2>FAQ</h2> {% for faq in site.md-faq %}
+            <p>{{ faq.q }} <small>
+                {% if faq.issue %}
+                    GitHub <a href="https://github.com/stephanebruckert/ShazamScrobbler/issues/{{ faq.issue }}">issue #{{ faq.issue }}</a>.
+                {% endif %}
+                </small></p>
+            <footer>
+                <cite>{{ faq.a }}</cite>
+            </footer>
+            {% endfor %}
+        </div>
+    </div>
+</section>
