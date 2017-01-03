@@ -3,6 +3,7 @@ short-description: Scrobble vinyl, radios or movies to Last.fm
 long-description: Menubar app for people who use Shazam to identify songs played around their Mac and who would like to keep an updated playback history using Last.fm's scrobbling service.
 title: ShazamScrobbler for Mac
 keywords: scrobble, shazam, mac, menubar, app, vinyl, radio, movies, ost, lastfm, audioscrobbler
+year: 2017
 
 app:
  os: "OS X 10.9+"
