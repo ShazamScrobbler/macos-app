@@ -1,9 +1,8 @@
 ## CHANGELOG
 
-### 1.2.3
+### 1.2.3 (2017/01/26)
 - Fixed scrobbling that would not work in some cases
 - Fixed an issue where in some cases we would read the Shazam DB before it finishes storing the new tag information
-- Added troubleshooting information to README
 
 ### 1.2.2 (2016/12/23)
 - Support for Shazam 1.2.2

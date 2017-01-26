@@ -29,7 +29,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SdM-5G-yCq">
                         <rect key="frame" x="189" y="172" width="277" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Scrobbler version 1.2.2 for Shazam 1.2.2" id="gJt-wU-JGY">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Scrobbler version 1.2.3 for Shazam 1.2.2" id="gJt-wU-JGY">
                             <font key="font" size="13" name="Helvetica"/>
                             <color key="textColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -58,7 +58,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jJ-4i-y2o">
                         <rect key="frame" x="136" y="53" width="277" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2016 Stéphane Bruckert. All rights reserved." id="J5A-lt-eDn">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2017 Stéphane Bruckert. All rights reserved." id="J5A-lt-eDn">
                             <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
                             <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
