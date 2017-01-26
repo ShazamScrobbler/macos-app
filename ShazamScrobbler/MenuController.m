@@ -51,7 +51,6 @@ static NSMenuItem* separator;
     [_main addItemWithTitle:@"Quit ShazamScrobbler"     // Quit ShazamScrobbler
                      action:@selector(terminate:)
               keyEquivalent:@""];
-    separator = [NSMenuItem separatorItem];
 
     return self;
 }
@@ -139,12 +138,16 @@ static NSMenuItem* separator;
 
 - (void)setNowPlaying:(bool)isNowPlaying {
     _isNowPlaying = isNowPlaying;
+    NSInteger indexOfSeparator = [_main indexOfItem:separator];
+    if (indexOfSeparator >= 0) {
+        [_main removeItemAtIndex:indexOfSeparator];
+    }
     if (_isNowPlaying) {
         _itemsTitle.title = NOW_PLAYING_TITLE;
+        separator = [NSMenuItem separatorItem];
         [_main insertItem:separator atIndex:SONGS_START_INDEX+1];
     } else {
         _itemsTitle.title = LAST_ITEMS_TITLE;
-        [_main removeItemAtIndex:[_main indexOfItem:separator]];
     }
 }
 

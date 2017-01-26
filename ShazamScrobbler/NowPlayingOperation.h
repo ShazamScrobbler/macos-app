@@ -21,5 +21,4 @@ typedef void(^NowPlayingOperationFailure)();
 
 - (id)initWithSong:(Song *)song successHandler:(NowPlayingOperationCompletion)completion failureHandler:(NowPlayingOperationFailure)failure;
 + (NSInteger)secondsBeforeNowPlayingEnds:(NSDate*)startPlayingDate;
-
 @end

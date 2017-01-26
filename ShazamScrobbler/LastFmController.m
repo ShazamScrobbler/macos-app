@@ -118,14 +118,6 @@ static NSOperationQueue* operationQueue;
         }  failureHandler:^(NSError *error) {
             NSLog(@"Now playing error: %@", error);
         }];
-        
-//        // ROLLED BACK, we can't do this anymore (for now)
-//        NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
-//
-//        // The song is displayed as "now playing" on last.fm for the next 'PLAYTIME' seconds
-//        [[LastFm sharedInstance] sendNowPlayingTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds successHandler:^(NSDictionary *result) {} failureHandler:^(NSError *error) {
-//            NSLog(@"Now playing error: %@", error);
-//        }];
     } else {
         // This item was not in the not-to-scrobble list and could be scrobbled
         [LastFmController scrobble:song withTag:tag];
@@ -135,25 +127,28 @@ static NSOperationQueue* operationQueue;
 + (void)scrobble:(Song *)song withTag:(NSInteger)tag {
     MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu ;
     NSMenuItem* item = [menu.main itemWithTag:tag];
+
     NSInteger seconds = [NowPlayingOperation secondsBeforeNowPlayingEnds:song.date];
 
-    // Scrobble a track
-    [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:seconds atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
-        
-        // We need to re-check if the user is connected and the scrobbling is enabled
-        // in case the configuration changed during the last 30 seconds
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
-            // Save last scrobble position
+    if (seconds <= 0) {
+        // Scrobble a track
+        [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:30 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+
+            // We need to re-check if the user is connected and the scrobbling is enabled
+            // in case the configuration changed during the last 30 seconds
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs setInteger:song.tag forKey:@"lastScrobble"];
-            [item setState:NSOnState];
-        } else {
-            [menu incrementScrobblingItem];
-        }
-    } failureHandler:^(NSError *error) {
-        NSLog(@"Scrobble error: %@", error);
-    }];
+            if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
+                // Save last scrobble position
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                [prefs setInteger:song.tag forKey:@"lastScrobble"];
+                [item setState:NSOnState];
+            } else {
+                [menu incrementScrobblingItem];
+            }
+        } failureHandler:^(NSError *error) {
+            NSLog(@"Scrobble error: %@", error);
+        }];
+    }
 }
 
 

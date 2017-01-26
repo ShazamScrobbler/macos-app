@@ -105,6 +105,8 @@ int lastShazamTag;
         if (flags)
         {
             dispatch_source_cancel(source);
+            // Wait for Shazam to update the DB
+            [NSThread sleepForTimeInterval:0.1f];
             [self findNewTags];
             [blockSelf watch:path];
         }
