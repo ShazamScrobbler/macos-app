@@ -1,5 +1,4 @@
 language: objective-c
 before_install:
     - brew update
-    - brew outdated xctool || brew upgrade xctool
-script: xctool -workspace ShazamScrobbler.xcworkspace -scheme ShazamScrobbler
+script: xcodebuild clean build -workspace ShazamScrobbler.xcworkspace -scheme ShazamScrobbler
