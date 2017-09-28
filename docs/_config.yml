@@ -7,7 +7,7 @@ year: 2017
 
 app:
  os: "OS X 10.9+"
- shazam-version: "1.2.2"
+ shazam-version: "1.2.4"
  current: "1.2.3"
 
 images:
@@ -22,7 +22,6 @@ social:
 owner:
  name: Stéphane Bruckert
  website: http://stephanebruckert.com
- github: stephanebruckert
 
 collections:
  md-faq:
