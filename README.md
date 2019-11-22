@@ -14,7 +14,7 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 ### Requirements
 
  - [Shazam](https://itunes.apple.com/gb/app/shazam/id897118787?mt=12)
- - macOS Yosemite/Capitan/Sierra
+ - macOS
 
 ### Install
 
