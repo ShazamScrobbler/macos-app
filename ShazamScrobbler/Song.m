@@ -18,6 +18,7 @@ static NSString *_defaultModel;
     if (self) {
         _song = [song copy];
         _artist = artist;
+        _album: nil;
         _scrobbled = NO;
         _date = date;
         _tag = tag;
@@ -30,10 +31,12 @@ static NSString *_defaultModel;
     NSInteger tag = [rs intForColumn:@"ZID"];
     NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
     NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
+    NSString *album = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZALBUMNAME"]];
     NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"ZDATE"] doubleValue]];
     if (self) {
         _song = [track copy];
         _artist = [artist copy];
+        _album = [album copy];
         _scrobbled = NO;
         _date = [date copy];
         _tag = tag;

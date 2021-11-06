@@ -167,7 +167,7 @@ int lastShazamTag;
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     if([database open])
     {
-        FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where ZID = %ld", tag]];
+        FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME, (select ZVALUE from ZSHMETADATAMO, ZSHTAGRESULTMO where ZKEY = 'Album' and ZTAGRESULT = ZSHTAGRESULTMO.Z_PK) as ZALBUMNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where ZID = %ld", tag]];
         [database close];
         return [[Song alloc] initWithResultSet:songWithGivenTag];
     }
