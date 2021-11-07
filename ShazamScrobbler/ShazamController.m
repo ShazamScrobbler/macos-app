@@ -43,7 +43,11 @@ int lastShazamTag;
         if ([prefs integerForKey:@"lastScrobble"] < 0 || [prefs integerForKey:@"lastScrobble"] > last) {
             [prefs setInteger:last forKey:@"lastScrobble"];
         };
-        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"SELECT track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track WHERE artist.ZTAGRESULT = track.Z_PK ORDER BY ZID DESC LIMIT %d", SONGS_LENGTH]];
+        FMResultSet *rs = [database executeQuery:[NSString stringWithFormat:@"\
+                                                  SELECT track.Z_PK as id, track.ZDATE as timestamp, track.ZTRACKNAME as track, artist.ZNAME as artist, album.ZVALUE as album \
+                                                  FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track, ZSHMETADATAMO album \
+                                                  WHERE artist.ZTAGRESULT = track.Z_PK AND track.Z_PK = album.ZTAGRESULT AND album.ZKEY = 'Album' \
+                                                  ORDER BY id DESC LIMIT %d", SONGS_LENGTH]];
         MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
         
         NSMutableArray* lastSongsArray = [[NSMutableArray alloc] initWithCapacity:SONGS_LENGTH];
@@ -139,7 +143,12 @@ int lastShazamTag;
         lastShazamTag = [shazamLastTag intForColumn:@"Z_PK"];
         
         // Get Shazam tags since the last Scrobble to last.fm
-        FMResultSet *shazamTagsSinceLastScrobble = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where artist.ZTAGRESULT = track.Z_PK and track.Z_PK > %ld", lastScrobblePosition]];
+        FMResultSet *shazamTagsSinceLastScrobble = [database executeQuery:[NSString stringWithFormat:@"\
+                                                                           SELECT track.Z_PK as id, track.ZDATE as timestamp, track.ZTRACKNAME as track, artist.ZNAME as artist, album.ZVALUE as album \
+                                                                           FROM ZSHARTISTMO artist, ZSHTAGRESULTMO track, ZSHMETADATAMO album \
+                                                                           WHERE artist.ZTAGRESULT = track.Z_PK \
+                                                                           AND track.Z_PK = album.ZTAGRESULT AND album.ZKEY = 'Album' \
+                                                                           AND track.Z_PK > %ld", lastScrobblePosition]];
         
         // While a new Shazam tag is found
         while ([shazamTagsSinceLastScrobble next]) {
@@ -150,7 +159,7 @@ int lastShazamTag;
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             if ([prefs integerForKey:@"scrobbling"] && [prefs stringForKey:@"session"] != nil) {
                 Song *song = [[Song alloc] initWithResultSet:shazamTagsSinceLastScrobble];
-                [LastFmController nowPlaying:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"ZID"]];
+                [LastFmController nowPlaying:song withTag:[shazamTagsSinceLastScrobble intForColumn:@"id"]];
             } else {
                 unscrobbledCount++;
             }
@@ -167,7 +176,12 @@ int lastShazamTag;
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     if([database open])
     {
-        FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"select track.Z_PK as ZID, ZDATE, ZTRACKNAME, ZNAME, (select ZVALUE from ZSHMETADATAMO, ZSHTAGRESULTMO where ZKEY = 'Album' and ZTAGRESULT = ZSHTAGRESULTMO.Z_PK) as ZALBUMNAME from ZSHARTISTMO artist, ZSHTAGRESULTMO track where ZID = %ld", tag]];
+        FMResultSet *songWithGivenTag = [database executeQuery:[NSString stringWithFormat:@"\
+                                                                SELECT track.Z_PK as id, track.ZDATE as timestamp, track.ZTRACKNAME as track, artist.ZNAME as artist, album.ZVALUE as album \
+                                                                FROM ZSHTAGRESULTMO track \
+                                                                JOIN ZSHARTISTMO artist ON track.Z_PK = artist.Z_PK \
+                                                                JOIN ZSHMETADATAMO album ON track.Z_PK = album.ZTAGRESULT \
+                                                                WHERE album.ZKEY = 'Album' and track.Z_PK = %ld", tag]];
         [database close];
         return [[Song alloc] initWithResultSet:songWithGivenTag];
     }

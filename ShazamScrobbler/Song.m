@@ -13,12 +13,12 @@ static NSString *_defaultModel;
 
 @implementation Song
 
-- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date tag:(NSInteger)tag{
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date album:(NSString *)album tag:(NSInteger)tag{
     self = [super init];
     if (self) {
         _song = [song copy];
         _artist = artist;
-        _album: nil;
+        _album = album;
         _scrobbled = NO;
         _date = date;
         _tag = tag;
@@ -28,25 +28,20 @@ static NSString *_defaultModel;
 
 - (id)initWithResultSet:(FMResultSet *)rs {
     self = [super init];
-    NSInteger tag = [rs intForColumn:@"ZID"];
-    NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
-    NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
-    NSString *album = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZALBUMNAME"]];
-    NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"ZDATE"] doubleValue]];
     if (self) {
-        _song = [track copy];
-        _artist = [artist copy];
-        _album = [album copy];
-        _scrobbled = NO;
-        _date = [date copy];
-        _tag = tag;
+        NSInteger tag = [rs intForColumn:@"id"];
+        NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"artist"]];
+        NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"track"]];
+        NSString *album = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"album"]];
+        NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:[[rs stringForColumn:@"timestamp"] doubleValue]];
+        self = [self initWithSong:track artist:artist date:date album:album tag:tag];
     }
     return self;
 }
 
 - (id)init {
     // Forward to the "designated" initialization method
-    return [self initWithSong:_defaultModel artist:nil date:nil tag:0];
+    return [self initWithSong:_defaultModel artist:nil date:nil album:nil tag:0];
 }
 
 + (void)setDefaultModel:(NSString *)aModel {
@@ -61,8 +56,12 @@ static NSString *_defaultModel;
     _date = [aDate copy];
 }
 
+- (void)setAlbum:(NSString *)aAlbum {
+    _album = [aAlbum copy];
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"Date=%@; Artist=%@; Song=%@",_date, _artist, _song];
+    return [NSString stringWithFormat:@"Date=%@; Artist=%@; Song=%@; Album=%@",_date, _artist, _song, _album];
 }
 
 @end
