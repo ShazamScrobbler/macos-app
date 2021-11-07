@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### Unreleased
+
+- Scrobble with album name [issue #37](https://github.com/ShazamScrobbler/shazamscrobbler-macos/issues/37)
+
 ### 1.2.3 (2017/01/26)
 - Fixed scrobbling that would not work in some cases
 - Fixed an issue where in some cases we would read the Shazam DB before it finishes storing the new tag information
