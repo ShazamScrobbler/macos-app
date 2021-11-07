@@ -20,15 +20,17 @@
 @property (copy, nonatomic) NSString *artist;
 @property (copy, nonatomic) NSString *song;
 @property (copy, nonatomic) NSDate *date;
+@property (copy, nonatomic) NSString *album;
 @property NSInteger tag;
 
 @property (nonatomic) bool scrobbled;
 
-- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date tag:(NSInteger)tag;
+- (id)initWithSong:(NSString *)song artist:(NSString *)artist date:(NSDate *)date album:(NSString *)album tag:(NSInteger)tag;
 - (id)initWithResultSet:(FMResultSet *)rs;
 + (void)setDefaultModel:(NSString *)aModel;
 - (void)setArtist:(NSString *)aArtist;
 - (void)setDate:(NSDate *)aDate;
+- (void)setAlbum:(NSString *)aAlbum;
 - (NSString *)description;
 
 @end

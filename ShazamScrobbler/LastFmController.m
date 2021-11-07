@@ -132,7 +132,7 @@ static NSOperationQueue* operationQueue;
 
     if (seconds <= 0) {
         // Scrobble a track
-        [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:nil withDuration:30 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
+        [[LastFm sharedInstance] sendScrobbledTrack:song.song byArtist:song.artist onAlbum:song.album withDuration:30 atTimestamp:(int)[song.date timeIntervalSince1970] successHandler:^(NSDictionary *result) {
 
             // We need to re-check if the user is connected and the scrobbling is enabled
             // in case the configuration changed during the last 30 seconds

@@ -75,11 +75,11 @@ static NSMenuItem* separator;
 }
 
 -(NSMenuItem*)insertResultSet:(FMResultSet*)rs withIndex:(int)i {
-    NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZNAME"]];
-    NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"ZTRACKNAME"]];
+    NSString *artist = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"artist"]];
+    NSString *track = [NSString stringWithFormat:@"%@",[rs stringForColumn:@"track"]];
     
     NSMenuItem * menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ - %@", artist, track] action:@selector(negateItem:) keyEquivalent:@""];
-    menuItem.tag = [rs intForColumn:@"ZID"];
+    menuItem.tag = [rs intForColumn:@"id"];
 
     // state pictures
     NSImage* onState = [NSImage imageNamed:@"NSOnState"];
@@ -152,7 +152,7 @@ static NSMenuItem* separator;
 }
 
 - (void)insert:(FMResultSet*)rs {
-    if ([_main itemWithTag:[rs intForColumn:@"ZID"]] == nil) {
+    if ([_main itemWithTag:[rs intForColumn:@"id"]] == nil) {
         [self insertResultSet:rs withIndex:SONGS_START_INDEX];
         if (_itemCount >= SONGS_LENGTH) {
             // If a song is "now playing", the list has one more element
