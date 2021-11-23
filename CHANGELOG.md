@@ -3,6 +3,7 @@
 ### Unreleased
 
 - Scrobble with album name [issue #37](https://github.com/ShazamScrobbler/shazamscrobbler-macos/issues/37)
+- Show login error message received from last.fm API
 
 ### 1.2.3 (2017/01/26)
 - Fixed scrobbling that would not work in some cases

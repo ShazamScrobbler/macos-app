@@ -23,7 +23,7 @@
         [_usernameField setStringValue:[prefs stringForKey:@"username"]];
         [self loginSuccess];
     } else {
-        [self loginFail];
+        [self.connectButton setAction:@selector(login)];
     }
     _alert.hidden = true;
     _loader.hidden = true;
@@ -58,10 +58,11 @@
     _alert.hidden = true;
 }
 
-- (void)loginFail {
+- (void)loginFail:(NSString *)error {
     _alert.hidden = false;
     _loader.hidden = true;
 
+    [_alert setStringValue:error];
     [_passwordField setStringValue:@""];
     
     _connectButton.enabled = true;
@@ -82,7 +83,5 @@
     [self.connectButton setTitle:@"Disconnect"];
     [self.connectButton setAction:@selector(logout)];
 }
-
-
 
 @end

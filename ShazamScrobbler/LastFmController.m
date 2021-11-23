@@ -53,7 +53,7 @@ static NSOperationQueue* operationQueue;
         [loginController loginSuccess];
         [ShazamController findNewTags];
     } failureHandler:^(NSError *error) {
-        [loginController loginFail];
+        [loginController loginFail:[error localizedDescription]];
         [self logout];
     }];
     return true;

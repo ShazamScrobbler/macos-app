@@ -19,7 +19,7 @@
 - (void)login;
 - (void)logout;
 - (void)logoutChanges;
-- (void)loginFail;
+- (void)loginFail:(NSString *)error;
 - (void)loginSuccess;
 - (void)connecting;
 
