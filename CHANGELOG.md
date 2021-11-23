@@ -1,9 +1,9 @@
 ## CHANGELOG
 
-### Unreleased
+### 1.3.0 (2021/11/23)
 
 - Scrobble with album name [issue #37](https://github.com/ShazamScrobbler/shazamscrobbler-macos/issues/37)
-- Show login error message received from last.fm API
+- Show login error message received from last.fm API [issue #39](https://github.com/ShazamScrobbler/shazamscrobbler-macos/issues/39)
 
 ### 1.2.3 (2017/01/26)
 - Fixed scrobbling that would not work in some cases
