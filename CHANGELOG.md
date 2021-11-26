@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### Unrelaesed
+- Remove spaces from login
+
 ### 1.3.0 (2021/11/23)
 
 - Scrobble with album name [issue #37](https://github.com/ShazamScrobbler/shazamscrobbler-macos/issues/37)
