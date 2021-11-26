@@ -42,6 +42,7 @@ static NSOperationQueue* operationQueue;
 + (bool)login:(NSString*)username withPassword:(NSString*)password {
     LoginViewController *loginController = ((AppDelegate *)[NSApplication sharedApplication].delegate).loginViewController;
     [loginController connecting];
+    username = [username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     [[LastFm sharedInstance] getSessionForUser:username password:password successHandler:^(NSDictionary *result) {
         [LastFm sharedInstance].session = result[@"key"];
         [LastFm sharedInstance].username = result[@"name"];
