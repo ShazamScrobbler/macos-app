@@ -4,6 +4,7 @@
 
 #### Added
 - Send "Now playing" request to last.fm
+- Dark mode support for Login and About views
 
 #### Fixed
 - Remove spaces from login
