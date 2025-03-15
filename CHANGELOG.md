@@ -2,6 +2,7 @@
 
 ### Unrelaesed
 - Remove spaces from login
+- Send "Now playing" request to last.fm
 
 ### 1.3.0 (2021/11/23)
 
