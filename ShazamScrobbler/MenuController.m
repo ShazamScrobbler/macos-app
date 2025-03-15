@@ -205,13 +205,13 @@ static NSMenuItem* separator;
     NSInteger scrobbling = [[NSUserDefaults standardUserDefaults] integerForKey:@"scrobbling"];
     NSInteger state = scrobbling ? NSOffState : NSOnState;
     [[NSUserDefaults standardUserDefaults] setInteger:state forKey:@"scrobbling"];
-    
+    [[NSUserDefaults standardUserDefaults] synchronize]; // Ensure settings are saved
+
     [_scrobblingItem setState:state];
-    [_scrobblingItem setEnabled:state];
     [_main itemChanged:_scrobblingItem];
-    if (state == NSOnState) {
-        [ShazamController findNewTags];
-    }
+
+    // Always try to find new tags when toggling scrobbling
+    [ShazamController findNewTags];
 }
 
 - (void)updateScrobblingItemWith:(NSInteger)itemsToScrobble

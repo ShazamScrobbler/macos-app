@@ -126,7 +126,7 @@ int lastShazamTag;
 + (void)findNewTags  {
     //Initialize previous session information
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    
+
     // Connection to the DB
     FMDatabase *database = [FMDatabase databaseWithPath:[ShazamConstants getSqlitePath]];
     
