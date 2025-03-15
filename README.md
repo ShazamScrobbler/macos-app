@@ -1,4 +1,4 @@
-ShazamScrobbler for Mac [![Build Status](https://travis-ci.org/stephanebruckert/ShazamScrobbler.svg?branch=master)](https://travis-ci.org/stephanebruckert/ShazamScrobbler) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/stephanebruckert/ShazamScrobbler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+ShazamScrobbler for Mac ![Build](https://github.com/ShazamScrobbler/macos-app/actions/workflows/objective-c-xcode.yml/badge.svg?branch=master)
 =================
 
 [ShazamScrobbler](http://shazamscrobbler.com) was created for people who use Shazam to identify songs played around their Mac and would like to keep an updated playback history using [Last.fm](http://www.last.fm/)'s scrobbling service.
