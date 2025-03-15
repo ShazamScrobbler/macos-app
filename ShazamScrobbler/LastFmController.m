@@ -34,9 +34,14 @@ static NSOperationQueue* operationQueue;
     [LastFm sharedInstance].apiSecret = SECRET;
     [LastFm sharedInstance].session = [prefs valueForKey:@"session"];
     [LastFm sharedInstance].username = [prefs valueForKey:@"username"];
-    
+
+    // Initialize operation queue
     operationQueue = [[NSOperationQueue alloc] init];
     [operationQueue setMaxConcurrentOperationCount: 1];
+
+    // Ensure scrobbling state is properly initialized
+    MenuController *menu = ((AppDelegate *)[NSApplication sharedApplication].delegate).menu;
+    [menu.scrobblingItem setEnabled:([prefs stringForKey:@"session"] != nil)];
 }
 
 + (bool)login:(NSString*)username withPassword:(NSString*)password {

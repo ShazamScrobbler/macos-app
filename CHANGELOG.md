@@ -1,8 +1,13 @@
 ## CHANGELOG
 
 ### Unrelaesed
-- Remove spaces from login
+
+#### Added
 - Send "Now playing" request to last.fm
+
+#### Fixed
+- Remove spaces from login
+- Fix bug where toggling "Enabled" on and off was needed to scrobble songs
 
 ### 1.3.0 (2021/11/23)
 
