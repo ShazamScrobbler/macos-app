@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.0</string>
+	<string>1.4.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3.0</string>
+	<string>1.4.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.music</string>
 	<key>LSBackgroundOnly</key>
@@ -31,15 +31,15 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2021 Stéphane Bruckert. All rights reserved.</string>
+	<string>© 2025 Stéphane Bruckert. Licensed under the MIT License.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>Product Homepage</key>
-	<string>https://github.com/stephanebruckert/ShazamScrobbler</string>
+	<string>https://github.com/ShazamScrobbler/macos-app</string>
 	<key>Shazam Compatibility</key>
-	<string>1.2.2</string>
+	<string>2.11.0</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

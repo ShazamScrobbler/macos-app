@@ -1,11 +1,3 @@
-//
-//  MenuConstants.m
-//  ShazamScrobbler
-//
-//  Created by Stephane Bruckert on 9/25/15.
-//  Copyright © 2015 Stéphane Bruckert. All rights reserved.
-//
-
 #import "MenuConstants.h"
 
 @implementation MenuConstants

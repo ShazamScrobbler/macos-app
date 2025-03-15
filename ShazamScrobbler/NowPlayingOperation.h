@@ -1,11 +1,3 @@
-//
-//  NowPlayingOperation.h
-//  ShazamScrobbler
-//
-//  Created by Stephane Bruckert on 10/9/15.
-//  Copyright © 2015 Stephane Bruckert. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import "Song.h"
 

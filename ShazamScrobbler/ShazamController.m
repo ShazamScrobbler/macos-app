@@ -1,11 +1,3 @@
-//
-//  Shazam.m
-//  ShazamScrobbler
-//
-//  Created by Stéphane Bruckert on 09/10/14.
-//  Copyright (c) 2014 Stéphane Bruckert. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import "ShazamController.h"
 #import "Song.h"

@@ -2,6 +2,10 @@
 
 ### Unrelaesed
 
+// New changes here
+
+### 1.4.0 (2025/3/15)
+
 #### Added
 - Send "Now playing" request to last.fm
 - Dark mode support for Login and About views
