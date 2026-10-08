@@ -27,4 +27,13 @@ jobs:
           if [ $scheme = default ]; then scheme=$(cat default); fi
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}
+          # Compile only. Developer ID signing and notarization of published
+          # releases are done by the repository owner, outside this workflow.
+          xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -configuration Release ONLY_ACTIVE_ARCH=NO ARCHS="arm64 x86_64" CODE_SIGNING_ALLOWED=NO -derivedDataPath build | xcpretty && exit ${PIPESTATUS[0]}
+      - name: Verify Apple silicon slice
+        run: |
+          binary=$(find build/Build/Products -path '*ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler' -type f | head -1)
+          echo "Binary: $binary"
+          lipo -info "$binary"
+          lipo -info "$binary" | grep -q arm64
+          lipo -info "$binary" | grep -q x86_64
