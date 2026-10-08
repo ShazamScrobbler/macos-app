@@ -1,8 +1,9 @@
 ## CHANGELOG
 
-### Unrelaesed
+### Unreleased
 
-// New changes here
+- Build a universal binary (Apple silicon and Intel) so the app runs natively on M-series Macs and macOS does not warn that Rosetta apps will stop working in a future release
+- Raise the minimum system to macOS 11, which current Xcode requires in order to link an Apple silicon build
 
 ### 1.4.0 (2025/3/15)
 

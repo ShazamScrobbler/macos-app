@@ -549,7 +549,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				// Native arm64 plus Intel. Debug still builds only the
+				// active architecture, so an M-series Mac runs arm64 and
+				// does not go through Rosetta.
+				ARCHS = (
+					arm64,
+					x86_64,
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -582,7 +589,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				// Release always includes both slices, including when archived
+				// on Apple silicon, so the shipped app is not Intel-only.
+				ARCHS = (
+					arm64,
+					x86_64,
+				);
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;

@@ -14,12 +14,16 @@ It works together with the [Shazam Mac App](https://itunes.apple.com/us/app/shaz
 ### Requirements
 
  - [Shazam](https://itunes.apple.com/gb/app/shazam/id897118787?mt=12)
- - macOS
+ - macOS 11 or later, on Apple silicon or Intel. Release builds are universal, so M-series Macs run the app natively and do not need Rosetta.
 
 ### Install
 
  - Download [ShazamScrobbler.dmg from here](https://github.com/stephanebruckert/ShazamScrobbler/releases) (~1MB),
  - Before launching ShazamScrobbler, the Shazam app must have tagged at least one song.
+
+### Releases
+
+Published builds are code signed and notarized by a maintainer of [ShazamScrobbler/macos-app](https://github.com/ShazamScrobbler/macos-app) with their Apple Developer ID before they are attached to a GitHub release. Signing credentials are not stored in this repository, and contributors do not sign release builds.
 
 
 ### Uninstall
