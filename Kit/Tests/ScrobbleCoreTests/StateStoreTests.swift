@@ -1,0 +1,118 @@
+import Foundation
+import Testing
+@testable import ScrobbleCore
+
+@Suite struct StateStoreTests {
+    let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+    let a = AccountID(rawValue: "a")
+    let b = AccountID(rawValue: "b")
+
+    func tag(_ pk: Int64, _ title: String, at s: TimeInterval) -> ShazamTag {
+        ShazamTag(pk: pk, date: t0 + s, track: Track(artist: "Artist", title: title, album: "Album"))
+    }
+    func transition(_ tag: ShazamTag, _ account: AccountID, _ state: DeliveryState) -> Transition {
+        Transition(key: tag.key, tag: tag, account: account, to: state)
+    }
+
+    @Test func appliesAndReadsStatesPerAccount() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0)
+        try s.apply([transition(x, a, .waiting), transition(x, b, .tooShort)], now: t0)
+        try s.apply([transition(x, a, .scrobbled(at: t0 + 60))], now: t0 + 60)
+        #expect(try s.states(since: t0 - 1)[x.key] == [a: .scrobbled(at: t0 + 60), b: .tooShort])
+        #expect(try s.states(since: t0)[x.key] == nil)
+        #expect(try s.track(for: x.key) == x.track)
+    }
+
+    @Test func pendingReturnsWaitingAndDueRetriesOldestFirst() throws {
+        let s = try StateStore(url: nil)
+        let old = tag(1, "Old", at: 0), mid = tag(2, "Mid", at: 100), late = tag(3, "Late", at: 200)
+        try s.apply([
+            transition(late, a, .waiting),
+            transition(old, a, .retry(attempt: 1, nextAt: t0 + 500)),
+            transition(mid, a, .retry(attempt: 1, nextAt: t0 + 5000)),
+            transition(old, b, .waiting),
+        ], now: t0)
+        let due = try s.pending(account: a, dueBy: t0 + 600, limit: 50)
+        #expect(due.map(\.track.title) == ["Old", "Late"])
+        #expect(try s.pending(account: a, dueBy: t0 + 600, limit: 1).count == 1)
+        #expect(try s.nextRetryDate() == t0 + 500)
+    }
+
+    @Test func holdAndReleasePerAccount() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100)
+        try s.apply([transition(x, a, .waiting), transition(y, a, .retry(attempt: 2, nextAt: t0)), transition(x, b, .waiting)], now: t0)
+        try s.hold(account: a, problem: .keyUnusable)
+        #expect(try s.heldProblems() == [a: .keyUnusable])
+        #expect(try s.pending(account: a, dueBy: t0 + 9999, limit: 50).isEmpty)
+        try s.releaseHeld(account: a)
+        #expect(try s.heldProblems().isEmpty)
+        #expect(try s.pending(account: a, dueBy: t0, limit: 50).count == 2)
+    }
+
+    @Test func waitingCountAndSkipAllWaitingAlsoExcludes() throws {   // #28
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100), z = tag(3, "Z", at: 200)
+        try s.apply([transition(x, a, .waiting), transition(x, b, .held(.signedOut)),
+                     transition(y, a, .retry(attempt: 1, nextAt: t0)), transition(z, a, .scrobbled(at: t0))], now: t0)
+        #expect(try s.waitingCount() == 2)
+        #expect(try s.skipAllWaiting(now: t0) == 2)
+        #expect(try s.waitingCount() == 0)
+        #expect(try s.choices().excluded == [x.key, y.key])
+        #expect(try s.states(since: t0 - 1)[z.key]?[a] == .scrobbled(at: t0))
+    }
+
+    @Test func choicesReplaceEachOther() throws {
+        let s = try StateStore(url: nil)
+        let k = tag(1, "X", at: 0).key
+        try s.setChoice(.exclude, for: k)
+        #expect(try s.choices().excluded == [k])
+        try s.setChoice(.force, for: k)
+        #expect(try s.choices().excluded.isEmpty)
+        #expect(try s.choices().forced == [k])
+        try s.setChoice(nil, for: k)
+        #expect(try s.choices().forced.isEmpty)
+    }
+
+    @Test func cursorAdvancesToOldestUnfinishedAndNeverBackwards() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100), z = tag(3, "Z", at: 200)
+        try s.setCursor(t0 - 10, for: a)
+        try s.apply([transition(x, a, .scrobbled(at: t0)), transition(y, a, .waiting), transition(z, a, .tooShort)], now: t0)
+        try s.advanceCursor(for: a)
+        #expect(try s.cursor(for: a)! < t0 + 100)
+        #expect(try s.cursor(for: a)! > t0)
+        try s.apply([transition(y, a, .scrobbled(at: t0 + 300))], now: t0 + 300)
+        try s.advanceCursor(for: a)
+        #expect(try s.cursor(for: a) == t0 + 200)
+    }
+
+    @Test func nowPlayingRecordsAndAccountRemoval() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0)
+        try s.apply([transition(x, a, .waiting)], now: t0)
+        try s.setCursor(t0, for: a)
+        try s.setNowPlaying(NowPlayingRecord(key: x.key, sentAt: t0 + 5), for: a)
+        #expect(try s.lastNowPlaying() == [a: NowPlayingRecord(key: x.key, sentAt: t0 + 5)])
+        try s.removeAccount(a)
+        #expect(try s.lastNowPlaying().isEmpty)
+        #expect(try s.cursor(for: a) == nil)
+        #expect(try s.states(since: t0 - 1)[x.key] == nil)
+    }
+
+    @Test func persistsAcrossReopenAndRecordsSchemaVersion() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("state-\(UUID()).sqlite")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let x = tag(1, "X", at: 0)
+        do {
+            let s = try StateStore(url: url)
+            try s.apply([transition(x, a, .waiting)], now: t0)
+            try s.setMeta("legacy.lastScrobblePK", "11938")
+        }
+        let reopened = try StateStore(url: url)
+        #expect(try reopened.states(since: t0 - 1)[x.key]?[a] == .waiting)
+        #expect(try reopened.meta("schema_version") == "1")
+        #expect(try reopened.meta("legacy.lastScrobblePK") == "11938")
+    }
+}
