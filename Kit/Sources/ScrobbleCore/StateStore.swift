@@ -173,6 +173,36 @@ public final class StateStore: @unchecked Sendable {
             .map(Date.init(timeIntervalSince1970:))
     }
 
+    /// Earliest retry time among the given accounts' rows only.
+    public func nextRetryDate(accounts: [AccountID]) throws -> Date? {
+        guard !accounts.isEmpty else { return nil }
+        lock.lock(); defer { lock.unlock() }
+        let marks = accounts.map { _ in "?" }.joined(separator: ",")
+        return try db.query("SELECT MIN(next_at) AS n FROM deliveries WHERE kind = 'retry' AND account IN (\(marks))",
+                            accounts.map { .text($0.rawValue) }).first?.double("n")
+            .map(Date.init(timeIntervalSince1970:))
+    }
+
+    /// Compare-and-set: writes `state` only if the row still exists and its current kind is in `fromKinds`.
+    /// Used for writes after an await, so a removed account or a user action taken meanwhile is not overwritten.
+    @discardableResult
+    public func transition(key: TagKey, account: AccountID, fromKinds: Set<String>, to state: DeliveryState,
+                           now: Date) throws -> Bool {
+        lock.lock(); defer { lock.unlock() }
+        let kinds = fromKinds.sorted()
+        let marks = kinds.map { _ in "?" }.joined(separator: ",")
+        let current = try db.query("SELECT kind FROM deliveries WHERE tag_key = ? AND account = ? AND kind IN (\(marks))",
+                                   [.text(key.rawValue), .text(account.rawValue)] + kinds.map { .text($0) })
+        guard !current.isEmpty else { return false }
+        let json = String(decoding: try JSONEncoder().encode(state), as: UTF8.self)
+        try db.query("""
+            UPDATE deliveries SET kind = ?, next_at = ?, state = ?, updated = ?
+            WHERE tag_key = ? AND account = ? AND kind IN (\(marks))
+            """, [.text(state.kind), state.retryAt.map { .real($0.timeIntervalSince1970) } ?? .null, .text(json),
+                  .real(now.timeIntervalSince1970), .text(key.rawValue), .text(account.rawValue)] + kinds.map { .text($0) })
+        return true
+    }
+
     /// Derived from held rows only. An account problem with nothing queued is not persisted;
     /// Delivery re-detects it and reports it on each run.
     public func heldProblems() throws -> [AccountID: AccountProblem] {

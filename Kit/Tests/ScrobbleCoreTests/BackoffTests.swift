@@ -42,6 +42,13 @@ import Testing
                 == .retry(attempt: 1, nextAt: now + 3600))
     }
 
+    @Test func nonFiniteRetryAfterFallsBackToBackoff() {
+        for bad in [Double.nan, .infinity, -.infinity] {
+            #expect(DeliveryPolicy.state(after: .rateLimited(retryAfter: bad), previous: nil, now: now, random: 0.5)
+                    == .retry(attempt: 1, nextAt: now + 60))
+        }
+    }
+
     @Test func problemsOnlyForAccountErrors() {
         #expect(DeliveryPolicy.problem(for: .signedOut) == .signedOut)
         #expect(DeliveryPolicy.problem(for: .keyUnusable(code: 10)) == .keyUnusable)

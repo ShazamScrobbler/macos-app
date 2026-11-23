@@ -144,4 +144,82 @@ import TestSupport
         #expect(await fake.otherPlayerChecks.isEmpty)
         #expect(await fake.nowPlayingTracks == [current.track])
     }
+
+    // MARK: fix round 1
+
+    /// Scrobbler whose `scrobble` runs a hook first, to simulate things happening mid-send.
+    struct HookScrobbler: Scrobbler {
+        let maxBatchSize = 50
+        let maxScrobbleAge: TimeInterval? = nil
+        let hook: @Sendable ([ScrobbleItem]) throws -> [ScrobbleItemResult]
+        func nowPlaying(_ track: Track) async throws {}
+        func scrobble(_ items: [ScrobbleItem]) async throws -> [ScrobbleItemResult] { try hook(items) }
+        func isOtherPlayerActive(excluding ours: Track?) async throws -> Bool { false }
+    }
+
+    @Test func pausedHasNoNextWake() async throws {
+        let x = tag(1, "X", at: 0)
+        let (_, delivery, _) = try setup([(x, a, .retry(attempt: 1, nextAt: t0 + 10))])
+        let report = await delivery.run(scrobblers: [a: FakeScrobbler()], nowPlaying: [], paused: true)
+        #expect(report.nextWake == nil)
+    }
+
+    @Test func retryOfAccountNotInScrobblersGivesNoNextWake() async throws {
+        let x = tag(1, "X", at: 0)
+        let (_, delivery, _) = try setup([(x, b, .retry(attempt: 1, nextAt: t0 + 10))])
+        let report = await delivery.run(scrobblers: [a: FakeScrobbler()], nowPlaying: [], paused: false)
+        #expect(report.nextWake == nil)
+    }
+
+    @Test func nextWakeIsAtLeastThirtySecondsAway() async throws {
+        let x = tag(1, "X", at: 0)
+        let (_, delivery, _) = try setup([(x, a, .waiting)])
+        let fake = FakeScrobbler()
+        await fake.setReplies([.failure(.rateLimited(retryAfter: 5))])
+        let report = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
+        #expect(report.nextWake == t0 + 1030)
+    }
+
+    @Test func removedAccountIsNotResurrectedByResults() async throws {
+        let x = tag(1, "X", at: 0)
+        let (store, delivery, _) = try setup([(x, a, .waiting)])
+        let scrobbler = HookScrobbler { items in
+            try store.removeAccount(AccountID(rawValue: "a"))
+            return items.map { _ in .accepted }
+        }
+        let report = await delivery.run(scrobblers: [a: scrobbler], nowPlaying: [], paused: false)
+        #expect(try state(store, x, a) == nil)
+        #expect(report.scrobbled == 0)
+    }
+
+    @Test func userActionDuringSendSurvivesTransientFailure() async throws {
+        let x = tag(1, "X", at: 0)
+        let (store, delivery, _) = try setup([(x, a, .waiting)])
+        let scrobbler = HookScrobbler { _ in
+            try store.set(.skipped(.user), key: x.key, account: AccountID(rawValue: "a"), now: Date())
+            throw ScrobbleError.transient("offline")
+        }
+        _ = await delivery.run(scrobblers: [a: scrobbler], nowPlaying: [], paused: false)
+        #expect(try state(store, x, a) == .skipped(.user))
+    }
+
+    @Test func wrongResultCountIsTransientAndTerminates() async throws {
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100)
+        let (store, delivery, _) = try setup([(x, a, .waiting), (y, a, .waiting)])
+        let scrobbler = HookScrobbler { _ in [.accepted] }
+        let report = await delivery.run(scrobblers: [a: scrobbler], nowPlaying: [], paused: false)
+        #expect(try state(store, x, a) == .retry(attempt: 1, nextAt: t0 + 1060))
+        #expect(try state(store, y, a) == .retry(attempt: 1, nextAt: t0 + 1060))
+        #expect(report.scrobbled == 0)
+    }
+
+    @Test func dailyLimitStopsTheAccountForThisRun() async throws {
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100)
+        let (store, delivery, _) = try setup([(x, a, .waiting), (y, a, .waiting)])
+        let fake = FakeScrobbler(maxBatchSize: 1)
+        await fake.setReplies([.success([.dailyLimit])])
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
+        #expect(await fake.batches.count == 1)
+        #expect(try state(store, y, a) == .waiting)
+    }
 }

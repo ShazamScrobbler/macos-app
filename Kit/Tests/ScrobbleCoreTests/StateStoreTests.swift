@@ -144,4 +144,19 @@ import Testing
         #expect(choices.excluded.isDisjoint(with: choices.forced))
         #expect(try s.states(since: t0 - 1000).count == 50)
     }
+
+    @Test func compareAndSetOnlyTransitionsMatchingKinds() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0)
+        try s.apply([transition(x, a, .waiting)], now: t0)
+        #expect(try s.transition(key: x.key, account: a, fromKinds: ["nowPlaying"], to: .scrobbled(at: t0), now: t0) == false)
+        #expect(try s.states(for: [x.key])[x.key]?[a] == .waiting)
+        #expect(try s.transition(key: x.key, account: a, fromKinds: ["waiting", "retry"],
+                                 to: .retry(attempt: 1, nextAt: t0 + 60), now: t0) == true)
+        #expect(try s.states(for: [x.key])[x.key]?[a] == .retry(attempt: 1, nextAt: t0 + 60))
+        #expect(try s.nextRetryDate(accounts: [a]) == t0 + 60)
+        #expect(try s.nextRetryDate(accounts: [b]) == nil)
+        #expect(try s.transition(key: x.key, account: b, fromKinds: ["waiting", "retry"], to: .waiting, now: t0) == false)
+        #expect(try s.states(for: [x.key])[x.key]?[b] == nil)
+    }
 }
