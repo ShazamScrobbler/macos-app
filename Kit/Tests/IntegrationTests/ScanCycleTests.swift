@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-import ScrobbleCore
+@testable import ScrobbleCore
 import ShazamLibrary
 import TestSupport
 
@@ -53,11 +53,16 @@ import TestSupport
             let store = try StateStore(url: url)
             let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
                                   delivery: Delivery(store: store, time: time), time: time)
-            _ = await cycle.run(accounts: [acc], scrobblers: [accountID: FakeScrobbler()], settings: EngineSettings())
+            let first = await cycle.run(accounts: [acc], scrobblers: [accountID: FakeScrobbler()], settings: EngineSettings())
+            #expect(first.nowPlaying != nil)
         }
 
         time.advance(by: 600)
         let store = try StateStore(url: url)
+        let pk = try #require(ShazamLibrary(containerURL: fixture.container).read(since: t0, recentLimit: 5).recent.first)
+        guard case .nowPlaying = try store.states(for: [pk.key])[pk.key]?[accountID] else {
+            Issue.record("expected persisted .nowPlaying after reopen"); return
+        }
         let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
                               delivery: Delivery(store: store, time: time), time: time)
         let fake = FakeScrobbler()
@@ -113,5 +118,41 @@ import TestSupport
         let snapshot = await cycle.run(accounts: [account(addedAt: t0 - 1000)], scrobblers: [accountID: fake], settings: EngineSettings())
         #expect(snapshot.libraryStatus == .accessDenied)
         #expect(await fake.batches.count == 1)
+    }
+
+    @Test func nowPlayingSurvivesAutoShazamRetag() async throws {
+        let fixture = try ShazamFixture(); defer { fixture.remove() }
+        try fixture.createDatabase()
+        try fixture.addTag(title: "Song", artists: ["A"], album: nil, date: t0 + 5)
+        try fixture.addTag(title: "Song", artists: ["A"], album: nil, date: t0 + 35)
+        let time = ManualTimeSource(t0 + 40)
+        let store = try StateStore(url: nil)
+        let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
+                              delivery: Delivery(store: store, time: time, random: { 0.5 }), time: time)
+        let snapshot = await cycle.run(accounts: [account(addedAt: t0)], scrobblers: [accountID: FakeScrobbler()], settings: EngineSettings())
+        #expect(snapshot.nowPlaying?.tag.pk == 1)
+        #expect(snapshot.nowPlaying?.deadline == t0 + 50)
+    }
+
+    struct Boom: Error {}
+
+    @Test func failedStatesReadSkipsEngineButStillDelivers() async throws {
+        let fixture = try ShazamFixture(); defer { fixture.remove() }
+        try fixture.createDatabase()
+        try fixture.addTag(title: "New", artists: ["A"], album: nil, date: t0 + 5)
+        let time = ManualTimeSource(t0 + 100)
+        let store = try StateStore(url: nil)
+        let queued = ShazamTag(pk: 99, date: t0 - 300, track: Track(artist: "Q", title: "Queued"))
+        try store.apply([Transition(key: queued.key, tag: queued, account: accountID, to: .waiting)], now: t0)
+        let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
+                              delivery: Delivery(store: store, time: time), time: time,
+                              statesReader: { _, _ in throw Boom() })
+        let fake = FakeScrobbler()
+        let snapshot = await cycle.run(accounts: [account(addedAt: t0)], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.map { $0.map(\.track.title) } == [["Queued"]])
+        #expect(await fake.nowPlayingTracks.isEmpty)
+        #expect(snapshot.recent.count == 1)
+        let newTag = try #require(snapshot.recent.first)
+        #expect(try store.states(for: [newTag.key])[newTag.key] == nil)
     }
 }
