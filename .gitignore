@@ -26,3 +26,8 @@ DerivedData
 # Pods/
 
 .DS_Store
+Kit/.build/
+Kit/.swiftpm/
+App/ShazamScrobbler.xcodeproj/
+App/Config/Secrets.xcconfig
+App/build/
