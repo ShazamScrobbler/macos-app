@@ -4,12 +4,15 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: latest-stable
       - name: Tools
@@ -23,4 +26,6 @@ jobs:
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
             -derivedDataPath build CODE_SIGN_IDENTITY=- build
-          lipo -archs build/Build/Products/Release/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler
+          archs=$(lipo -archs build/Build/Products/Release/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler)
+          echo "archs: $archs"
+          echo "$archs" | grep -q x86_64 && echo "$archs" | grep -q arm64

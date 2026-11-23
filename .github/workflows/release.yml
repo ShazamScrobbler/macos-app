@@ -12,10 +12,11 @@ jobs:
   release:
     runs-on: macos-latest
     env:
-      SPARKLE_VERSION: "2.6.4"
+      SPARKLE_VERSION: "2.10.1"
+      SPARKLE_SHA256: "1a856d2a9edb8e628de88121d7be04cf0e2167f8641650b78fca00b14244cf27"
     steps:
-      - uses: actions/checkout@v4
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: latest-stable
       - run: brew install xcodegen
@@ -28,6 +29,9 @@ jobs:
           LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
           SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
         run: |
+          case "$SPARKLE_PUBLIC_KEY" in
+            *//*) echo "error: SPARKLE_PUBLIC_KEY contains '//' which an xcconfig would truncate" >&2; exit 1 ;;
+          esac
           {
             echo "LASTFM_API_KEY = $LASTFM_API_KEY"
             echo "LASTFM_API_SECRET = $LASTFM_API_SECRET"
@@ -43,39 +47,59 @@ jobs:
       - name: Test
         run: scripts/check-boundaries.sh && swift test --package-path Kit
       - name: Build
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          KEYCHAIN: ${{ steps.cert.outputs.keychain }}
         run: |
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
             -derivedDataPath build \
-            MARKETING_VERSION="${{ steps.version.outputs.version }}" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-            OTHER_CODE_SIGN_FLAGS="--keychain ${{ steps.cert.outputs.keychain }} --timestamp=none" build
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN --timestamp=none" build
       - name: Verify signature
         run: scripts/verify-release-signature.sh App/build/Build/Products/Release/ShazamScrobbler.app
+      - name: Verify Sparkle public key
+        env:
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+        run: |
+          built=$(/usr/libexec/PlistBuddy -c "Print :SUPublicEDKey" App/build/Build/Products/Release/ShazamScrobbler.app/Contents/Info.plist)
+          if [ "$built" != "$SPARKLE_PUBLIC_KEY" ]; then
+            echo "error: SUPublicEDKey in the built app does not match SPARKLE_PUBLIC_KEY" >&2
+            exit 1
+          fi
       - name: DMG
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          KEYCHAIN: ${{ steps.cert.outputs.keychain }}
         run: |
           mkdir -p dist dmgroot
           cp -R App/build/Build/Products/Release/ShazamScrobbler.app dmgroot/
           ln -s /Applications dmgroot/Applications
           hdiutil create -volname ShazamScrobbler -srcfolder dmgroot -ov -format UDZO \
-            "dist/ShazamScrobbler-${{ steps.version.outputs.version }}.dmg"
-          codesign --keychain "${{ steps.cert.outputs.keychain }}" -s "ShazamScrobbler Signing" --timestamp=none dist/*.dmg
+            "dist/ShazamScrobbler-$VERSION.dmg"
+          codesign --keychain "$KEYCHAIN" -s "ShazamScrobbler Signing" --timestamp=none dist/*.dmg
           (cd dist && shasum -a 256 ./*.dmg > SHA256SUMS.txt)
       - name: Sparkle appcast
         env:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          REPOSITORY: ${{ github.repository }}
         run: |
+          umask 077
           curl -fsSL -o sparkle.tar.xz "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          echo "${SPARKLE_SHA256}  sparkle.tar.xz" | shasum -a 256 -c -
           mkdir sparkle && tar -xf sparkle.tar.xz -C sparkle
+          trap 'rm -f "$RUNNER_TEMP/sparkle.key"' EXIT
           printf '%s' "$SPARKLE_PRIVATE_KEY" > "$RUNNER_TEMP/sparkle.key"
           sparkle/bin/generate_appcast --ed-key-file "$RUNNER_TEMP/sparkle.key" \
-            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/" dist
-          rm "$RUNNER_TEMP/sparkle.key"
-      - uses: actions/attest-build-provenance@v2
+            --download-url-prefix "https://github.com/${REPOSITORY}/releases/download/${GITHUB_REF_NAME}/" dist
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
         with:
           subject-path: dist/*.dmg
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           {
             echo "## First launch"
@@ -83,9 +107,9 @@ jobs:
             echo "open it once, then go to System Settings › Privacy & Security and click **Open Anyway**."
             echo "Then follow the in-app steps to give it Full Disk Access (it reads only Shazam's library). See SECURITY.md."
             echo
-            echo "Verify this download: \`gh attestation verify ShazamScrobbler-${{ steps.version.outputs.version }}.dmg -R ${{ github.repository }}\`"
+            echo "Verify this download: \`gh attestation verify ShazamScrobbler-$VERSION.dmg -R $REPOSITORY\`"
             echo
             cat dist/SHA256SUMS.txt
           } > notes.md
           gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/appcast.xml dist/SHA256SUMS.txt \
-            --title "ShazamScrobbler ${{ steps.version.outputs.version }}" --notes-file notes.md
+            --title "ShazamScrobbler $VERSION" --notes-file notes.md
