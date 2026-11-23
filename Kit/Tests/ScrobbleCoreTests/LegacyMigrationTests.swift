@@ -84,4 +84,62 @@ import TestSupport
         #expect(d.bool(forKey: LegacyMigration.doneKey))
         #expect(try LegacyMigration.resolvePending(store: store, source: FakeTagSource()) == false)
     }
+
+    final class FlakySecrets: SecretStore, @unchecked Sendable {
+        struct Boom: Error {}
+        let inner = InMemorySecretStore()
+        private let lock = NSLock()
+        private var failures = 1
+        func get(_ name: String) throws -> String? { try inner.get(name) }
+        func set(_ value: String?, for name: String) throws {
+            let fail = lock.withLock { () -> Bool in defer { failures = max(0, failures - 1) }; return failures > 0 }
+            if fail { throw Boom() }
+            try inner.set(value, for: name)
+        }
+    }
+
+    @Test func retryAfterKeychainFailureConverges() throws {
+        let defaults = legacyDefaults()
+        let secrets = FlakySecrets()
+        let accounts = AccountStore(defaults: defaults, secrets: secrets)
+        let settings = SettingsStore(defaults: defaults)
+        let store = try StateStore(url: nil)
+
+        #expect(throws: FlakySecrets.Boom.self) {
+            try LegacyMigration.migrateDefaults(defaults: defaults, accounts: accounts, settings: settings, store: store, now: now)
+        }
+        #expect(accounts.load().isEmpty)
+        #expect(defaults.string(forKey: "session") == "SESSIONKEY")
+        let recorded = try #require(try store.meta("legacy.account"))
+
+        let account = try #require(try LegacyMigration.migrateDefaults(
+            defaults: defaults, accounts: accounts, settings: settings, store: store, now: now))
+        #expect(accounts.load() == [account])
+        #expect(account.id.rawValue == recorded)
+        #expect(accounts.secret(.sessionKey, for: account.id) == "SESSIONKEY")
+        #expect(defaults.object(forKey: "session") == nil)
+    }
+
+    @Test func newerTagNeverMovesCursorForward() throws {
+        let defaults = legacyDefaults()
+        let store = try StateStore(url: nil)
+        let account = try #require(try LegacyMigration.migrateDefaults(
+            defaults: defaults, accounts: AccountStore(defaults: defaults, secrets: InMemorySecretStore()),
+            settings: SettingsStore(defaults: defaults), store: store, now: now))
+        let newer = ShazamTag(pk: 11938, date: now + 600, track: Track(artist: "A", title: "Reused"))
+        _ = try LegacyMigration.resolvePending(store: store, source: FakeTagSource(byPK: [11938: newer]))
+        #expect(try store.cursor(for: account.id) == now)
+    }
+
+    @Test func removedAccountGetsNoCursorRow() throws {
+        let defaults = legacyDefaults()
+        let store = try StateStore(url: nil)
+        let account = try #require(try LegacyMigration.migrateDefaults(
+            defaults: defaults, accounts: AccountStore(defaults: defaults, secrets: InMemorySecretStore()),
+            settings: SettingsStore(defaults: defaults), store: store, now: now))
+        try store.removeAccount(account.id)
+        let last = ShazamTag(pk: 11938, date: now - 3600, track: Track(artist: "A", title: "Last"))
+        #expect(try LegacyMigration.resolvePending(store: store, source: FakeTagSource(byPK: [11938: last])) == true)
+        #expect(try store.cursor(for: account.id) == nil)
+    }
 }

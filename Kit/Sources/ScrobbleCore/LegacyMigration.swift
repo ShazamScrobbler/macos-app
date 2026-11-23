@@ -11,19 +11,25 @@ public enum LegacyMigration {
         guard !defaults.bool(forKey: doneKey) else { return nil }
         var created: Account?
         if let session = defaults.string(forKey: "session"), !session.isEmpty {
-            let account = Account(id: .new(), preset: .lastfm, username: defaults.string(forKey: "username") ?? "",
-                                  apiURL: ServicePreset.lastfm.defaultAPIURL!, webAuthURL: ServicePreset.lastfm.defaultWebAuthURL,
-                                  keyMode: .builtIn, addedAt: now)
-            accounts.upsert(account)
-            try accounts.setSecret(session, .sessionKey, for: account.id)
-            try store.setCursor(now, for: account.id)
-            try store.setMeta("legacy.account", account.id.rawValue)
+            // Ordered so a throw midway converges on retry: the id is recorded first and reused,
+            // and the account is upserted last (upsert replaces by id, never duplicates).
+            let id = try store.meta("legacy.account").map(AccountID.init(rawValue:)) ?? AccountID.new()
+            try store.setMeta("legacy.account", id.rawValue)
+            try accounts.setSecret(session, .sessionKey, for: id)
+            if try store.cursor(for: id) == nil { try store.setCursor(now, for: id) }
             if let pk = defaults.object(forKey: "lastScrobble") as? Int {
                 try store.setMeta("legacy.lastScrobblePK", String(pk))
             }
+            if let excluded = defaults.array(forKey: "notToScrobble") as? [Int], !excluded.isEmpty {
+                try store.setMeta("legacy.notToScrobble", excluded.map(String.init).joined(separator: ","))
+            }
+            let account = Account(id: id, preset: .lastfm, username: defaults.string(forKey: "username") ?? "",
+                                  apiURL: ServicePreset.lastfm.defaultAPIURL!, webAuthURL: ServicePreset.lastfm.defaultWebAuthURL,
+                                  keyMode: .builtIn, addedAt: now)
+            accounts.upsert(account)
             created = account
         }
-        if let excluded = defaults.array(forKey: "notToScrobble") as? [Int], !excluded.isEmpty {
+        if created == nil, let excluded = defaults.array(forKey: "notToScrobble") as? [Int], !excluded.isEmpty {
             try store.setMeta("legacy.notToScrobble", excluded.map(String.init).joined(separator: ","))
         }
         if defaults.object(forKey: "scrobbling") != nil, defaults.integer(forKey: "scrobbling") == 0 {
@@ -43,8 +49,8 @@ public enum LegacyMigration {
         guard accountID != nil || lastPK != nil || !excludedPKs.isEmpty else { return false }
 
         let found = source.tags(withPKs: excludedPKs + (lastPK.map { [$0] } ?? []))
-        if let accountID, let lastPK, let tag = found[lastPK] {
-            try store.setCursor(tag.date, for: accountID)
+        if let accountID, let lastPK, let tag = found[lastPK], let current = try store.cursor(for: accountID) {
+            try store.setCursor(min(current, tag.date), for: accountID)
         }
         for pk in excludedPKs {
             if let tag = found[pk] { try store.setChoice(.exclude, for: tag.key) }
