@@ -38,7 +38,7 @@ public enum DeliveryPolicy {
         case let .permanent(message): return .ignored(message)
         case .transient: return .retry(attempt: attempt, nextAt: now + Backoff.delay(attempt: attempt, random: random))
         case let .rateLimited(after):
-            return .retry(attempt: attempt, nextAt: now + (after ?? Backoff.delay(attempt: attempt, random: random)))
+            return .retry(attempt: attempt, nextAt: now + (after.map { min(max($0, 5), 3600) } ?? Backoff.delay(attempt: attempt, random: random)))
         }
     }
 

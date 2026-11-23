@@ -35,6 +35,13 @@ import Testing
                 == .retry(attempt: 1, nextAt: now + 17))
     }
 
+    @Test func serverRetryAfterIsClampedToSaneRange() {
+        #expect(DeliveryPolicy.state(after: .rateLimited(retryAfter: 0), previous: nil, now: now, random: 0.5)
+                == .retry(attempt: 1, nextAt: now + 5))
+        #expect(DeliveryPolicy.state(after: .rateLimited(retryAfter: 99_999), previous: nil, now: now, random: 0.5)
+                == .retry(attempt: 1, nextAt: now + 3600))
+    }
+
     @Test func problemsOnlyForAccountErrors() {
         #expect(DeliveryPolicy.problem(for: .signedOut) == .signedOut)
         #expect(DeliveryPolicy.problem(for: .keyUnusable(code: 10)) == .keyUnusable)
