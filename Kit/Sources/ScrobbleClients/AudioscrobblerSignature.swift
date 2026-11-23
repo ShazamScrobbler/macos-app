@@ -45,6 +45,8 @@ struct AudioscrobblerAPI: Sendable {
 
         let data: Data, response: HTTPURLResponse
         do { (data, response) = try await transport.send(request) }
+        catch is CancellationError { throw CancellationError() }
+        catch let error as URLError where error.code == .cancelled { throw CancellationError() }
         catch { throw ScrobbleError.transient(error.localizedDescription) }
 
         let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]

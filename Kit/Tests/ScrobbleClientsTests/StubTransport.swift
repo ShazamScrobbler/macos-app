@@ -6,6 +6,7 @@ actor StubTransport: HTTPTransport {
         var status = 200
         var body: String
         var headers: [String: String] = [:]
+        var error: (any Error)?
     }
 
     private var replies: [Reply]
@@ -17,6 +18,7 @@ actor StubTransport: HTTPTransport {
         requests.append(request)
         guard !replies.isEmpty else { throw URLError(.notConnectedToInternet) }
         let reply = replies.removeFirst()
+        if let error = reply.error { throw error }
         let response = HTTPURLResponse(url: request.url!, statusCode: reply.status, httpVersion: "HTTP/1.1",
                                        headerFields: reply.headers)!
         return (Data(reply.body.utf8), response)

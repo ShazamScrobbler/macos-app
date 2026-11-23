@@ -73,4 +73,21 @@ import ScrobbleCore
         #expect(AudioscrobblerAPI.mapError(code: 29, message: "m") == .rateLimited(retryAfter: nil))
         #expect(AudioscrobblerAPI.mapError(code: 6, message: "Invalid parameters") == .permanent("Invalid parameters"))
     }
+
+    @Test func passwordSignInRefusesNonHTTPS() async throws {
+        let stub = StubTransport([.init(body: #"{"session":{"name":"u","key":"SK"}}"#)])
+        let auth = AudioscrobblerAuth(apiURL: URL(string: "http://example.com/2.0/")!, apiKey: "KEY", apiSecret: "SECRET", transport: stub)
+        await #expect(throws: AudioscrobblerAuthError.failed(.permanent("Password sign-in requires an https:// server address"))) {
+            try await auth.getMobileSession(username: "u", password: "p")
+        }
+        #expect(await stub.requests.isEmpty)
+    }
+
+    @Test func cancellationPropagates() async throws {
+        for error in [CancellationError() as any Error, URLError(.cancelled)] {
+            let stub = StubTransport([.init(body: "", error: error)])
+            let auth = AudioscrobblerAuth(apiURL: api, apiKey: "KEY", apiSecret: "SECRET", transport: stub)
+            await #expect(throws: CancellationError.self) { try await auth.getToken() }
+        }
+    }
 }

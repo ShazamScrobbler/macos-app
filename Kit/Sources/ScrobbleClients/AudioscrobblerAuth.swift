@@ -40,6 +40,9 @@ public struct AudioscrobblerAuth: Sendable {
     }
 
     public func getMobileSession(username: String, password: String) async throws -> AudioscrobblerSession {
+        guard api.apiURL.scheme?.lowercased() == "https" else {
+            throw AudioscrobblerAuthError.failed(.permanent("Password sign-in requires an https:// server address"))
+        }
         let trimmed = username.trimmingCharacters(in: .whitespacesAndNewlines)
         return try await session(from: perform {
             try await api.call(method: "auth.getMobileSession", params: ["username": trimmed, "password": password])
@@ -56,6 +59,7 @@ public struct AudioscrobblerAuth: Sendable {
 
     private func perform(_ body: () async throws -> [String: Any]) async throws -> [String: Any] {
         do { return try await body() }
+        catch is CancellationError { throw CancellationError() }
         catch let error as AudioscrobblerCallError {
             switch error.code {
             case 14: throw AudioscrobblerAuthError.notAuthorizedYet
