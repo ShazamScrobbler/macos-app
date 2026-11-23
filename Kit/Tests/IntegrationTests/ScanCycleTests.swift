@@ -155,4 +155,31 @@ import TestSupport
         let newTag = try #require(snapshot.recent.first)
         #expect(try store.states(for: [newTag.key])[newTag.key] == nil)
     }
+
+    @Test func heldAccountDoesNotPinTheReadWindowForOthers() async throws {
+        let fixture = try ShazamFixture(); defer { fixture.remove() }
+        try fixture.createDatabase()
+        try fixture.addTag(title: "New", artists: ["A"], album: nil, date: t0 + 100)
+        let time = ManualTimeSource(t0 + 110)
+        let store = try StateStore(url: nil)
+        let heldID = AccountID(rawValue: "held"), okID = AccountID(rawValue: "ok")
+        func acct(_ id: AccountID) -> Account {
+            Account(id: id, preset: .listenbrainz, username: "u", apiURL: URL(string: "https://example.invalid")!,
+                    webAuthURL: nil, keyMode: .own, addedAt: t0 - 100_000)
+        }
+        // A held row far older than everything, which would pin the minimum cursor.
+        let old = ShazamTag(pk: 900, date: t0 - 50_000, track: Track(artist: "Old", title: "Old"))
+        try store.apply([Transition(key: old.key, tag: old, account: heldID, to: .waiting)], now: t0)
+        try store.hold(account: heldID, problem: .signedOut, now: t0)
+        try store.setCursor(t0 - 100_000, for: heldID)
+        let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
+                              delivery: Delivery(store: store, time: time), time: time)
+        let snapshot = await cycle.run(accounts: [acct(heldID), acct(okID)],
+                                       scrobblers: [heldID: FakeScrobbler(), okID: FakeScrobbler()],
+                                       settings: EngineSettings())
+        let key = try #require(snapshot.recent.first).key
+        #expect(snapshot.states[key]?[okID] != nil)
+        #expect(snapshot.states[key]?[heldID] == nil)
+        #expect(try store.cursor(for: heldID) == t0 - 100_000)
+    }
 }

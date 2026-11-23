@@ -13,7 +13,9 @@ enum RedirectPolicy {
             return (scheme, host, port)
         }
         guard let a = origin(from), let b = origin(to) else { return false }
-        return a == b
+        if a == b { return true }
+        // A same-host upgrade to HTTPS is safe; the port must be the HTTPS default or unchanged.
+        return a.0 == "http" && b.0 == "https" && a.1 == b.1 && (b.2 == 443 || b.2 == a.2)
     }
 }
 
@@ -40,8 +42,10 @@ private final class RedirectGuard: NSObject, URLSessionTaskDelegate, Sendable {
 public struct URLSessionTransport: HTTPTransport {
     private let session: URLSession
 
-    public init() {
-        let configuration = URLSessionConfiguration.ephemeral
+    public init() { self.init(configuration: .ephemeral) }
+
+    /// Internal so tests can register a URLProtocol stub on the configuration.
+    init(configuration: URLSessionConfiguration) {
         configuration.timeoutIntervalForRequest = 30
         configuration.timeoutIntervalForResource = 60
         configuration.httpAdditionalHeaders = ["User-Agent": "ShazamScrobbler/2 (macOS)"]

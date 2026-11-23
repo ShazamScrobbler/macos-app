@@ -46,12 +46,12 @@ public struct ShazamLibrary: TagSource {
                 return TagSourceResult(status: .unsupportedSchema(missing))
             }
             // Fetch twice the limit: rows without an artist are dropped in Swift after the cheap top-N selection.
-            let recent = Array(try Self.tags(db, filter: "1=1", bindings: [], ascending: false,
-                                             limit: max(recentLimit, 0) * 2).prefix(max(recentLimit, 0)))
-            guard !recent.isEmpty else { return TagSourceResult(status: .noLibraryYet) }
+            let top = try Self.tags(db, filter: "1=1", bindings: [], ascending: false, limit: max(recentLimit, 0) * 2)
+            guard top.fetched > 0 else { return TagSourceResult(status: .noLibraryYet) }
+            let recent = Array(top.tags.prefix(max(recentLimit, 0)))
             // Capped: a backlog larger than this is picked up by later scans as the caller's cursor advances.
             let since = try Self.tags(db, filter: "ZDATE > ?", bindings: [.real(since.timeIntervalSinceReferenceDate)],
-                                      ascending: true, limit: Self.sinceCap)
+                                      ascending: true, limit: Self.sinceCap).tags
             return TagSourceResult(status: .ok, tagsSince: since, recent: recent)
         } catch let error as SQLiteError {
             return TagSourceResult(status: classify(error))
@@ -65,7 +65,7 @@ public struct ShazamLibrary: TagSource {
         let db = try SQLiteDatabase(path: databaseURL.path, mode: .readOnly)
         let placeholders = Array(repeating: "?", count: pks.count).joined(separator: ",")
         let found = try Self.tags(db, filter: "Z_PK IN (\(placeholders))", bindings: pks.map { .integer($0) },
-                                  ascending: true, limit: pks.count)
+                                  ascending: true, limit: pks.count).tags
         return Dictionary(found.map { ($0.pk, $0) }, uniquingKeysWith: { a, _ in a })
     }
 
@@ -85,7 +85,7 @@ public struct ShazamLibrary: TagSource {
 
     private static func schemaProblem(_ db: SQLiteDatabase) throws -> String? {
         for (table, columns) in requiredColumns {
-            let kind = try db.query("SELECT type FROM sqlite_master WHERE name = ?", [.text(table)]).first?.string("type")
+            let kind = try db.query("SELECT type FROM sqlite_master WHERE name = ? COLLATE NOCASE", [.text(table)]).first?.string("type")
             if let kind, kind != "table" { return "\(table) is not a table" }
             let present = Set(try db.query("PRAGMA table_info(\(table))").compactMap { $0.string("name") })
             if present.isEmpty { return table }
@@ -94,29 +94,39 @@ public struct ShazamLibrary: TagSource {
         return nil
     }
 
-    /// Picks the top `limit` tags first (a derived table), then looks up artist and album for only those rows, so
-    /// cost is independent of library size even though Shazam's tables have no indexes on the foreign keys.
-    /// `filter` refers to unqualified ZSHTAGRESULTMO columns.
+    /// Picks the top `limit` tags first (a CTE), then resolves the first artist and first album of only those tags
+    /// with grouped MIN(Z_PK) lookups joined back by rowid. Shazam's tables have no index on ZTAGRESULT, so correlated
+    /// subqueries would rescan them per row; the grouped form scans each table once (O(n), not O(n*m)).
+    /// `filter` refers to unqualified ZSHTAGRESULTMO columns. `fetched` is the inner row count before artist filtering.
     private static func tags(_ db: SQLiteDatabase, filter: String, bindings: [SQLiteValue],
-                             ascending: Bool, limit: Int) throws -> [ShazamTag] {
+                             ascending: Bool, limit: Int) throws -> (tags: [ShazamTag], fetched: Int) {
         let dir = ascending ? "ASC" : "DESC"
         let sql = """
-            SELECT t.pk, t.date, t.title,
-              (SELECT a.ZNAME FROM ZSHARTISTMO a WHERE a.ZTAGRESULT = t.pk ORDER BY a.Z_PK LIMIT 1) AS artist,
-              (SELECT m.ZVALUE FROM ZSHMETADATAMO m WHERE m.ZTAGRESULT = t.pk AND m.ZKEY = 'Album'
-                 ORDER BY m.Z_PK LIMIT 1) AS album
-            FROM (SELECT Z_PK AS pk, ZDATE AS date, ZTRACKNAME AS title FROM ZSHTAGRESULTMO
-                  WHERE \(filter) AND ZTRACKNAME IS NOT NULL AND ZTRACKNAME <> '' AND ZDATE BETWEEN ? AND ?
-                  ORDER BY ZDATE \(dir), Z_PK \(dir) LIMIT ?) t
-            ORDER BY t.date \(dir), t.pk \(dir)
+            WITH top AS (
+              SELECT Z_PK AS pk, ZDATE AS date, ZTRACKNAME AS title FROM ZSHTAGRESULTMO
+              WHERE \(filter) AND ZTRACKNAME IS NOT NULL AND ZTRACKNAME <> '' AND ZDATE BETWEEN ? AND ?
+              ORDER BY ZDATE \(dir), Z_PK \(dir) LIMIT ?),
+            art AS (
+              SELECT ZTAGRESULT AS tag, MIN(Z_PK) AS rid FROM ZSHARTISTMO
+              WHERE ZNAME <> '' AND ZTAGRESULT IN (SELECT pk FROM top) GROUP BY ZTAGRESULT),
+            alb AS (
+              SELECT ZTAGRESULT AS tag, MIN(Z_PK) AS rid FROM ZSHMETADATAMO
+              WHERE ZKEY = 'Album' AND ZTAGRESULT IN (SELECT pk FROM top) GROUP BY ZTAGRESULT)
+            SELECT top.pk AS pk, top.date AS date, top.title AS title, a.ZNAME AS artist, m.ZVALUE AS album
+            FROM top
+            LEFT JOIN art ON art.tag = top.pk LEFT JOIN ZSHARTISTMO a ON a.Z_PK = art.rid
+            LEFT JOIN alb ON alb.tag = top.pk LEFT JOIN ZSHMETADATAMO m ON m.Z_PK = alb.rid
+            ORDER BY top.date \(dir), top.pk \(dir)
             """
         let all = bindings + [.real(dateRange.lower), .real(dateRange.upper), .integer(Int64(limit))]
-        return try db.query(sql, all).compactMap { row in
+        let rows = try db.query(sql, all)
+        let tags = rows.compactMap { row -> ShazamTag? in
             guard let pk = row.int("pk"), let seconds = row.double("date"), seconds.isFinite,
-                  let title = row.string("title"), let artist = row.string("artist"), !artist.isEmpty else { return nil }
+                  let title = row.string("title"), let artist = row.string("artist") else { return nil }
             let album = row.string("album").flatMap { $0.isEmpty ? nil : $0 }
             return ShazamTag(pk: pk, date: Date(timeIntervalSinceReferenceDate: seconds),
                              track: Track(artist: artist, title: title, album: album))
         }
+        return (tags, rows.count)
     }
 }

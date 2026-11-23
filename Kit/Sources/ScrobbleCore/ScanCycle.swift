@@ -69,11 +69,17 @@ public actor ScanCycle {
         }
         // Read EngineSettings.duplicateWindow of history before the oldest cursor: the engine only creates rows
         // for tags newer than each account's own cursor, the extra history only feeds duplicate detection.
+        // Only deliverable accounts (a scrobbler, no held problem) drive the read window and get new rows. A held
+        // or unusable account keeps its cursor, so its backlog is evaluated once released, and it can't pin the
+        // window on old rows and starve everyone else.
+        let held = (try? store.heldProblems()) ?? [:]
+        let deliverable = Set(scrobblers.keys).subtracting(held.keys)
+        cursors = cursors.filter { deliverable.contains($0.id) }
         var since = readSince(cursors, now: now)
         var result = source.read(since: since, recentLimit: recentLimit)
 
         if inputsOK, result.status == .ok, (try? LegacyMigration.resolvePending(store: store, source: source)) == true {
-            cursors = currentCursors(accounts)
+            cursors = currentCursors(accounts).filter { deliverable.contains($0.id) }
             since = readSince(cursors, now: now)
             result = source.read(since: since, recentLimit: recentLimit)
         }

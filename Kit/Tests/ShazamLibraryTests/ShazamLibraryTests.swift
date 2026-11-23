@@ -98,19 +98,43 @@ import TestSupport
         #expect(throws: (any Error).self) { try lib.tags(withPKs: [pk]) }
     }
 
-    @Test func recentQueryStaysFastOnLargeUnindexedLibrary() throws {
+    @Test func readsStayFastOnLargeUnindexedLibrary() throws {
         let f = try ShazamFixture(); defer { f.remove() }
         try f.createDatabase()
-        try f.addBulk(count: 3_000, metadataPerTag: 6, start: t0)
+        try f.addBulk(count: 15_000, metadataPerTag: 6, start: t0)
         let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
-        let started = ContinuousClock.now
-        let r = lib.read(since: t0 + 2_990, recentLimit: 20)
-        let elapsed = ContinuousClock.now - started
+
+        let t1 = ContinuousClock.now
+        let all = lib.read(since: .distantPast, recentLimit: 20)   // `since` hits the 5000 cap
+        let d1 = ContinuousClock.now - t1
+        #expect(all.status == .ok)
+        #expect(all.recent.count == 20)
+        #expect(all.recent.first?.track.title == "Title 14999")
+        #expect(all.tagsSince.count == 5000)
+        #expect(all.tagsSince.first?.track.album == "v0")
+        #expect(d1 < .milliseconds(1500))
+
+        let t2 = ContinuousClock.now
+        let recentOnly = lib.read(since: t0 + 20_000, recentLimit: 20)
+        let d2 = ContinuousClock.now - t2
+        #expect(recentOnly.recent.count == 20)
+        #expect(recentOnly.tagsSince.isEmpty)
+        #expect(d2 < .milliseconds(300))
+    }
+
+    @Test func firstNonEmptyArtistWinsAndNoLibraryYetOnlyWhenNoRows() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        try f.addTag(title: "Mixed", artists: ["", "B"], album: nil, date: t0)
+        let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
+        #expect(lib.read(since: .distantPast, recentLimit: 20).recent.first?.track.artist == "B")
+
+        let g = try ShazamFixture(); defer { g.remove() }
+        try g.createDatabase()
+        try g.addTag(title: "NoArtist", artists: [], album: nil, date: t0)
+        let r = ShazamLibrary(containerURL: g.container, shazamAppURL: noShazamApp).read(since: .distantPast, recentLimit: 20)
         #expect(r.status == .ok)
-        #expect(r.recent.count == 20)
-        #expect(r.recent.first?.track.title == "Title 2999")
-        #expect(r.tagsSince.count == 9)
-        #expect(elapsed < .milliseconds(500))
+        #expect(r.recent.isEmpty)
     }
 
     @Test func recentSkipsArtistlessRowsAndStillFillsTheLimit() throws {

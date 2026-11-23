@@ -51,7 +51,7 @@ public struct TagKey: Hashable, Sendable, Codable, CustomStringConvertible {
 
 extension Date {
     /// Whole seconds since 1970 (rounded down) that can never trap: NaN is 0, out-of-range values clamp.
-    public var epochSeconds: Int64 {
+    package var epochSeconds: Int64 {
         let x = timeIntervalSince1970
         if x.isNaN { return 0 }
         return Int64(exactly: x.rounded(.down)) ?? (x < 0 ? .min : .max)

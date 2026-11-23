@@ -57,7 +57,7 @@ public struct ListenBrainzClient: Scrobbler {
         let seconds = Int(clamping: date.epochSeconds)
         var components = URLComponents(url: apiURL.appendingPathComponent("1/user").appendingPathComponent(username)
             .appendingPathComponent("listens"), resolvingAgainstBaseURL: false)!
-        components.queryItems = [URLQueryItem(name: "max_ts", value: String(seconds + 1)), URLQueryItem(name: "count", value: "10")]
+        components.queryItems = [URLQueryItem(name: "max_ts", value: String(seconds &+ 1)), URLQueryItem(name: "count", value: "10")]
         let object = try await Self.request(components.url!, token: token, method: "GET", body: nil, transport: transport)
         let listens = ((object["payload"] as? [String: Any])?["listens"] as? [[String: Any]]) ?? []
         let match = listens.first { listen in
