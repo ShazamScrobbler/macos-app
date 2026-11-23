@@ -21,6 +21,8 @@ public final class StateStore: @unchecked Sendable {
     }
 
     private let db: SQLiteDatabase
+    /// Serializes all access: the store is shared by several actors and transactions span calls.
+    private let lock = NSRecursiveLock()
 
     public init(url: URL?) throws {
         if let url {
@@ -58,10 +60,12 @@ public final class StateStore: @unchecked Sendable {
     // MARK: meta
 
     public func meta(_ key: String) throws -> String? {
-        try db.query("SELECT value FROM meta WHERE key = ?", [.text(key)]).first?.string("value")
+        lock.lock(); defer { lock.unlock() }
+        return try db.query("SELECT value FROM meta WHERE key = ?", [.text(key)]).first?.string("value")
     }
 
     public func setMeta(_ key: String, _ value: String?) throws {
+        lock.lock(); defer { lock.unlock() }
         if let value {
             try db.query("INSERT OR REPLACE INTO meta(key, value) VALUES(?, ?)", [.text(key), .text(value)])
         } else {
@@ -72,6 +76,7 @@ public final class StateStore: @unchecked Sendable {
     // MARK: tags and states
 
     public func record(_ tags: [ShazamTag]) throws {
+        lock.lock(); defer { lock.unlock() }
         guard !tags.isEmpty else { return }
         try db.transaction { for tag in tags { try insert(tag) } }
     }
@@ -84,6 +89,7 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func apply(_ transitions: [Transition], now: Date) throws {
+        lock.lock(); defer { lock.unlock() }
         guard !transitions.isEmpty else { return }
         try db.transaction {
             for t in transitions {
@@ -94,6 +100,7 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func set(_ state: DeliveryState, key: TagKey, account: AccountID, now: Date) throws {
+        lock.lock(); defer { lock.unlock() }
         try write(state, key: key, account: account, now: now)
     }
 
@@ -107,12 +114,14 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func states(since: Date) throws -> [TagKey: [AccountID: DeliveryState]] {
-        try collect(db.query("""
+        lock.lock(); defer { lock.unlock() }
+        return try collect(db.query("""
             SELECT d.tag_key, d.account, d.state FROM deliveries d JOIN tags t ON t.key = d.tag_key WHERE t.date > ?
             """, [.real(since.timeIntervalSince1970)]))
     }
 
     public func states(for keys: [TagKey]) throws -> [TagKey: [AccountID: DeliveryState]] {
+        lock.lock(); defer { lock.unlock() }
         guard !keys.isEmpty else { return [:] }
         let marks = Array(repeating: "?", count: keys.count).joined(separator: ",")
         return try collect(db.query("SELECT tag_key, account, state FROM deliveries WHERE tag_key IN (\(marks))",
@@ -132,7 +141,8 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func track(for key: TagKey) throws -> Track? {
-        try db.query("SELECT artist, title, album FROM tags WHERE key = ?", [.text(key.rawValue)]).first.flatMap { row in
+        lock.lock(); defer { lock.unlock() }
+        return try db.query("SELECT artist, title, album FROM tags WHERE key = ?", [.text(key.rawValue)]).first.flatMap { row in
             guard let artist = row.string("artist"), let title = row.string("title") else { return nil }
             return Track(artist: artist, title: title, album: row.string("album"))
         }
@@ -141,6 +151,7 @@ public final class StateStore: @unchecked Sendable {
     // MARK: delivery queries
 
     public func pending(account: AccountID, dueBy now: Date, limit: Int) throws -> [PendingItem] {
+        lock.lock(); defer { lock.unlock() }
         let decoder = JSONDecoder()
         return try db.query("""
             SELECT d.tag_key, d.state, t.date, t.artist, t.title, t.album
@@ -157,11 +168,15 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func nextRetryDate() throws -> Date? {
-        try db.query("SELECT MIN(next_at) AS n FROM deliveries WHERE kind = 'retry'").first?.double("n")
+        lock.lock(); defer { lock.unlock() }
+        return try db.query("SELECT MIN(next_at) AS n FROM deliveries WHERE kind = 'retry'").first?.double("n")
             .map(Date.init(timeIntervalSince1970:))
     }
 
+    /// Derived from held rows only. An account problem with nothing queued is not persisted;
+    /// Delivery re-detects it and reports it on each run.
     public func heldProblems() throws -> [AccountID: AccountProblem] {
+        lock.lock(); defer { lock.unlock() }
         var result: [AccountID: AccountProblem] = [:]
         for row in try db.query("SELECT account, state FROM deliveries WHERE kind = 'held' GROUP BY account") {
             guard let account = row.string("account"), let json = row.string("state"),
@@ -171,11 +186,15 @@ public final class StateStore: @unchecked Sendable {
         return result
     }
 
+    /// Marks the account's waiting/retry rows as held. A no-op when nothing is queued: the problem
+    /// is then not remembered here (see `heldProblems()`); Delivery reports it again on each run.
     public func hold(account: AccountID, problem: AccountProblem, now: Date = Date()) throws {
+        lock.lock(); defer { lock.unlock() }
         try rewrite(account: account, kinds: ["waiting", "retry"], to: .held(problem), now: now)
     }
 
     public func releaseHeld(account: AccountID, now: Date = Date()) throws {
+        lock.lock(); defer { lock.unlock() }
         try rewrite(account: account, kinds: ["held"], to: .waiting, now: now)
     }
 
@@ -188,7 +207,8 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func waitingCount() throws -> Int {
-        Int(try db.query("""
+        lock.lock(); defer { lock.unlock() }
+        return Int(try db.query("""
             SELECT COUNT(DISTINCT tag_key) AS c FROM deliveries WHERE kind IN ('waiting', 'retry', 'held')
             """).first?.int("c") ?? 0)
     }
@@ -197,7 +217,8 @@ public final class StateStore: @unchecked Sendable {
     /// so the engine doesn't revive it.
     @discardableResult
     public func skipAllWaiting(now: Date) throws -> Int {
-        try db.transaction {
+        lock.lock(); defer { lock.unlock() }
+        return try db.transaction {
             let keys = try db.query("""
                 SELECT DISTINCT tag_key FROM deliveries WHERE kind IN ('waiting', 'retry', 'held')
                 """).compactMap { $0.string("tag_key") }
@@ -216,6 +237,7 @@ public final class StateStore: @unchecked Sendable {
     // MARK: user choices
 
     public func setChoice(_ choice: UserChoice?, for key: TagKey) throws {
+        lock.lock(); defer { lock.unlock() }
         if let choice {
             try db.query("INSERT OR REPLACE INTO user_choices(tag_key, choice) VALUES(?, ?)",
                          [.text(key.rawValue), .text(choice.rawValue)])
@@ -225,6 +247,7 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func choices() throws -> (excluded: Set<TagKey>, forced: Set<TagKey>) {
+        lock.lock(); defer { lock.unlock() }
         var excluded = Set<TagKey>(), forced = Set<TagKey>()
         for row in try db.query("SELECT tag_key, choice FROM user_choices") {
             guard let key = row.string("tag_key") else { continue }
@@ -237,11 +260,13 @@ public final class StateStore: @unchecked Sendable {
     // MARK: cursors
 
     public func cursor(for account: AccountID) throws -> Date? {
-        try db.query("SELECT since FROM cursors WHERE account = ?", [.text(account.rawValue)]).first?.double("since")
+        lock.lock(); defer { lock.unlock() }
+        return try db.query("SELECT since FROM cursors WHERE account = ?", [.text(account.rawValue)]).first?.double("since")
             .map(Date.init(timeIntervalSince1970:))
     }
 
     public func setCursor(_ date: Date, for account: AccountID) throws {
+        lock.lock(); defer { lock.unlock() }
         try db.query("INSERT OR REPLACE INTO cursors(account, since) VALUES(?, ?)",
                      [.text(account.rawValue), .real(date.timeIntervalSince1970)])
     }
@@ -249,6 +274,7 @@ public final class StateStore: @unchecked Sendable {
     /// Moves the cursor forward to just before the oldest unfinished tag (or to the newest
     /// finished one), so scans don't re-read the whole history. Never moves backwards.
     public func advanceCursor(for account: AccountID) throws {
+        lock.lock(); defer { lock.unlock() }
         let id = SQLiteValue.text(account.rawValue)
         let oldestOpen = try db.query("""
             SELECT MIN(t.date) AS d FROM deliveries d JOIN tags t ON t.key = d.tag_key
@@ -265,6 +291,7 @@ public final class StateStore: @unchecked Sendable {
     // MARK: now playing
 
     public func lastNowPlaying() throws -> [AccountID: NowPlayingRecord] {
+        lock.lock(); defer { lock.unlock() }
         var result: [AccountID: NowPlayingRecord] = [:]
         for row in try db.query("SELECT account, tag_key, sent_at FROM now_playing") {
             guard let account = row.string("account"), let key = row.string("tag_key"),
@@ -276,11 +303,13 @@ public final class StateStore: @unchecked Sendable {
     }
 
     public func setNowPlaying(_ record: NowPlayingRecord, for account: AccountID) throws {
+        lock.lock(); defer { lock.unlock() }
         try db.query("INSERT OR REPLACE INTO now_playing(account, tag_key, sent_at) VALUES(?,?,?)",
                      [.text(account.rawValue), .text(record.key.rawValue), .real(record.sentAt.timeIntervalSince1970)])
     }
 
     public func removeAccount(_ account: AccountID) throws {
+        lock.lock(); defer { lock.unlock() }
         try db.transaction {
             for table in ["deliveries", "cursors", "now_playing"] {
                 try db.query("DELETE FROM \(table) WHERE account = ?", [.text(account.rawValue)])

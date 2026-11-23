@@ -115,4 +115,33 @@ import Testing
         #expect(try reopened.meta("schema_version") == "1")
         #expect(try reopened.meta("legacy.lastScrobblePK") == "11938")
     }
+
+    @Test func survivesConcurrentUse() async throws {
+        let s = try StateStore(url: nil)
+        let tags = (0..<50).map { tag(Int64($0), "T\($0)", at: TimeInterval($0)) }
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for (i, t) in tags.enumerated() {
+                group.addTask {
+                    try s.apply([transition(t, a, .waiting), transition(t, b, .waiting)], now: t0)
+                    switch i % 5 {
+                    case 0: try s.setChoice(.force, for: t.key)
+                    case 1: _ = try s.skipAllWaiting(now: t0)
+                    case 2: try s.setCursor(t0 + Double(i), for: a)
+                    case 3: _ = try s.pending(account: a, dueBy: t0, limit: 10)
+                    default: try s.advanceCursor(for: b)
+                    }
+                }
+            }
+            try await group.waitForAll()
+        }
+        // No row lost or torn: every tag kept both accounts' states, and each skip excluded
+        // exactly what it skipped (a later .force may replace an exclusion).
+        let all = try s.states(since: t0 - 1000)
+        #expect(all.values.allSatisfy { $0.count == 2 })
+        let waiting = try s.waitingCount()
+        let choices = try s.choices()
+        #expect(waiting + choices.excluded.count + choices.forced.count >= 50)
+        #expect(choices.excluded.isDisjoint(with: choices.forced))
+        #expect(try s.states(since: t0 - 1000).count == 50)
+    }
 }
