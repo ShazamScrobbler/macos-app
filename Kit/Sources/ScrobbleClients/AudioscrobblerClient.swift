@@ -28,7 +28,7 @@ public struct AudioscrobblerClient: Scrobbler {
         for (index, item) in items.enumerated() {
             params["artist[\(index)]"] = item.track.artist
             params["track[\(index)]"] = item.track.title
-            params["timestamp[\(index)]"] = String(Int64(item.date.timeIntervalSince1970))
+            params["timestamp[\(index)]"] = String(item.date.epochSeconds)
             params["chosenByUser[\(index)]"] = "0"
             if let album = item.track.album { params["album[\(index)]"] = album }
         }

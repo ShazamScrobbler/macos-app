@@ -41,10 +41,19 @@ public struct TagKey: Hashable, Sendable, Codable, CustomStringConvertible {
     public let rawValue: String
 
     public init(date: Date, track: Track) {
-        rawValue = "\(Int64(date.timeIntervalSince1970.rounded(.down)))\u{1F}\(track.artist)\u{1F}\(track.title)"
+        rawValue = "\(date.epochSeconds)\u{1F}\(track.artist)\u{1F}\(track.title)"
     }
 
     public init(rawValue: String) { self.rawValue = rawValue }
 
     public var description: String { rawValue.replacingOccurrences(of: "\u{1F}", with: " | ") }
+}
+
+extension Date {
+    /// Whole seconds since 1970 (rounded down) that can never trap: NaN is 0, out-of-range values clamp.
+    public var epochSeconds: Int64 {
+        let x = timeIntervalSince1970
+        if x.isNaN { return 0 }
+        return Int64(exactly: x.rounded(.down)) ?? (x < 0 ? .min : .max)
+    }
 }

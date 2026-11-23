@@ -54,10 +54,21 @@ public final class SQLiteDatabase: @unchecked Sendable {
 
     public init(path: String, mode: Mode, busyTimeoutMs: Int32 = 2000) throws {
         let flags: Int32 = mode == .readOnly
-            ? SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX
+            ? SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_NOFOLLOW
             : SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX
+        var openPath = mode == .inMemory ? ":memory:" : path
+        if mode == .readOnly {
+            // NOFOLLOW makes SQLite refuse a symlink anywhere in the path (macOS puts /var, /tmp behind symlinks), so
+            // canonicalize the directory and let NOFOLLOW guard only the final component: the database file itself.
+            // (Foundation's resolvingSymlinksInPath maps /private/var back to /var, so use realpath(3).)
+            let url = URL(fileURLWithPath: path)
+            if let resolved = realpath(url.deletingLastPathComponent().path, nil) {
+                openPath = URL(fileURLWithPath: String(cString: resolved)).appendingPathComponent(url.lastPathComponent).path
+                free(resolved)
+            }
+        }
         var db: OpaquePointer?
-        let rc = sqlite3_open_v2(mode == .inMemory ? ":memory:" : path, &db, flags, nil)
+        let rc = sqlite3_open_v2(openPath, &db, flags, nil)
         guard rc == SQLITE_OK else {
             let error = Self.error(db, rc)
             sqlite3_close_v2(db)
@@ -66,6 +77,12 @@ public final class SQLiteDatabase: @unchecked Sendable {
         sqlite3_extended_result_codes(db, 1)
         sqlite3_busy_timeout(db, busyTimeoutMs)
         handle = db
+        if mode == .readOnly {
+            // sqlite3_db_config(TRUSTED_SCHEMA/DEFENSIVE) is variadic and unavailable from Swift; the PRAGMAs are the
+            // equivalents that matter for a read-only connection to a file we don't own.
+            try execute("PRAGMA trusted_schema=OFF")
+            try execute("PRAGMA query_only=ON")
+        }
     }
 
     deinit { sqlite3_close_v2(handle) }

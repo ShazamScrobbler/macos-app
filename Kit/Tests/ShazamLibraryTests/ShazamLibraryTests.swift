@@ -97,4 +97,61 @@ import TestSupport
         let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
         #expect(throws: (any Error).self) { try lib.tags(withPKs: [pk]) }
     }
+
+    @Test func recentQueryStaysFastOnLargeUnindexedLibrary() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        try f.addBulk(count: 3_000, metadataPerTag: 6, start: t0)
+        let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
+        let started = ContinuousClock.now
+        let r = lib.read(since: t0 + 2_990, recentLimit: 20)
+        let elapsed = ContinuousClock.now - started
+        #expect(r.status == .ok)
+        #expect(r.recent.count == 20)
+        #expect(r.recent.first?.track.title == "Title 2999")
+        #expect(r.tagsSince.count == 9)
+        #expect(elapsed < .milliseconds(500))
+    }
+
+    @Test func recentSkipsArtistlessRowsAndStillFillsTheLimit() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        for i in 0..<5 { try f.addTag(title: "Ok\(i)", artists: ["A"], album: nil, date: t0 + Double(i)) }
+        try f.addTag(title: "Blank", artists: [""], album: nil, date: t0 + 10)
+        try f.addTag(title: "None", artists: [], album: nil, date: t0 + 11)
+        let r = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: .distantFuture, recentLimit: 3)
+        #expect(r.recent.map(\.track.title) == ["Ok4", "Ok3", "Ok2"])
+    }
+
+    @Test func malformedDatesAreIgnored() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        try f.addTag(title: "Inf", artist: "A", rawSeconds: .infinity)
+        try f.addTag(title: "Negative", artist: "A", rawSeconds: -5)
+        try f.addTag(title: "Huge", artist: "A", rawSeconds: 1e15)
+        try f.addTag(title: "Good", artist: "A", rawSeconds: 700_000_000)
+        let r = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: .distantPast, recentLimit: 20)
+        #expect(r.status == .ok)
+        #expect(r.recent.map(\.track.title) == ["Good"])
+        #expect(r.tagsSince.map(\.track.title) == ["Good"])
+    }
+
+    @Test func symlinkedDatabaseIsRefused() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase(wal: false)
+        try f.addTag(title: "One", artists: ["A"], album: nil, date: t0)
+        let real = f.dbURL.deletingLastPathComponent().appendingPathComponent("real.sqlite")
+        try FileManager.default.moveItem(at: f.dbURL, to: real)
+        try FileManager.default.createSymbolicLink(at: f.dbURL, withDestinationURL: real)
+        let r = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: .distantPast, recentLimit: 20)
+        #expect(r.status != .ok)
+        #expect(r.recent.isEmpty)
+    }
+
+    @Test func viewInsteadOfTableIsUnsupportedSchema() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase(tagResultAsView: true)
+        let r = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: .distantPast, recentLimit: 20)
+        #expect(r.status == .unsupportedSchema("ZSHTAGRESULTMO is not a table"))
+    }
 }

@@ -18,12 +18,14 @@ public final class ShazamFixture {
     }
 
     @discardableResult
-    public func createDatabase(wal: Bool = true, dropColumn: String? = nil) throws -> SQLiteDatabase {
+    public func createDatabase(wal: Bool = true, dropColumn: String? = nil, tagResultAsView: Bool = false) throws -> SQLiteDatabase {
         let db = try SQLiteDatabase(path: dbURL.path, mode: .readWriteCreate)
         if wal { try db.execute("PRAGMA journal_mode=WAL") }
         let artistCols = dropColumn == "ZNAME" ? "Z_PK INTEGER PRIMARY KEY, ZTAGRESULT INTEGER" : "Z_PK INTEGER PRIMARY KEY, ZTAGRESULT INTEGER, ZNAME TEXT"
         try db.execute("""
-            CREATE TABLE ZSHTAGRESULTMO(Z_PK INTEGER PRIMARY KEY, ZDATE TIMESTAMP, ZTRACKNAME TEXT);
+            \(tagResultAsView
+                ? "CREATE TABLE TAGBASE(Z_PK INTEGER PRIMARY KEY, ZDATE TIMESTAMP, ZTRACKNAME TEXT); CREATE VIEW ZSHTAGRESULTMO AS SELECT * FROM TAGBASE;"
+                : "CREATE TABLE ZSHTAGRESULTMO(Z_PK INTEGER PRIMARY KEY, ZDATE TIMESTAMP, ZTRACKNAME TEXT);")
             CREATE TABLE ZSHARTISTMO(\(artistCols));
             CREATE TABLE ZSHMETADATAMO(Z_PK INTEGER PRIMARY KEY, ZTAGRESULT INTEGER, ZKEY TEXT, ZVALUE TEXT);
             """)
@@ -49,6 +51,35 @@ public final class ShazamFixture {
                          [.integer(pk * 100 + 1), .integer(pk), .text("Album"), .text(album)])
         }
         return pk
+    }
+
+    /// Inserts a tag whose ZDATE is stored verbatim (reference-time seconds), for malformed-date tests.
+    @discardableResult
+    public func addTag(title: String, artist: String, rawSeconds: Double) throws -> Int64 {
+        guard let db = self.db else { throw CocoaError(.fileNoSuchFile) }
+        let pk = nextPK; nextPK += 1
+        try db.query("INSERT INTO ZSHTAGRESULTMO VALUES(?,?,?)", [.integer(pk), .real(rawSeconds), .text(title)])
+        try db.query("INSERT INTO ZSHARTISTMO(Z_PK, ZTAGRESULT, ZNAME) VALUES(?,?,?)",
+                     [.integer(pk * 100), .integer(pk), .text(artist)])
+        return pk
+    }
+
+    /// Bulk-fills `count` tags, each with one artist and `metadataPerTag` metadata rows, in one transaction.
+    public func addBulk(count: Int, metadataPerTag: Int, start: Date) throws {
+        guard let db = self.db else { throw CocoaError(.fileNoSuchFile) }
+        try db.transaction {
+            for i in 0..<count {
+                let pk = nextPK; nextPK += 1
+                try db.query("INSERT INTO ZSHTAGRESULTMO VALUES(?,?,?)",
+                             [.integer(pk), .real(start.timeIntervalSinceReferenceDate + Double(i)), .text("Title \(i)")])
+                try db.query("INSERT INTO ZSHARTISTMO(Z_PK, ZTAGRESULT, ZNAME) VALUES(?,?,?)",
+                             [.integer(pk * 100), .integer(pk), .text("Artist \(i)")])
+                for m in 0..<metadataPerTag {
+                    try db.query("INSERT INTO ZSHMETADATAMO VALUES(?,?,?,?)",
+                                 [.integer(pk * 100 + Int64(m)), .integer(pk), .text(m == 0 ? "Album" : "Key\(m)"), .text("v\(m)")])
+                }
+            }
+        }
     }
 
     public func remove() { try? FileManager.default.removeItem(at: container) }

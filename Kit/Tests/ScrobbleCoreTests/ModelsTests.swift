@@ -54,3 +54,18 @@ import Testing
         #expect(t.now == Date(timeIntervalSince1970: 146))
     }
 }
+
+@Suite struct TagKeySafetyTests {
+    @Test func nonFiniteAndHugeDatesDoNotTrap() {
+        let track = Track(artist: "A", title: "T")
+        _ = TagKey(date: Date(timeIntervalSince1970: .infinity), track: track)
+        _ = TagKey(date: Date(timeIntervalSince1970: -.infinity), track: track)
+        _ = TagKey(date: Date(timeIntervalSince1970: .nan), track: track)
+        _ = TagKey(date: Date(timeIntervalSince1970: 1e30), track: track)
+        #expect(Date(timeIntervalSince1970: .infinity).epochSeconds == Int64.max)
+        #expect(Date(timeIntervalSince1970: -.infinity).epochSeconds == Int64.min)
+        #expect(Date(timeIntervalSince1970: .nan).epochSeconds == 0)
+        #expect(Date(timeIntervalSince1970: -12.5).epochSeconds == -13)
+        #expect(TagKey(date: Date(timeIntervalSince1970: 100.9), track: track).rawValue.hasPrefix("100\u{1F}"))
+    }
+}

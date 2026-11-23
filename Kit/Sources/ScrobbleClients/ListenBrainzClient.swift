@@ -54,7 +54,7 @@ public struct ListenBrainzClient: Scrobbler {
 
     /// Deletes a listen we submitted (#7). Needs the listen's msid, which submit-listens doesn't return.
     public func remove(listenedAt date: Date, track: Track) async throws {
-        let seconds = Int(date.timeIntervalSince1970)
+        let seconds = Int(clamping: date.epochSeconds)
         var components = URLComponents(url: apiURL.appendingPathComponent("1/user").appendingPathComponent(username)
             .appendingPathComponent("listens"), resolvingAgainstBaseURL: false)!
         components.queryItems = [URLQueryItem(name: "max_ts", value: String(seconds + 1)), URLQueryItem(name: "count", value: "10")]
@@ -84,7 +84,7 @@ public struct ListenBrainzClient: Scrobbler {
         ]
         if let album = track.album { metadata["release_name"] = album }
         var listen: [String: Any] = ["track_metadata": metadata]
-        if let date { listen["listened_at"] = Int(date.timeIntervalSince1970) }
+        if let date { listen["listened_at"] = Int(clamping: date.epochSeconds) }
         return listen
     }
 

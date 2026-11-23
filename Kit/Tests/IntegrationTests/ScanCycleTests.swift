@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 @testable import ScrobbleCore
-import ShazamLibrary
+@testable import ShazamLibrary
 import TestSupport
 
 @Suite(.serialized) struct ScanCycleTests {
