@@ -85,4 +85,32 @@ import Testing
         FileManager.default.createFile(atPath: dir.appendingPathComponent("db-wal").path, contents: Data())
         #expect(await waitUntil { counter.value >= 1 })
     }
+
+    func openFDCount() -> Int {
+        (try? FileManager.default.contentsOfDirectory(atPath: "/dev/fd").count) ?? -1
+    }
+
+    @Test func releasingWatcherWithoutStopClosesDescriptors() async throws {
+        let dir = try makeDir(); defer { try? FileManager.default.removeItem(at: dir) }
+        FileManager.default.createFile(atPath: dir.appendingPathComponent("db-wal").path, contents: Data())
+        let baseline = openFDCount()
+        var watcher: FolderWatcher? = FolderWatcher(directory: dir, fileNames: ["db-wal"], debounce: 0.05, rearmInterval: 0.2) {}
+        watcher?.start()
+        #expect(await waitUntil { watcher?.isWatchingDirectory == true })
+        #expect(openFDCount() > baseline)
+        watcher = nil
+        #expect(await waitUntil { openFDCount() == baseline })
+    }
+
+    @Test func stopClosesDescriptors() async throws {
+        let dir = try makeDir(); defer { try? FileManager.default.removeItem(at: dir) }
+        FileManager.default.createFile(atPath: dir.appendingPathComponent("db-wal").path, contents: Data())
+        let baseline = openFDCount()
+        let watcher = FolderWatcher(directory: dir, fileNames: ["db-wal"], debounce: 0.05, rearmInterval: 0.2) {}
+        watcher.start()
+        #expect(await waitUntil { watcher.isWatchingDirectory })
+        #expect(openFDCount() > baseline)
+        watcher.stop()
+        #expect(await waitUntil { openFDCount() == baseline })
+    }
 }

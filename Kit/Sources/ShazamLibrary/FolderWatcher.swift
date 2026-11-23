@@ -17,6 +17,7 @@ public final class FolderWatcher: @unchecked Sendable {
     private var rearmTimer: DispatchSourceTimer?
     private var pending: DispatchWorkItem?
     private var stopped = true
+    private var loggedErrors: [String: Int32] = [:]
 
     /// `onChange` runs on the watcher's private queue. Never call `stop()` (or read
     /// `isWatchingDirectory`) from inside it: both use `queue.sync` and would deadlock.
@@ -29,7 +30,10 @@ public final class FolderWatcher: @unchecked Sendable {
         self.onChange = onChange
     }
 
-    public var isWatchingDirectory: Bool { queue.sync { directorySource != nil } }
+    public var isWatchingDirectory: Bool {
+        dispatchPrecondition(condition: .notOnQueue(queue))
+        return queue.sync { directorySource != nil }
+    }
 
     public func start() {
         queue.async {
@@ -40,10 +44,19 @@ public final class FolderWatcher: @unchecked Sendable {
 
     /// Blocks until the watcher's queue has torn everything down. Do not call from `onChange`.
     public func stop() {
+        dispatchPrecondition(condition: .notOnQueue(queue))
         queue.sync {
             stopped = true
             cancelAll()
         }
+    }
+
+    deinit {
+        // Handlers hold `self` weakly, so none can be running here. Cancelling closes the fds.
+        directorySource?.cancel()
+        fileSources.values.forEach { $0.cancel() }
+        rearmTimer?.cancel()
+        pending?.cancel()
     }
 
     private func arm() {
@@ -58,7 +71,9 @@ public final class FolderWatcher: @unchecked Sendable {
                 }
             }
         }
-        if directorySource == nil || fileSources.count < fileNames.count { scheduleRearm() } else { cancelRearm() }
+        // A missing file inside a watched directory is reported by the directory's own event,
+        // so only an unwatched directory needs polling.
+        if directorySource == nil { scheduleRearm() } else { cancelRearm() }
     }
 
     private func makeSource(path: String, handler: @escaping @Sendable (DispatchSource.FileSystemEvent) -> Void)
@@ -66,9 +81,13 @@ public final class FolderWatcher: @unchecked Sendable {
         let fd = open(path, O_EVTONLY)
         guard fd >= 0 else {
             let code = errno
-            if code != ENOENT { Self.log.notice("Cannot watch \(path, privacy: .private): errno \(code)") }
+            if code != ENOENT, loggedErrors[path] != code {
+                Self.log.notice("Cannot watch \(path, privacy: .private): errno \(code)")
+            }
+            loggedErrors[path] = code
             return nil
         }
+        loggedErrors[path] = nil
         let source = DispatchSource.makeFileSystemObjectSource(
             fileDescriptor: fd, eventMask: [.write, .extend, .delete, .rename, .attrib, .link, .revoke], queue: queue)
         source.setEventHandler { [weak source] in
