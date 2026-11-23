@@ -144,4 +144,45 @@ import Testing
         #expect(states(out, a) == ["Song": .nowPlaying(deadline: t0 + 45)])
         #expect(states(out, b).isEmpty)
     }
+
+    @Test func duplicateExcludedThenUnexcludedStaysDuplicate() {
+        let first = tag(1, "Loop", at: 0), dup = tag(2, "Loop", at: 30)
+        let out = run([first, dup, tag(3, "Next", at: 200)], now: 210,
+                      states: [dup.key: [a: .skipped(.user)]])
+        #expect(out.transitions.first { $0.tag.pk == 2 }?.to == .skipped(.duplicate))
+        let kept = run([first, dup, tag(3, "Next", at: 200)], now: 210,
+                       states: [dup.key: [a: .skipped(.duplicate)]], excluded: [dup.key])
+        #expect(kept.transitions.filter { $0.tag.pk == 2 }.isEmpty)
+    }
+
+    @Test func tooShortSurvivesExcludeUnexcludeAndForcedRevivesIt() {
+        let short = tag(1, "Short", at: 0)
+        let tags = [short, tag(2, "Next", at: 20), tag(3, "Last", at: 300)]
+        let excl = run(tags, now: 310, states: [short.key: [a: .tooShort]], excluded: [short.key])
+        #expect(states(excl)["Short"] == nil)
+        let unexcl = run(tags, now: 310, states: [short.key: [a: .skipped(.user)]])
+        #expect(states(unexcl)["Short"] == .tooShort)
+        let forced = run(tags, now: 310, states: [short.key: [a: .tooShort]], forced: [short.key])
+        #expect(states(forced)["Short"] == .waiting)
+    }
+
+    @Test func unexcludedNowPlayingInsideWindowStaysNowPlaying() {
+        let song = tag(1, "Song", at: 0)
+        let out = run([song], now: 10, states: [song.key: [a: .skipped(.user)]])
+        #expect(states(out) == ["Song": .nowPlaying(deadline: t0 + 45)])
+    }
+
+    @Test func newTagBothDuplicateAndExcludedIsDuplicate() {
+        let first = tag(1, "Loop", at: 0), dup = tag(2, "Loop", at: 30)
+        let out = run([first, dup], now: 100, states: [first.key: [a: .waiting]], excluded: [dup.key])
+        #expect(out.transitions.first { $0.tag.pk == 2 }?.to == .skipped(.duplicate))
+    }
+
+    @Test func abaPatternKeepsTheRealSecondPlay() {
+        let out = run([tag(1, "Loop", at: 0), tag(2, "Other", at: 20), tag(3, "Loop", at: 30)], now: 100)
+        let rows = out.transitions.filter { $0.account == a }
+        #expect(rows.first { $0.tag.pk == 1 }?.to == .tooShort)
+        #expect(rows.first { $0.tag.pk == 2 }?.to == .tooShort)
+        #expect(rows.first { $0.tag.pk == 3 }?.to == .waiting)
+    }
 }

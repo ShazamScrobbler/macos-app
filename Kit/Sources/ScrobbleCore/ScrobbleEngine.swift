@@ -13,6 +13,8 @@ public struct NowPlayingRecord: Sendable, Equatable {
 }
 
 public struct EngineInput: Sendable {
+    /// Callers must include at least `EngineSettings.duplicateWindow` (600 s) of tag history before the
+    /// oldest account cursor, so duplicates and "following" tags are seen.
     public var tags: [ShazamTag]
     public var now: Date
     public var settings: EngineSettings
@@ -59,6 +61,9 @@ public struct EngineOutput: Sendable, Equatable {
     public var transitions: [Transition]
     public var nowPlaying: [NowPlayingRequest]
     public var nextWake: Date?
+    public init(transitions: [Transition], nowPlaying: [NowPlayingRequest], nextWake: Date?) {
+        self.transitions = transitions; self.nowPlaying = nowPlaying; self.nextWake = nextWake
+    }
 }
 
 /// Pure scrobbling rules (spec §5). No I/O, no clock: everything comes in through `EngineInput`.
@@ -70,15 +75,15 @@ public enum ScrobbleEngine {
         var seenKeys = Set<TagKey>()
         let unique = sorted.filter { seenKeys.insert($0.key).inserted }
 
-        var lastSeenBySong: [String: Date] = [:]
+        var lastPlay: ShazamTag?
         var duplicates = Set<TagKey>()
         for tag in unique {
-            let song = tag.track.matchKey
-            if let previous = lastSeenBySong[song],
-               tag.date.timeIntervalSince(previous) < EngineSettings.duplicateWindow {
+            if let previous = lastPlay, previous.track.matchKey == tag.track.matchKey,
+               tag.date.timeIntervalSince(previous.date) < EngineSettings.duplicateWindow {
                 duplicates.insert(tag.key)
+            } else {
+                lastPlay = tag
             }
-            lastSeenBySong[song] = tag.date
         }
 
         let plays = unique.filter { !duplicates.contains($0.key) }
@@ -149,8 +154,9 @@ public enum ScrobbleEngine {
                                   following: ShazamTag?, input: EngineInput) -> DeliveryState? {
         if input.excluded.contains(tag.key) {
             switch current {
-            case .scrobbled?, .ignored?, .skipped(.user)?: return current
-            default: return .skipped(.user)
+            case nil: return isDuplicate ? .skipped(.duplicate) : .skipped(.user)
+            case .nowPlaying?, .waiting?, .retry?, .held?: return .skipped(.user)
+            default: return current   // final states stay as they are
             }
         }
         switch current {
@@ -161,7 +167,10 @@ public enum ScrobbleEngine {
         case .nowPlaying?:
             return playState(for: tag, following: following, input: input)
         case .skipped(.user)?:
-            return .waiting   // no longer excluded: the user chose "Scrobble Anyway"
+            // No longer excluded: re-evaluate like a new row (paused rule not applied, the user asked for it).
+            if input.forced.contains(tag.key) { return .waiting }
+            if isDuplicate { return .skipped(.duplicate) }
+            return playState(for: tag, following: following, input: input)
         case .tooShort?, .skipped?:
             return input.forced.contains(tag.key) ? .waiting : current
         default:
