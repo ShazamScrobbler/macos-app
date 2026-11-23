@@ -86,31 +86,36 @@ import Testing
         #expect(await waitUntil { counter.value >= 1 })
     }
 
-    func openFDCount() -> Int {
-        (try? FileManager.default.contentsOfDirectory(atPath: "/dev/fd").count) ?? -1
+    /// Number of open fds of this process pointing inside `dir` (ignores other suites' fds).
+    func openFDCount(in dir: URL) -> Int {
+        let prefix = realpath(dir.path, nil).map { String(cString: $0) } ?? dir.path   // /var -> /private/var
+        let names = (try? FileManager.default.contentsOfDirectory(atPath: "/dev/fd")) ?? []
+        return names.compactMap { Int32($0) }.filter { fd in
+            var buffer = [CChar](repeating: 0, count: Int(MAXPATHLEN))
+            guard fcntl(fd, F_GETPATH, &buffer) != -1 else { return false }
+            return String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self).hasPrefix(prefix)
+        }.count
     }
 
     @Test func releasingWatcherWithoutStopClosesDescriptors() async throws {
         let dir = try makeDir(); defer { try? FileManager.default.removeItem(at: dir) }
         FileManager.default.createFile(atPath: dir.appendingPathComponent("db-wal").path, contents: Data())
-        let baseline = openFDCount()
         var watcher: FolderWatcher? = FolderWatcher(directory: dir, fileNames: ["db-wal"], debounce: 0.05, rearmInterval: 0.2) {}
         watcher?.start()
         #expect(await waitUntil { watcher?.isWatchingDirectory == true })
-        #expect(openFDCount() > baseline)
+        #expect(openFDCount(in: dir) > 0)
         watcher = nil
-        #expect(await waitUntil { openFDCount() == baseline })
+        #expect(await waitUntil { openFDCount(in: dir) == 0 })
     }
 
     @Test func stopClosesDescriptors() async throws {
         let dir = try makeDir(); defer { try? FileManager.default.removeItem(at: dir) }
         FileManager.default.createFile(atPath: dir.appendingPathComponent("db-wal").path, contents: Data())
-        let baseline = openFDCount()
         let watcher = FolderWatcher(directory: dir, fileNames: ["db-wal"], debounce: 0.05, rearmInterval: 0.2) {}
         watcher.start()
         #expect(await waitUntil { watcher.isWatchingDirectory })
-        #expect(openFDCount() > baseline)
+        #expect(openFDCount(in: dir) > 0)
         watcher.stop()
-        #expect(await waitUntil { openFDCount() == baseline })
+        #expect(await waitUntil { openFDCount(in: dir) == 0 })
     }
 }
