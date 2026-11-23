@@ -20,8 +20,7 @@ public struct AudioscrobblerClient: Scrobbler {
         var params = ["artist": track.artist, "track": track.title]
         if let album = track.album { params["album"] = album }
         // No duration: Last.fm would expire now playing after it (#47).
-        do { _ = try await api.call(method: "track.updateNowPlaying", params: params, sessionKey: sessionKey) }
-        catch { throw error.audioscrobblerError }
+        _ = try await perform { try await api.call(method: "track.updateNowPlaying", params: params, sessionKey: sessionKey) }
     }
 
     public func scrobble(_ items: [ScrobbleItem]) async throws -> [ScrobbleItemResult] {
@@ -33,9 +32,7 @@ public struct AudioscrobblerClient: Scrobbler {
             params["chosenByUser[\(index)]"] = "0"
             if let album = item.track.album { params["album[\(index)]"] = album }
         }
-        let object: [String: Any]
-        do { object = try await api.call(method: "track.scrobble", params: params, sessionKey: sessionKey) }
-        catch { throw error.audioscrobblerError }
+        let object = try await perform { try await api.call(method: "track.scrobble", params: params, sessionKey: sessionKey) }
 
         let scrobbles = AudioscrobblerAPI.array((object["scrobbles"] as? [String: Any])?["scrobble"])
         guard scrobbles.count == items.count else {
@@ -58,11 +55,10 @@ public struct AudioscrobblerClient: Scrobbler {
     }
 
     public func isOtherPlayerActive(excluding ours: Track?) async throws -> Bool {
-        let object: [String: Any]
-        do {
-            object = try await api.call(method: "user.getRecentTracks", params: ["user": username, "limit": "1"],
-                                        signed: false, get: true)
-        } catch { throw error.audioscrobblerError }
+        let object = try await perform {
+            try await api.call(method: "user.getRecentTracks", params: ["user": username, "limit": "1"],
+                               signed: false, get: true)
+        }
         let tracks = AudioscrobblerAPI.array((object["recenttracks"] as? [String: Any])?["track"])
         guard let playing = tracks.first(where: { ($0["@attr"] as? [String: Any])?["nowplaying"] as? String == "true" }) else {
             return false
@@ -72,5 +68,12 @@ public struct AudioscrobblerClient: Scrobbler {
         let title = playing["name"] as? String ?? ""
         if let ours, Track(artist: artist, title: title).matchKey == ours.matchKey { return false }
         return true
+    }
+
+    /// Cancellation passes through unchanged; every other failure becomes a ScrobbleError.
+    private func perform(_ body: () async throws -> [String: Any]) async throws -> [String: Any] {
+        do { return try await body() }
+        catch is CancellationError { throw CancellationError() }
+        catch { throw error.audioscrobblerError }
     }
 }

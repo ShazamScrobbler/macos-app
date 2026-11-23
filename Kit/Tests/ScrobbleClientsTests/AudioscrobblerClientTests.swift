@@ -72,9 +72,17 @@ import ScrobbleCore
         #expect(try await c.isOtherPlayerActive(excluding: nil) == true)
         #expect(try await c.isOtherPlayerActive(excluding: Track(artist: "air", title: "KELLY")) == false)
         #expect(try await c.isOtherPlayerActive(excluding: nil) == false)
+        let other = StubTransport([.init(body: playing)])
+        #expect(try await client(other).isOtherPlayerActive(excluding: Track(artist: "Other", title: "Song")) == true)
         let request = await stub.requests[0]
         #expect(request.httpMethod == "GET")
         #expect(request.url?.query?.contains("method=user.getRecentTracks") == true)
         #expect(request.url?.query?.contains("api_sig") == false)
+    }
+
+    @Test func cancellationIsNotWrapped() async {
+        let stub = StubTransport([.init(body: "", error: CancellationError()), .init(body: "", error: CancellationError())])
+        await #expect(throws: CancellationError.self) { _ = try await client(stub).scrobble([item("One")]) }
+        await #expect(throws: CancellationError.self) { try await client(stub).nowPlaying(Track(artist: "A", title: "B")) }
     }
 }
