@@ -28,7 +28,13 @@ actor StubTransport: HTTPTransport {
         FormEncoding.decode(requests[index].httpBody ?? Data())
     }
 
-    func json(_ index: Int) -> [String: Any] {
-        (try? JSONSerialization.jsonObject(with: requests[index].httpBody ?? Data())) as? [String: Any] ?? [:]
+    /// Decoded JSON request body. Read-only after creation, so safe to hand across the actor boundary.
+    struct JSONBody: @unchecked Sendable {
+        let value: [String: Any]
+        subscript(key: String) -> Any? { value[key] }
+    }
+
+    func json(_ index: Int) -> JSONBody {
+        JSONBody(value: (try? JSONSerialization.jsonObject(with: requests[index].httpBody ?? Data())) as? [String: Any] ?? [:])
     }
 }
