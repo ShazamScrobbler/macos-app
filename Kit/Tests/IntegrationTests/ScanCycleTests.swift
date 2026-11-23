@@ -182,4 +182,34 @@ import TestSupport
         #expect(snapshot.states[key]?[heldID] == nil)
         #expect(try store.cursor(for: heldID) == t0 - 100_000)
     }
+
+    @Test func stuckAccountDoesNotStarveOthers() async throws {
+        let fixture = try ShazamFixture(); defer { fixture.remove() }
+        try fixture.createDatabase()
+        // 8 tags after A's open row, more than the injected cap of 5, then B's new tag.
+        for i in 0..<8 { try fixture.addTag(title: "Mid \(i)", artists: ["A"], album: nil, date: t0 - 800 + Double(i) * 50) }
+        try fixture.addTag(title: "New", artists: ["A"], album: nil, date: t0 + 100)
+        let time = ManualTimeSource(t0 + 110)
+        let store = try StateStore(url: nil)
+        let stuckID = AccountID(rawValue: "stuck"), okID = AccountID(rawValue: "ok")
+        func acct(_ id: AccountID) -> Account {
+            Account(id: id, preset: .listenbrainz, username: "u", apiURL: URL(string: "https://example.invalid")!,
+                    webAuthURL: nil, keyMode: .own, addedAt: t0 - 100_000)
+        }
+        let old = ShazamTag(pk: 900, date: t0 - 900, track: Track(artist: "Old", title: "Old"))
+        try store.apply([Transition(key: old.key, tag: old, account: stuckID, to: .retry(attempt: 9, nextAt: t0 + 100_000))], now: t0)
+        try store.setCursor(t0 - 1000, for: stuckID)
+        try store.setCursor(t0, for: okID)
+        let library = ShazamLibrary(containerURL: fixture.container, tagsSinceLimit: 5)
+        let cycle = ScanCycle(source: library, store: store, delivery: Delivery(store: store, time: time, random: { 0.5 }), time: time)
+        let okFake = FakeScrobbler()
+        let snapshot = await cycle.run(accounts: [acct(stuckID), acct(okID)],
+                                       scrobblers: [stuckID: FakeScrobbler(), okID: okFake], settings: EngineSettings())
+        let key = try #require(snapshot.recent.first).key
+        #expect(snapshot.recent.first?.track.title == "New")
+        guard case .nowPlaying = snapshot.states[key]?[okID] else {
+            Issue.record("expected nowPlaying for the healthy account, got \(String(describing: snapshot.states[key]?[okID]))"); return
+        }
+        #expect(await okFake.nowPlayingTracks.map(\.title) == ["New"])
+    }
 }

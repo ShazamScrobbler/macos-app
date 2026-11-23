@@ -13,6 +13,7 @@ public struct ShazamLibrary: TagSource {
 
     public let containerURL: URL
     public let shazamAppURL: URL
+    private let tagsSinceLimit: Int
     public var watchedDirectoryURL: URL { containerURL.appendingPathComponent("com.shazam.mac.Shazam") }
     public var databaseURL: URL { watchedDirectoryURL.appendingPathComponent("ShazamDataModel.sqlite") }
 
@@ -25,13 +26,15 @@ public struct ShazamLibrary: TagSource {
 
     /// The only public way in: always Shazam's real container, never a caller-chosen path.
     public init() {
-        self.init(containerURL: Self.defaultContainerURL, shazamAppURL: Self.defaultShazamAppURL)
+        self.init(containerURL: Self.defaultContainerURL, shazamAppURL: Self.defaultShazamAppURL,
+                  tagsSinceLimit: Self.sinceCap)
     }
 
     /// Internal so only tests (via `@testable import`) can point the reader elsewhere.
-    init(containerURL: URL, shazamAppURL: URL = ShazamLibrary.defaultShazamAppURL) {
+    init(containerURL: URL, shazamAppURL: URL = ShazamLibrary.defaultShazamAppURL, tagsSinceLimit: Int = ShazamLibrary.sinceCap) {
         self.containerURL = containerURL
         self.shazamAppURL = shazamAppURL
+        self.tagsSinceLimit = tagsSinceLimit
     }
 
     public func read(since: Date, recentLimit: Int) -> TagSourceResult {
@@ -51,7 +54,7 @@ public struct ShazamLibrary: TagSource {
             let recent = Array(top.tags.prefix(max(recentLimit, 0)))
             // Capped: a backlog larger than this is picked up by later scans as the caller's cursor advances.
             let since = try Self.tags(db, filter: "ZDATE > ?", bindings: [.real(since.timeIntervalSinceReferenceDate)],
-                                      ascending: true, limit: Self.sinceCap).tags
+                                      ascending: true, limit: tagsSinceLimit).tags
             return TagSourceResult(status: .ok, tagsSince: since, recent: recent)
         } catch let error as SQLiteError {
             return TagSourceResult(status: classify(error))
@@ -79,7 +82,7 @@ public struct ShazamLibrary: TagSource {
         return .unreadable(error.description)
     }
 
-    private static let sinceCap = 5000
+    static let sinceCap = 5000
     /// Valid ZDATE window in seconds since 2001 (about 2001...2127); anything else is corrupt and ignored.
     private static let dateRange: (lower: Double, upper: Double) = (0, 4e9)
 

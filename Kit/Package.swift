@@ -17,7 +17,7 @@ let package = Package(
         // Test doubles and fixtures shared by unit and integration tests. Not a product; never linked by the app.
         .target(name: "TestSupport", dependencies: ["ScrobbleCore", "SQLiteLite"]),
         .testTarget(name: "SQLiteLiteTests", dependencies: ["SQLiteLite"]),
-        .testTarget(name: "ScrobbleCoreTests", dependencies: ["ScrobbleCore", "TestSupport"]),
+        .testTarget(name: "ScrobbleCoreTests", dependencies: ["ScrobbleCore", "SQLiteLite", "TestSupport"]),
         .testTarget(name: "ShazamLibraryTests", dependencies: ["ShazamLibrary", "SQLiteLite", "TestSupport"]),
         .testTarget(name: "ScrobbleClientsTests", dependencies: ["ScrobbleClients"]),
         .testTarget(name: "IntegrationTests", dependencies: ["ScrobbleCore", "ShazamLibrary", "TestSupport"]),

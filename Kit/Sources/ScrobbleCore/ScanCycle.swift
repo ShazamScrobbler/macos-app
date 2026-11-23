@@ -64,46 +64,53 @@ public actor ScanCycle {
                 }
             } catch {
                 inputsOK = false
-                log.error("cursor read failed for \(account.id.rawValue, privacy: .public): \(error.localizedDescription, privacy: .public)")
+                log.error("cursor read failed for \(account.id.rawValue, privacy: .public): \(error.localizedDescription, privacy: .private)")
             }
         }
-        // Read EngineSettings.duplicateWindow of history before the oldest cursor: the engine only creates rows
-        // for tags newer than each account's own cursor, the extra history only feeds duplicate detection.
-        // Only deliverable accounts (a scrobbler, no held problem) drive the read window and get new rows. A held
-        // or unusable account keeps its cursor, so its backlog is evaluated once released, and it can't pin the
-        // window on old rows and starve everyone else.
-        let held = (try? store.heldProblems()) ?? [:]
+        // Each deliverable account (a scrobbler, no held problem) is evaluated against its own read window:
+        // `cursor - EngineSettings.duplicateWindow`, the extra history only feeds duplicate detection. Accounts with
+        // the same cursor share one read. A stuck account with an old cursor therefore can't push the newest tags
+        // beyond the reader's cap for everyone else, and a held or unusable account (which keeps its cursor, so its
+        // backlog is evaluated once released) never drives a window at all.
+        var held: [AccountID: AccountProblem] = [:]
+        do { held = try store.heldProblems() } catch {
+            inputsOK = false
+            log.error("held problems read failed: \(error.localizedDescription, privacy: .private)")
+        }
         let deliverable = Set(scrobblers.keys).subtracting(held.keys)
-        cursors = cursors.filter { deliverable.contains($0.id) }
-        var since = readSince(cursors, now: now)
-        var result = source.read(since: since, recentLimit: recentLimit)
+        var choices: (excluded: Set<TagKey>, forced: Set<TagKey>) = ([], [])
+        do { choices = try store.choices() } catch {
+            inputsOK = false
+            log.error("choices read failed: \(error.localizedDescription, privacy: .private)")
+        }
 
-        if inputsOK, result.status == .ok, (try? LegacyMigration.resolvePending(store: store, source: source)) == true {
-            cursors = currentCursors(accounts).filter { deliverable.contains($0.id) }
-            since = readSince(cursors, now: now)
-            result = source.read(since: since, recentLimit: recentLimit)
+        var reads = readWindows(cursors.filter { deliverable.contains($0.id) }, now: now, recentLimit: recentLimit)
+        if inputsOK, reads.status == .ok, (try? LegacyMigration.resolvePending(store: store, source: source)) == true {
+            reads = readWindows(currentCursors(accounts).filter { deliverable.contains($0.id) }, now: now, recentLimit: recentLimit)
         }
 
         var requests: [NowPlayingRequest] = []
         var engineWake: Date?
-        if inputsOK, result.status == .ok, !cursors.isEmpty {
+        if inputsOK, reads.status == .ok {
             do {
-                // All reads first: a failed read must skip the engine, never feed it empty state.
-                let states = try statesReader(store, since)
-                let choices = try store.choices()
                 let lastNowPlaying = try store.lastNowPlaying()
-                try store.record(result.tagsSince)
-                let output = ScrobbleEngine.evaluate(EngineInput(
-                    tags: result.tagsSince, now: now, settings: settings, accounts: cursors,
-                    states: states, excluded: choices.excluded, forced: choices.forced,
-                    lastNowPlaying: lastNowPlaying))
-                try store.apply(output.transitions, now: now)
-                requests = output.nowPlaying
-                engineWake = output.nextWake
+                for window in reads.windows {
+                    // All reads first: a failed read must skip the engine, never feed it empty state.
+                    let states = try statesReader(store, window.since)
+                    try store.record(window.tags)
+                    let output = ScrobbleEngine.evaluate(EngineInput(
+                        tags: window.tags, now: now, settings: settings, accounts: window.accounts,
+                        states: states, excluded: choices.excluded, forced: choices.forced,
+                        lastNowPlaying: lastNowPlaying))
+                    try store.apply(output.transitions, now: now)
+                    requests += output.nowPlaying
+                    engineWake = [engineWake, output.nextWake].compactMap { $0 }.min()
+                }
             } catch {
-                log.error("engine step skipped: \(error.localizedDescription, privacy: .public)")
+                log.error("engine step skipped: \(error.localizedDescription, privacy: .private)")
             }
         }
+        let result = reads.result
 
         let report = await delivery.run(scrobblers: scrobblers, nowPlaying: requests, paused: settings.paused)
 
@@ -122,13 +129,38 @@ public actor ScanCycle {
 
         return Snapshot(
             libraryStatus: result.status, recent: result.recent, states: states,
-            excluded: (try? store.choices().excluded) ?? [], problems: problems,
+            excluded: choices.excluded, problems: problems,
             waitingCount: (try? store.waitingCount()) ?? 0, nowPlaying: nowPlaying,
             nextWake: [engineWake, report.nextWake].compactMap { $0 }.min(), paused: settings.paused)
     }
 
-    private func readSince(_ cursors: [AccountCursor], now: Date) -> Date {
-        (cursors.map(\.since).min() ?? now).addingTimeInterval(-EngineSettings.duplicateWindow)
+    private struct ReadWindow {
+        var since: Date
+        var accounts: [AccountCursor]
+        var tags: [ShazamTag]
+    }
+
+    /// One `source.read` per distinct cursor. `status` is the first non-ok status (any failed read skips the engine);
+    /// `result` carries the `recent` list, which is the same newest window in every read.
+    private func readWindows(_ cursors: [AccountCursor], now: Date, recentLimit: Int)
+        -> (windows: [ReadWindow], status: LibraryStatus, result: TagSourceResult) {
+        let grouped = Dictionary(grouping: cursors, by: \.since)
+        let sinces = grouped.keys.sorted()
+        guard !sinces.isEmpty else {
+            let result = source.read(since: now.addingTimeInterval(-EngineSettings.duplicateWindow), recentLimit: recentLimit)
+            return ([], result.status, result)
+        }
+        var windows: [ReadWindow] = []
+        var first: TagSourceResult?
+        var status = LibraryStatus.ok
+        for cursor in sinces {
+            let since = cursor.addingTimeInterval(-EngineSettings.duplicateWindow)
+            let result = source.read(since: since, recentLimit: recentLimit)
+            if first == nil { first = result }
+            if result.status != .ok, status == .ok { status = result.status; first = result }
+            windows.append(ReadWindow(since: since, accounts: grouped[cursor] ?? [], tags: result.tagsSince))
+        }
+        return (windows, status, first ?? TagSourceResult(status: status))
     }
 
     private func currentCursors(_ accounts: [Account]) -> [AccountCursor] {

@@ -86,6 +86,20 @@ import Testing
         #expect(await waitUntil { counter.value >= 1 })
     }
 
+    @Test func rearmIntervalGrowsToTheMaximumAndResetsOnAttach() async throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("watch-backoff-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let counter = Counter()
+        let watcher = FolderWatcher(directory: dir, fileNames: ["db-wal"], debounce: 0.05, rearmInterval: 0.05,
+                                    maxRearmInterval: 0.2) { counter.bump() }
+        watcher.start(); defer { watcher.stop() }
+        #expect(await waitUntil { watcher.currentRearmInterval == 0.2 })
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        #expect(await waitUntil { watcher.isWatchingDirectory })
+        #expect(await waitUntil { counter.value >= 1 })
+        #expect(watcher.currentRearmInterval == 0.05)
+    }
+
     /// Number of open fds of this process pointing inside `dir` (ignores other suites' fds).
     func openFDCount(in dir: URL) -> Int {
         let prefix = realpath(dir.path, nil).map { String(cString: $0) } ?? dir.path   // /var -> /private/var

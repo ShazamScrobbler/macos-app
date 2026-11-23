@@ -222,4 +222,32 @@ import TestSupport
         #expect(await fake.batches.count == 1)
         #expect(try state(store, y, a) == .waiting)
     }
+
+    @Test func transientNowPlayingFailureBacksOffFor90Seconds() async throws {
+        let current = tag(1, "Current", at: 0)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let fake = FakeScrobbler()
+        await fake.setNowPlayingError(.transient("offline"))
+        let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 1)
+        time.advance(by: 30)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 1)
+        time.advance(by: 70)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 2)
+    }
+
+    @Test func nowPlayingBackoffDoesNotAffectRefreshes() async throws {
+        let current = tag(1, "Current", at: 0)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let fake = FakeScrobbler()
+        await fake.setNowPlayingError(.transient("offline"))
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [NowPlayingRequest(account: a, tag: current, isRefresh: false)], paused: false)
+        await fake.setNowPlayingError(nil)
+        time.advance(by: 10)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [NowPlayingRequest(account: a, tag: current, isRefresh: true)], paused: false)
+        #expect(await fake.nowPlayingTracks == [current.track])
+    }
 }

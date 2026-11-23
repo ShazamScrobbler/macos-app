@@ -8,6 +8,19 @@ public enum ScrobbleError: Error, Equatable, Sendable {
     case permanent(String)
 }
 
+extension ScrobbleError {
+    /// Only the case name: safe for public logs (the payloads can carry server text or listening history).
+    public var logSummary: String {
+        switch self {
+        case .signedOut: "signedOut"
+        case .keyUnusable: "keyUnusable"
+        case .transient: "transient"
+        case .rateLimited: "rateLimited"
+        case .permanent: "permanent"
+        }
+    }
+}
+
 extension Error {
     public var asScrobbleError: ScrobbleError {
         (self as? ScrobbleError) ?? .transient(String(describing: self))

@@ -14,6 +14,9 @@ public actor Delivery {
     private let time: any TimeSource
     private let random: @Sendable () -> Double
     private let log = Logger(subsystem: "ShazamScrobbler", category: "delivery")
+    /// Accounts whose first-time now playing failed transiently: not retried before this date. Refreshes are exempt.
+    private var nowPlayingRetryAfter: [AccountID: Date] = [:]
+    private static let nowPlayingBackoff: TimeInterval = 90
 
     public init(store: StateStore, time: any TimeSource,
                 random: @escaping @Sendable () -> Double = { Double.random(in: 0..<1) }) {
@@ -28,8 +31,9 @@ public actor Delivery {
                     paused: Bool) async -> DeliveryReport {
         var report = DeliveryReport()
         if !paused {
+            let held = (try? store.heldProblems()) ?? [:]
             for (account, scrobbler) in scrobblers.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
-                if let problem = (try? store.heldProblems())?[account] {
+                if let problem = held[account] {
                     report.problems[account] = problem
                     continue
                 }
@@ -49,6 +53,7 @@ public actor Delivery {
     private func sendNowPlaying(_ requests: [NowPlayingRequest], account: AccountID, scrobbler: any Scrobbler,
                                 report: inout DeliveryReport) async {
         for request in requests {
+            if !request.isRefresh, let after = nowPlayingRetryAfter[account], time.now < after { continue }
             do {
                 if !request.isRefresh {
                     let ours = (try? store.lastNowPlaying())?[account].flatMap { try? store.track(for: $0.key) }
@@ -61,6 +66,7 @@ public actor Delivery {
                 }
                 try await scrobbler.nowPlaying(request.tag.track)
                 try? store.setNowPlaying(NowPlayingRecord(key: request.tag.key, sentAt: time.now), for: account)
+                nowPlayingRetryAfter[account] = nil
             } catch {
                 let scrobbleError = error.asScrobbleError
                 if let problem = DeliveryPolicy.problem(for: scrobbleError) {
@@ -68,7 +74,12 @@ public actor Delivery {
                     try? store.hold(account: account, problem: problem, now: time.now)
                     return
                 }
-                log.notice("Now playing failed for \(account.rawValue, privacy: .public): \(String(describing: scrobbleError), privacy: .public)")
+                switch scrobbleError {
+                case .transient, .rateLimited:
+                    if !request.isRefresh { nowPlayingRetryAfter[account] = time.now.addingTimeInterval(Self.nowPlayingBackoff) }
+                default: break
+                }
+                log.notice("Now playing failed for \(account.rawValue, privacy: .public): \(scrobbleError.logSummary, privacy: .public) (\(String(describing: scrobbleError), privacy: .private))")
             }
         }
     }
@@ -95,7 +106,7 @@ public actor Delivery {
                 if sendable.isEmpty { continue }
                 if await send(sendable, account: account, scrobbler: scrobbler, report: &report) == .stop { return }
             } catch {
-                log.error("Store error for \(account.rawValue, privacy: .public); stopping account: \(String(describing: error), privacy: .public)")
+                log.error("Store error for \(account.rawValue, privacy: .public); stopping account: \(String(describing: error), privacy: .private)")
                 return
             }
         }
@@ -141,7 +152,7 @@ public actor Delivery {
                                          now: now)
                 }
                 if case .permanent = scrobbleError { return .proceed }
-                log.notice("Delivery paused for \(account.rawValue, privacy: .public): \(String(describing: scrobbleError), privacy: .public)")
+                log.notice("Delivery paused for \(account.rawValue, privacy: .public): \(scrobbleError.logSummary, privacy: .public) (\(String(describing: scrobbleError), privacy: .private))")
                 return .stop
             }
             var hitDailyLimit = false
@@ -163,7 +174,7 @@ public actor Delivery {
             }
             return hitDailyLimit ? .stop : .proceed
         } catch {
-            log.error("Store error for \(account.rawValue, privacy: .public); stopping account: \(String(describing: error), privacy: .public)")
+            log.error("Store error for \(account.rawValue, privacy: .public); stopping account: \(String(describing: error), privacy: .private)")
             return .stop
         }
     }

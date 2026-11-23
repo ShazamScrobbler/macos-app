@@ -8,6 +8,7 @@ public final class FolderWatcher: @unchecked Sendable {
     private let fileNames: [String]
     private let debounce: TimeInterval
     private let rearmInterval: TimeInterval
+    private let maxRearmInterval: TimeInterval
     private let onChange: @Sendable () -> Void
     private let queue = DispatchQueue(label: "ShazamScrobbler.FolderWatcher")
     private static let log = Logger(subsystem: "ShazamScrobbler", category: "shazam")
@@ -18,21 +19,30 @@ public final class FolderWatcher: @unchecked Sendable {
     private var pending: DispatchWorkItem?
     private var stopped = true
     private var loggedErrors: [String: Int32] = [:]
+    private var nextRearmInterval: TimeInterval
 
     /// `onChange` runs on the watcher's private queue. Never call `stop()` (or read
     /// `isWatchingDirectory`) from inside it: both use `queue.sync` and would deadlock.
     public init(directory: URL, fileNames: [String], debounce: TimeInterval = 0.5, rearmInterval: TimeInterval = 5,
-                onChange: @escaping @Sendable () -> Void) {
+                maxRearmInterval: TimeInterval = 60, onChange: @escaping @Sendable () -> Void) {
         self.directory = directory
         self.fileNames = fileNames
         self.debounce = debounce
         self.rearmInterval = rearmInterval
+        self.maxRearmInterval = max(maxRearmInterval, rearmInterval)
+        self.nextRearmInterval = rearmInterval
         self.onChange = onChange
     }
 
     public var isWatchingDirectory: Bool {
         dispatchPrecondition(condition: .notOnQueue(queue))
         return queue.sync { directorySource != nil }
+    }
+
+    /// The delay before the next attempt to open the directory (test hook).
+    var currentRearmInterval: TimeInterval {
+        dispatchPrecondition(condition: .notOnQueue(queue))
+        return queue.sync { nextRearmInterval }
     }
 
     public func start() {
@@ -73,7 +83,12 @@ public final class FolderWatcher: @unchecked Sendable {
         }
         // A missing file inside a watched directory is reported by the directory's own event,
         // so only an unwatched directory needs polling.
-        if directorySource == nil { scheduleRearm() } else { cancelRearm() }
+        if directorySource == nil {
+            scheduleRearm()
+        } else {
+            cancelRearm()
+            nextRearmInterval = rearmInterval
+        }
     }
 
     private func makeSource(path: String, handler: @escaping @Sendable (DispatchSource.FileSystemEvent) -> Void)
@@ -122,12 +137,16 @@ public final class FolderWatcher: @unchecked Sendable {
         queue.asyncAfter(deadline: .now() + debounce, execute: item)
     }
 
+    /// One-shot timer per attempt, doubling from `rearmInterval` up to `maxRearmInterval` while the directory can't be opened.
     private func scheduleRearm() {
         guard rearmTimer == nil, !stopped else { return }
+        let interval = nextRearmInterval
         let timer = DispatchSource.makeTimerSource(queue: queue)
-        timer.schedule(deadline: .now() + rearmInterval, repeating: rearmInterval)
+        timer.schedule(deadline: .now() + interval, leeway: .nanoseconds(Int(interval * 0.1 * 1_000_000_000)))
         timer.setEventHandler { [weak self] in
             guard let self else { return }
+            self.cancelRearm()
+            self.nextRearmInterval = min(interval * 2, self.maxRearmInterval)
             let hadDirectory = self.directorySource != nil
             let hadFiles = self.fileSources.count
             self.arm()

@@ -55,6 +55,12 @@ public final class StateStore: @unchecked Sendable {
                 try setMeta("schema_version", "1")
             }
         }
+        if version < 2 {
+            try db.transaction {
+                try db.execute("CREATE INDEX IF NOT EXISTS deliveries_kind ON deliveries(kind, tag_key)")
+                try setMeta("schema_version", "2")
+            }
+        }
     }
 
     // MARK: meta
@@ -243,18 +249,19 @@ public final class StateStore: @unchecked Sendable {
     public func skipAllWaiting(now: Date) throws -> Int {
         lock.lock(); defer { lock.unlock() }
         return try db.transaction {
-            let keys = try db.query("""
-                SELECT DISTINCT tag_key FROM deliveries WHERE kind IN ('waiting', 'retry', 'held')
-                """).compactMap { $0.string("tag_key") }
+            let count = Int(try db.query("""
+                SELECT COUNT(DISTINCT tag_key) AS c FROM deliveries WHERE kind IN ('waiting', 'retry', 'held')
+                """).first?.int("c") ?? 0)
+            try db.query("""
+                INSERT OR REPLACE INTO user_choices(tag_key, choice)
+                SELECT DISTINCT tag_key, 'exclude' FROM deliveries WHERE kind IN ('waiting', 'retry', 'held')
+                """)
             let json = String(decoding: try JSONEncoder().encode(DeliveryState.skipped(.user)), as: UTF8.self)
-            for key in keys {
-                try db.query("""
-                    UPDATE deliveries SET kind = 'skipped', next_at = NULL, state = ?, updated = ?
-                    WHERE tag_key = ? AND kind IN ('waiting', 'retry', 'held')
-                    """, [.text(json), .real(now.timeIntervalSince1970), .text(key)])
-                try db.query("INSERT OR REPLACE INTO user_choices(tag_key, choice) VALUES(?, 'exclude')", [.text(key)])
-            }
-            return keys.count
+            try db.query("""
+                UPDATE deliveries SET kind = 'skipped', next_at = NULL, state = ?, updated = ?
+                WHERE kind IN ('waiting', 'retry', 'held')
+                """, [.text(json), .real(now.timeIntervalSince1970)])
+            return count
         }
     }
 
@@ -305,7 +312,9 @@ public final class StateStore: @unchecked Sendable {
             WHERE d.account = ? AND d.kind IN ('waiting', 'nowPlaying', 'retry', 'held')
             """, [id]).first?.double("d")
         let newestAny = try db.query("""
-            SELECT MAX(t.date) AS d FROM deliveries d JOIN tags t ON t.key = d.tag_key WHERE d.account = ?
+            SELECT t.date AS d FROM tags t
+            WHERE EXISTS (SELECT 1 FROM deliveries d WHERE d.tag_key = t.key AND d.account = ?)
+            ORDER BY t.date DESC LIMIT 1
             """, [id]).first?.double("d")
         guard let target = oldestOpen.map({ $0 - 0.001 }) ?? newestAny else { return }
         let current = try cursor(for: account)?.timeIntervalSince1970 ?? -.infinity

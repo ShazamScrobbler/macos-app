@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import SQLiteLite
 @testable import ScrobbleCore
 
 @Suite struct StateStoreTests {
@@ -112,8 +113,57 @@ import Testing
         }
         let reopened = try StateStore(url: url)
         #expect(try reopened.states(since: t0 - 1)[x.key]?[a] == .waiting)
-        #expect(try reopened.meta("schema_version") == "1")
+        #expect(try reopened.meta("schema_version") == "2")
         #expect(try reopened.meta("legacy.lastScrobblePK") == "11938")
+    }
+
+    @Test func reopeningAVersion1FileMigratesToVersion2() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("state-\(UUID()).sqlite")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let x = tag(1, "X", at: 0)
+        do {
+            let s = try StateStore(url: url)
+            try s.apply([transition(x, a, .waiting)], now: t0)
+        }
+        // Turn it back into a v1 file: no deliveries_kind index, schema_version 1.
+        do {
+            let raw = try SQLiteDatabase(path: url.path, mode: .readWriteCreate)
+            try raw.execute("DROP INDEX deliveries_kind")
+            try raw.execute("UPDATE meta SET value = '1' WHERE key = 'schema_version'")
+        }
+        func indexCount() throws -> Int {
+            let raw = try SQLiteDatabase(path: url.path, mode: .readWriteCreate)
+            return try raw.query("SELECT name FROM sqlite_master WHERE type = 'index' AND name = 'deliveries_kind'").count
+        }
+        #expect(try indexCount() == 0)
+        let migrated = try StateStore(url: url)
+        #expect(try migrated.meta("schema_version") == "2")
+        #expect(try indexCount() == 1)
+        #expect(try migrated.states(since: t0 - 1)[x.key]?[a] == .waiting)
+    }
+
+    @Test func advanceCursorUsesNewestRowOfThatAccountOnly() throws {
+        let s = try StateStore(url: nil)
+        let old = tag(1, "Old", at: 10), newer = tag(2, "Newer", at: 500)
+        try s.apply([transition(old, a, .scrobbled(at: t0)), transition(newer, b, .scrobbled(at: t0))], now: t0)
+        try s.setCursor(t0, for: a)
+        try s.advanceCursor(for: a)
+        #expect(try s.cursor(for: a) == t0 + 10)
+    }
+
+    @Test func skipAllWaitingIsSetBasedAndCountsDistinctTags() throws {
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 10), z = tag(3, "Z", at: 20)
+        try s.apply([transition(x, a, .waiting), transition(x, b, .retry(attempt: 1, nextAt: t0 + 60)),
+                     transition(y, a, .held(.signedOut)), transition(z, a, .scrobbled(at: t0))], now: t0)
+        #expect(try s.skipAllWaiting(now: t0 + 1) == 2)
+        let states = try s.states(for: [x.key, y.key, z.key])
+        #expect(states[x.key]?[a] == .skipped(.user))
+        #expect(states[x.key]?[b] == .skipped(.user))
+        #expect(states[y.key]?[a] == .skipped(.user))
+        #expect(states[z.key]?[a] == .scrobbled(at: t0))
+        #expect(try s.choices().excluded == [x.key, y.key])
+        #expect(try s.skipAllWaiting(now: t0 + 2) == 0)
     }
 
     @Test func survivesConcurrentUse() async throws {

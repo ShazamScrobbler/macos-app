@@ -110,14 +110,16 @@ public final class SQLiteDatabase: @unchecked Sendable {
             }
             guard rc == SQLITE_OK else { throw Self.error(handle, rc) }
         }
+        let columnCount = sqlite3_column_count(stmt)
+        let names = (0..<columnCount).map { String(cString: sqlite3_column_name(stmt, $0)) }
         var rows: [SQLiteRow] = []
         while true {
             rc = sqlite3_step(stmt)
             if rc == SQLITE_DONE { break }
             guard rc == SQLITE_ROW else { throw Self.error(handle, rc) }
             var values: [String: SQLiteValue] = [:]
-            for column in 0..<sqlite3_column_count(stmt) {
-                let name = String(cString: sqlite3_column_name(stmt, column))
+            for column in 0..<columnCount {
+                let name = names[Int(column)]
                 switch sqlite3_column_type(stmt, column) {
                 case SQLITE_INTEGER: values[name] = .integer(sqlite3_column_int64(stmt, column))
                 case SQLITE_FLOAT: values[name] = .real(sqlite3_column_double(stmt, column))
