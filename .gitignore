@@ -31,3 +31,4 @@ Kit/.swiftpm/
 App/ShazamScrobbler.xcodeproj/
 App/Config/Secrets.xcconfig
 App/build/
+signing/

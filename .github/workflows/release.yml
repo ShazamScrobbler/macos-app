@@ -1,0 +1,91 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    env:
+      SPARKLE_VERSION: "2.6.4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - run: brew install xcodegen
+      - name: Version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - name: Build configuration
+        env:
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+        run: |
+          {
+            echo "LASTFM_API_KEY = $LASTFM_API_KEY"
+            echo "LASTFM_API_SECRET = $LASTFM_API_SECRET"
+            echo "SPARKLE_PUBLIC_KEY = $SPARKLE_PUBLIC_KEY"
+            echo "CODE_SIGN_IDENTITY = ShazamScrobbler Signing"
+          } > App/Config/Secrets.xcconfig
+      - name: Import signing identity
+        id: cert
+        env:
+          SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
+        run: scripts/ci-import-cert.sh
+      - name: Test
+        run: scripts/check-boundaries.sh && swift test --package-path Kit
+      - name: Build
+        run: |
+          cd App && xcodegen generate
+          xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
+            -derivedDataPath build \
+            MARKETING_VERSION="${{ steps.version.outputs.version }}" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            OTHER_CODE_SIGN_FLAGS="--keychain ${{ steps.cert.outputs.keychain }} --timestamp=none" build
+      - name: Verify signature
+        run: scripts/verify-release-signature.sh App/build/Build/Products/Release/ShazamScrobbler.app
+      - name: DMG
+        run: |
+          mkdir -p dist dmgroot
+          cp -R App/build/Build/Products/Release/ShazamScrobbler.app dmgroot/
+          ln -s /Applications dmgroot/Applications
+          hdiutil create -volname ShazamScrobbler -srcfolder dmgroot -ov -format UDZO \
+            "dist/ShazamScrobbler-${{ steps.version.outputs.version }}.dmg"
+          codesign --keychain "${{ steps.cert.outputs.keychain }}" -s "ShazamScrobbler Signing" --timestamp=none dist/*.dmg
+          (cd dist && shasum -a 256 ./*.dmg > SHA256SUMS.txt)
+      - name: Sparkle appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          curl -fsSL -o sparkle.tar.xz "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          mkdir sparkle && tar -xf sparkle.tar.xz -C sparkle
+          printf '%s' "$SPARKLE_PRIVATE_KEY" > "$RUNNER_TEMP/sparkle.key"
+          sparkle/bin/generate_appcast --ed-key-file "$RUNNER_TEMP/sparkle.key" \
+            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/" dist
+          rm "$RUNNER_TEMP/sparkle.key"
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*.dmg
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "## First launch"
+            echo "This build is open source and not notarized by Apple. The first time you open it, macOS blocks it:"
+            echo "open it once, then go to System Settings › Privacy & Security and click **Open Anyway**."
+            echo "Then follow the in-app steps to give it Full Disk Access (it reads only Shazam's library). See SECURITY.md."
+            echo
+            echo "Verify this download: \`gh attestation verify ShazamScrobbler-${{ steps.version.outputs.version }}.dmg -R ${{ github.repository }}\`"
+            echo
+            cat dist/SHA256SUMS.txt
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/appcast.xml dist/SHA256SUMS.txt \
+            --title "ShazamScrobbler ${{ steps.version.outputs.version }}" --notes-file notes.md
