@@ -13,7 +13,7 @@ A menu bar app that scrobbles the songs Shazam for Mac identifies to Last.fm, Li
 
 1. Download the DMG from [Releases](https://github.com/ShazamScrobbler/macos-app/releases) and drag ShazamScrobbler to Applications.
 2. On first launch macOS says it can't verify the app. Open System Settings > Privacy & Security and click **Open Anyway**. This is needed once; updates don't repeat it.
-3. Follow the in-app **Full Disk Access** steps. macOS 27 won't show a prompt for Shazam's data, and on macOS 15 Sequoia and later group containers are protected, so the app has to be added by hand in System Settings. See [SECURITY.md](SECURITY.md) for what the app does with this access.
+3. Follow the in-app **Full Disk Access** steps. macOS blocks apps from reading Shazam's data unless you allow it, and it won't show a prompt, so you add the app by hand in System Settings. See [SECURITY.md](SECURITY.md) for what the app does with this access.
 
 ![Full Disk Access setup](docs/images/access-setup.png)
 
@@ -33,13 +33,13 @@ Password sign-in only works over `https://`. Passwords are not stored; session k
 
 ## How it decides what to scrobble
 
-- **45 s rule:** a song is scrobbled once it has played for 45 seconds (adjustable, 30 to 240 s). A newer tag before then means the song wasn't played long enough.
-- **Now playing:** sent as soon as a song is tagged and refreshed while you wait.
-- **Another player active:** if the account already shows something else playing (for example Music or Spotify scrobbling on its own), the tag is skipped.
+- **45 s rule:** a song is scrobbled once it has played for 45 seconds (adjustable, 30 to 240 s). If a different song is tagged before 45 s, the first one wasn't played long enough (a repeat of the same song doesn't count).
+- **Now playing:** sent as soon as a song is tagged, then re-sent every 4 minutes for up to 10 minutes after the tag.
+- **Another player active:** if your account's recent tracks (read from your own account) already show something else playing (for example Music or Spotify scrobbling on its own), the tag is skipped.
 - **Repeat tags:** Auto-Shazam tags the same song again and again. A tag is a repeat when the current play is the same song and the tag comes less than 10 minutes after that play's latest sighting. Repeats are not scrobbled twice.
-- **Pause modes:** pausing either ignores tags made meanwhile or keeps them until you resume.
+- **Pause modes:** Ignore drops tags made while paused; Keep holds them until you resume.
 - **Don't Scrobble / Scrobble Anyway:** cancel a song during the wait, or scrobble one that was skipped.
-- **Skip Waiting:** scrobble the current song now instead of waiting out the 45 s.
+- **Skip Waiting:** discards everything currently waiting; those songs are marked as not to be scrobbled.
 
 ## Upgrading from 1.x
 
@@ -66,7 +66,7 @@ See [SECURITY.md](SECURITY.md): build provenance, checksum, signing identity and
 2. `defaults delete ShazamScrobbler`
 3. `rm -rf ~/Library/Application\ Support/ShazamScrobbler`
 4. Remove the "ShazamScrobbler" items in Keychain Access.
-5. Remove ShazamScrobbler from System Settings > Privacy & Security > Full Disk Access.
+5. Remove ShazamScrobbler from System Settings > Privacy & Security > Full Disk Access, and from System Settings > General > Login Items if it's listed.
 
 ## Licence
 
