@@ -24,8 +24,13 @@ public final class AccountStore: @unchecked Sendable {
     }
 
     public func remove(_ id: AccountID) throws {
+        var firstError: Error?
+        for field in SecretField.allCases {
+            do { try secrets.set(nil, for: Self.name(field, id)) }
+            catch { firstError = firstError ?? error }
+        }
+        if let firstError { throw firstError }
         save(load().filter { $0.id != id })
-        for field in SecretField.allCases { try secrets.set(nil, for: Self.name(field, id)) }
     }
 
     public func secret(_ field: SecretField, for id: AccountID) -> String? {

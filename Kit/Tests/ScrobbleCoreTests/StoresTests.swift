@@ -22,8 +22,42 @@ import Testing
         try store.setSecret("TOKEN", .token, for: account.id)
         #expect(store.load() == [account])
         #expect(store.secret(.token, for: account.id) == "TOKEN")
-        let raw = String(decoding: try JSONSerialization.data(withJSONObject: defaults.dictionaryRepresentation().mapValues { "\($0)" }), as: UTF8.self)
-        #expect(!raw.contains("TOKEN"))
+        let stored = try #require(defaults.data(forKey: "accounts.v2"))
+        #expect(!String(decoding: stored, as: UTF8.self).contains("TOKEN"))
+        #expect(String(decoding: stored, as: UTF8.self).contains("steph"))
+        for (_, value) in defaults.dictionaryRepresentation() {
+            if let text = value as? String { #expect(!text.contains("TOKEN")) }
+            if let data = value as? Data { #expect(!String(decoding: data, as: UTF8.self).contains("TOKEN")) }
+        }
+    }
+
+    final class FailingSecretStore: SecretStore, @unchecked Sendable {
+        struct Boom: Error {}
+        let inner = InMemorySecretStore()
+        let failingName: String
+        nonisolated(unsafe) var deleteAttempts: [String] = []
+        init(failingName: String) { self.failingName = failingName }
+        func get(_ name: String) throws -> String? { try inner.get(name) }
+        func set(_ value: String?, for name: String) throws {
+            if value == nil {
+                deleteAttempts.append(name)
+                if name == failingName { throw Boom() }
+            }
+            try inner.set(value, for: name)
+        }
+    }
+
+    @Test func removeKeepsAccountAndAttemptsAllDeletesWhenOneThrows() throws {
+        let failing = "\(account.id.rawValue).\(SecretField.sessionKey.rawValue)"
+        let secrets = FailingSecretStore(failingName: failing)
+        let store = AccountStore(defaults: freshDefaults(), secrets: secrets)
+        store.upsert(account)
+        try store.setSecret("S", .sessionKey, for: account.id)
+        try store.setSecret("K", .apiKey, for: account.id)
+        #expect(throws: FailingSecretStore.Boom.self) { try store.remove(account.id) }
+        #expect(store.load() == [account])
+        #expect(secrets.deleteAttempts.count == SecretField.allCases.count)
+        #expect(store.secret(.apiKey, for: account.id) == nil)
     }
 
     @Test func upsertReplacesAndRemoveDeletesSecrets() throws {
