@@ -9,6 +9,7 @@ public struct ShazamLibrary: TagSource {
     public static let defaultContainerURL = URL(fileURLWithPath: NSHomeDirectory())
         .appendingPathComponent("Library/Group Containers/4GWDBCF5A4.group.com.shazam")
     public static let defaultShazamAppURL = URL(fileURLWithPath: "/Applications/Shazam.app")
+    public static let watchedFileNames = ["ShazamDataModel.sqlite", "ShazamDataModel.sqlite-wal"]
 
     public let containerURL: URL
     public let shazamAppURL: URL
