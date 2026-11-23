@@ -185,4 +185,13 @@ import Testing
         #expect(rows.first { $0.tag.pk == 2 }?.to == .tooShort)
         #expect(rows.first { $0.tag.pk == 3 }?.to == .waiting)
     }
+
+    @Test func longAutoShazamChainIsOnePlay() {
+        let out = run([tag(1, "Loop", at: 0), tag(2, "Loop", at: 500), tag(3, "Loop", at: 1000), tag(4, "Next", at: 1100)], now: 1110)
+        let rows = out.transitions.filter { $0.account == a }
+        #expect(rows.first { $0.tag.pk == 1 }?.to == .waiting)
+        #expect(rows.first { $0.tag.pk == 2 }?.to == .skipped(.duplicate))
+        #expect(rows.first { $0.tag.pk == 3 }?.to == .skipped(.duplicate))
+        #expect(rows.first { $0.tag.pk == 4 }?.to == .nowPlaying(deadline: t0 + 1145))
+    }
 }

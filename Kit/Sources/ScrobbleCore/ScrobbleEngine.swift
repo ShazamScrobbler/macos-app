@@ -76,13 +76,16 @@ public enum ScrobbleEngine {
         let unique = sorted.filter { seenKeys.insert($0.key).inserted }
 
         var lastPlay: ShazamTag?
+        var lastSighting = Date.distantPast
         var duplicates = Set<TagKey>()
         for tag in unique {
             if let previous = lastPlay, previous.track.matchKey == tag.track.matchKey,
-               tag.date.timeIntervalSince(previous.date) < EngineSettings.duplicateWindow {
+               tag.date.timeIntervalSince(lastSighting) < EngineSettings.duplicateWindow {
                 duplicates.insert(tag.key)
+                lastSighting = tag.date
             } else {
                 lastPlay = tag
+                lastSighting = tag.date
             }
         }
 
