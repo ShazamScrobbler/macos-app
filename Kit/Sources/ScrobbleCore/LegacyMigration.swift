@@ -48,7 +48,7 @@ public enum LegacyMigration {
         let excludedPKs = try store.meta("legacy.notToScrobble")?.split(separator: ",").compactMap { Int64($0) } ?? []
         guard accountID != nil || lastPK != nil || !excludedPKs.isEmpty else { return false }
 
-        let found = source.tags(withPKs: excludedPKs + (lastPK.map { [$0] } ?? []))
+        let found = try source.tags(withPKs: excludedPKs + (lastPK.map { [$0] } ?? []))
         if let accountID, let lastPK, let tag = found[lastPK], let current = try store.cursor(for: accountID) {
             try store.setCursor(min(current, tag.date), for: accountID)
         }

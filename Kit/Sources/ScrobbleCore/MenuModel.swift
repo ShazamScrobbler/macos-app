@@ -73,9 +73,9 @@ public enum MenuModel {
         }
         let nowPlaying = snapshot.nowPlaying.map { NowPlayingRow(row: row($0.tag), deadline: $0.deadline) }
         let recent = snapshot.recent.filter { $0.key != nowPlaying?.row.key }.prefix(recentSlots).map(row)
-        let problems = snapshot.problems.compactMap { id, problem in
-            accounts.first { $0.id == id }.map { ProblemRow(account: $0, problem: problem) }
-        }.sorted { $0.account.id.rawValue < $1.account.id.rawValue }
+        let problems = accounts.compactMap { account in
+            snapshot.problems[account.id].map { ProblemRow(account: account, problem: $0) }
+        }
 
         return MenuContent(nowPlaying: nowPlaying, recent: Array(recent), problems: Array(problems.prefix(problemSlots)),
                            library: notice(for: snapshot.libraryStatus), paused: snapshot.paused,

@@ -52,6 +52,13 @@ import Testing
         #expect(MenuModel.content(snapshot: snapshot, accounts: []).library == .waitingForShazam)
     }
 
+    @Test func problemRowsFollowAccountOrder() {
+        var snapshot = Snapshot.empty
+        snapshot.problems = [lastfm.id: .keyUnusable, lb.id: .signedOut]
+        let content = MenuModel.content(snapshot: snapshot, accounts: [lb, lastfm])
+        #expect(content.problems.map(\.account) == [lb, lastfm])
+    }
+
     @Test func changedSlotsReportsOnlyDifferences() {
         #expect(MenuModel.changedSlots(old: ["a", "b", nil], new: ["a", "c", "d"]) == [1, 2])
         #expect(MenuModel.changedSlots(old: ["a", "b"], new: ["a"]) == [1])

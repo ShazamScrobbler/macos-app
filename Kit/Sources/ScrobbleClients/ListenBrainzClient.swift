@@ -102,9 +102,13 @@ public struct ListenBrainzClient: Scrobbler {
         catch is CancellationError { throw CancellationError() }
         catch let error as URLError where error.code == .cancelled { throw CancellationError() }
         catch { throw ScrobbleError.transient(error.localizedDescription) }
-        let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] ?? [:]
+        let parsed = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+        let object = parsed ?? [:]
         switch response.statusCode {
-        case 200..<300: return object
+        case 200..<300:
+            // A login page or proxy answer with a 2xx status is not an accepted listen.
+            guard parsed != nil else { throw ScrobbleError.transient("Unreadable response from \(url.host ?? "server")") }
+            return object
         case 401: throw ScrobbleError.signedOut
         case 429:
             let reset = response.value(forHTTPHeaderField: "X-RateLimit-Reset-In").flatMap(TimeInterval.init)

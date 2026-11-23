@@ -120,6 +120,25 @@ import TestSupport
         #expect(defaults.object(forKey: "session") == nil)
     }
 
+    @Test func failedLookupKeepsLegacyPlanAndLaterCallResolves() throws {
+        struct Down: Error {}
+        let defaults = legacyDefaults()
+        let store = try StateStore(url: nil)
+        let account = try #require(try LegacyMigration.migrateDefaults(
+            defaults: defaults, accounts: AccountStore(defaults: defaults, secrets: InMemorySecretStore()),
+            settings: SettingsStore(defaults: defaults), store: store, now: now))
+        let last = ShazamTag(pk: 11938, date: now - 3600, track: Track(artist: "A", title: "Last"))
+        var broken = FakeTagSource(byPK: [11938: last])
+        broken.lookupError = Down()
+        #expect(throws: Down.self) { try LegacyMigration.resolvePending(store: store, source: broken) }
+        #expect(try store.meta("legacy.lastScrobblePK") == "11938")
+        #expect(try store.meta("legacy.account") == account.id.rawValue)
+
+        #expect(try LegacyMigration.resolvePending(store: store, source: FakeTagSource(byPK: [11938: last])) == true)
+        #expect(try store.meta("legacy.lastScrobblePK") == nil)
+        #expect(try store.cursor(for: account.id) == now - 3600)
+    }
+
     @Test func newerTagNeverMovesCursorForward() throws {
         let defaults = legacyDefaults()
         let store = try StateStore(url: nil)

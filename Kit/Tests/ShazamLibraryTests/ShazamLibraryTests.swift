@@ -84,7 +84,17 @@ import TestSupport
         try f.createDatabase()
         let pk = try f.addTag(title: "One", artists: ["A"], album: nil, date: t0)
         let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
-        #expect(lib.tags(withPKs: [pk, 999])[pk]?.track.title == "One")
-        #expect(lib.tags(withPKs: [pk, 999])[999] == nil)
+        #expect(try lib.tags(withPKs: [pk, 999])[pk]?.track.title == "One")
+        #expect(try lib.tags(withPKs: [pk, 999])[999] == nil)
+        #expect(try lib.tags(withPKs: []).isEmpty)
+    }
+
+    @Test func lookupThrowsWhenDatabaseUnreadable() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        let pk = try f.addTag(title: "One", artists: ["A"], album: nil, date: t0)
+        chmod(f.dbURL.path, 0); defer { chmod(f.dbURL.path, 0o644) }
+        let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
+        #expect(throws: (any Error).self) { try lib.tags(withPKs: [pk]) }
     }
 }

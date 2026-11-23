@@ -62,6 +62,13 @@ import ScrobbleCore
         await #expect(throws: expected) { _ = try await client(stub).scrobble([item("Kelly")]) }
     }
 
+    @Test func nonJSONSuccessIsTransientNotAccepted() async {
+        let stub = StubTransport([.init(status: 200, body: "<html>Please log in</html>")])
+        await #expect(throws: ScrobbleError.transient("Unreadable response from api.listenbrainz.org")) {
+            _ = try await client(stub).scrobble([item("Kelly")])
+        }
+    }
+
     @Test func otherPlayerIgnoresOurOwnClientAndOurTrack() async throws {   // #22, Review Focus 1
         func playingNow(client: String, title: String) -> StubTransport.Reply {
             .init(body: """

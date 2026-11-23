@@ -52,11 +52,12 @@ public struct ShazamLibrary: TagSource {
         }
     }
 
-    public func tags(withPKs pks: [Int64]) -> [Int64: ShazamTag] {
-        guard !pks.isEmpty, let db = try? SQLiteDatabase(path: databaseURL.path, mode: .readOnly) else { return [:] }
+    public func tags(withPKs pks: [Int64]) throws -> [Int64: ShazamTag] {
+        guard !pks.isEmpty else { return [:] }
+        let db = try SQLiteDatabase(path: databaseURL.path, mode: .readOnly)
         let placeholders = Array(repeating: "?", count: pks.count).joined(separator: ",")
-        let found = (try? Self.tags(db, filter: "t.Z_PK IN (\(placeholders))", bindings: pks.map { .integer($0) },
-                                    ascending: true, limit: nil)) ?? []
+        let found = try Self.tags(db, filter: "t.Z_PK IN (\(placeholders))", bindings: pks.map { .integer($0) },
+                                  ascending: true, limit: nil)
         return Dictionary(found.map { ($0.pk, $0) }, uniquingKeysWith: { a, _ in a })
     }
 

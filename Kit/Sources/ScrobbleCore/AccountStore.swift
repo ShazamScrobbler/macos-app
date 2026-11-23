@@ -1,8 +1,11 @@
 import Foundation
+import os
 
 /// Non-secret account fields in UserDefaults (key "accounts.v2"); secrets in a SecretStore.
 public final class AccountStore: @unchecked Sendable {
     static let defaultsKey = "accounts.v2"
+    static let unreadableKey = "accounts.v2.unreadable"
+    private static let log = Logger(subsystem: "ShazamScrobbler", category: "ui")
     private let defaults: UserDefaults
     private let secrets: any SecretStore
 
@@ -13,7 +16,13 @@ public final class AccountStore: @unchecked Sendable {
 
     public func load() -> [Account] {
         guard let data = defaults.data(forKey: Self.defaultsKey) else { return [] }
-        return (try? JSONDecoder().decode([Account].self, from: data)) ?? []
+        do { return try JSONDecoder().decode([Account].self, from: data) }
+        catch {
+            // Keep the unreadable blob (first one only) so a later save can't silently wipe the accounts.
+            if defaults.data(forKey: Self.unreadableKey) == nil { defaults.set(data, forKey: Self.unreadableKey) }
+            Self.log.error("Stored accounts are unreadable (\(data.count) bytes); kept a copy under \(Self.unreadableKey, privacy: .public)")
+            return []
+        }
     }
 
     public func upsert(_ account: Account) {

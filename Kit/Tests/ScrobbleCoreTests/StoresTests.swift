@@ -60,6 +60,22 @@ import Testing
         #expect(store.secret(.apiKey, for: account.id) == nil)
     }
 
+    @Test func corruptAccountsBlobIsBackedUpOnceAndNotOverwritten() throws {
+        let defaults = freshDefaults()
+        let garbage = Data("nope".utf8)
+        defaults.set(garbage, forKey: "accounts.v2")
+        let store = AccountStore(defaults: defaults, secrets: InMemorySecretStore())
+        #expect(store.load() == [])
+        #expect(defaults.data(forKey: "accounts.v2.unreadable") == garbage)
+        store.upsert(account)
+        #expect(store.load() == [account])
+        #expect(defaults.data(forKey: "accounts.v2.unreadable") == garbage)
+        // A second corruption never replaces the earlier backup.
+        defaults.set(Data("other".utf8), forKey: "accounts.v2")
+        #expect(store.load() == [])
+        #expect(defaults.data(forKey: "accounts.v2.unreadable") == garbage)
+    }
+
     @Test func upsertReplacesAndRemoveDeletesSecrets() throws {
         let secrets = InMemorySecretStore()
         let store = AccountStore(defaults: freshDefaults(), secrets: secrets)

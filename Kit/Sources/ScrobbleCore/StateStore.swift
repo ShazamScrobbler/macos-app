@@ -167,12 +167,6 @@ public final class StateStore: @unchecked Sendable {
         }
     }
 
-    public func nextRetryDate() throws -> Date? {
-        lock.lock(); defer { lock.unlock() }
-        return try db.query("SELECT MIN(next_at) AS n FROM deliveries WHERE kind = 'retry'").first?.double("n")
-            .map(Date.init(timeIntervalSince1970:))
-    }
-
     /// Earliest retry time among the given accounts' rows only.
     public func nextRetryDate(accounts: [AccountID]) throws -> Date? {
         guard !accounts.isEmpty else { return nil }

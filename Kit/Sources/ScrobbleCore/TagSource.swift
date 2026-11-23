@@ -26,5 +26,5 @@ public struct TagSourceResult: Sendable, Equatable {
 public protocol TagSource: Sendable {
     func read(since: Date, recentLimit: Int) -> TagSourceResult
     /// Lookup by Shazam row id; used once to migrate 1.x markers (§8).
-    func tags(withPKs pks: [Int64]) -> [Int64: ShazamTag]
+    func tags(withPKs pks: [Int64]) throws -> [Int64: ShazamTag]
 }

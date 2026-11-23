@@ -36,7 +36,7 @@ import Testing
         let due = try s.pending(account: a, dueBy: t0 + 600, limit: 50)
         #expect(due.map(\.track.title) == ["Old", "Late"])
         #expect(try s.pending(account: a, dueBy: t0 + 600, limit: 1).count == 1)
-        #expect(try s.nextRetryDate() == t0 + 500)
+        #expect(try s.nextRetryDate(accounts: [a]) == t0 + 500)
     }
 
     @Test func holdAndReleasePerAccount() throws {
