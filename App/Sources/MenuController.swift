@@ -61,7 +61,6 @@ final class MenuController: NSObject, NSMenuDelegate {
         configureHeader(nowPlayingHeader, String(localized: "Now Playing"))
         configureHeader(recentHeader, String(localized: "Recent"))
         [nowPlayingHeader, nowPlayingItem, nowPlayingSeparator].forEach { $0.isHidden = true; menu.addItem($0) }
-        nowPlayingItem.isEnabled = false
 
         menu.addItem(recentHeader)
         recentItems = (0..<MenuModel.recentSlots).map { _ in
@@ -134,6 +133,7 @@ final class MenuController: NSObject, NSMenuDelegate {
             shownNowPlaying = new.nowPlaying?.row
             nowPlayingItem.submenu = new.nowPlaying.map { submenu(for: $0.row) }
         }
+        nowPlayingItem.isEnabled = hasNowPlaying   // AppKit never opens a disabled item's submenu
         updateNowPlayingTitle()
 
         let newRecent: [SongRow?] = (0..<MenuModel.recentSlots).map { $0 < new.recent.count ? new.recent[$0] : nil }
