@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) var model: AppModel!
     private var scheduler: RescanScheduler!
     private var menuController: MenuController?
+    private lazy var settingsWindow = SettingsWindowController(model: model)
 
     /// No nib or storyboard (and no NSPrincipalClass), so `@main` alone would never install the delegate.
     static func main() {
@@ -33,8 +34,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             openAccessSetup: { [weak self] in self?.openAccessSetup() },
             checkForUpdates: {},
             openAbout: { NSApp.activateApp(); NSApp.orderFrontStandardAboutPanel(nil) }))
+        if model.accountStore.load().isEmpty && !UserDefaults.standard.bool(forKey: "didShowWelcome") {
+            UserDefaults.standard.set(true, forKey: "didShowWelcome")
+            settingsWindow.show(tab: .accounts)
+        }
     }
 
-    func openSettings() {}
+    func openSettings() { settingsWindow.show() }
     func openAccessSetup() {}
 }
