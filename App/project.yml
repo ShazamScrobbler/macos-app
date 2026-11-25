@@ -1,0 +1,74 @@
+name: ShazamScrobbler
+options:
+  deploymentTarget:
+    macOS: "12.0"
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
+packages:
+  ShazamScrobblerKit:
+    path: ../Kit
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: "2.10.1"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "12.0"
+    MARKETING_VERSION: "2.0.0"
+    CURRENT_PROJECT_VERSION: "200"
+    PRODUCT_BUNDLE_IDENTIFIER: ShazamScrobbler
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+  configs:
+    Debug:
+      ONLY_ACTIVE_ARCH: YES
+    Release:
+      ONLY_ACTIVE_ARCH: NO
+      ARCHS: "arm64 x86_64"
+targets:
+  ShazamScrobbler:
+    type: application
+    platform: macOS
+    sources:
+      - Sources
+      - Resources
+    info:
+      path: Resources/Info.plist
+      properties:
+        CFBundleName: ShazamScrobbler
+        CFBundleDisplayName: ShazamScrobbler
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        LSUIElement: true
+        NSHumanReadableCopyright: "Open source under the MIT License."
+        NSLocalNetworkUsageDescription: "ShazamScrobbler connects to scrobbling servers on your local network, such as a self-hosted Maloja or ListenBrainz server."
+        SUFeedURL: $(SPARKLE_FEED_URL)
+        SUPublicEDKey: $(SPARKLE_PUBLIC_KEY)
+        LastFmAPIKey: $(LASTFM_API_KEY)
+        LastFmAPISecret: $(LASTFM_API_SECRET)
+    dependencies:
+      - package: ShazamScrobblerKit
+        product: ScrobbleCore
+      - package: ShazamScrobblerKit
+        product: ShazamLibrary
+      - package: ShazamScrobblerKit
+        product: ScrobbleClients
+      - package: Sparkle
+        product: Sparkle
+schemes:
+  ShazamScrobbler:
+    build:
+      targets:
+        ShazamScrobbler: all
+    run:
+      config: Debug
+    archive:
+      config: Release

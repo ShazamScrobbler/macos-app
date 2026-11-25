@@ -28,7 +28,15 @@ DerivedData
 .DS_Store
 Kit/.build/
 Kit/.swiftpm/
-App/ShazamScrobbler.xcodeproj/
+App/ShazamScrobbler.xcodeproj/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+App/Resources/Info.plist
 App/Config/Secrets.xcconfig
 App/build/
 signing/
