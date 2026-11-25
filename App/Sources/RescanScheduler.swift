@@ -51,7 +51,7 @@ final class RescanScheduler {
         pathMonitor.start(queue: DispatchQueue(label: "ShazamScrobbler.network"))
     }
 
-    /// While on, every 2 s only checks whether the Shazam database became readable, and rescans once when it did.
+    /// While on, every 2 s only checks whether the Shazam database's readability changed (granted or revoked), and rescans once when it did.
     func setFastPolling(_ on: Bool) {
         fastTimer?.invalidate()
         fastTimer = nil
@@ -60,7 +60,7 @@ final class RescanScheduler {
         fastTimer = makeTimer(every: 2) { [weak self] in
             guard let self else { return }
             let readable = self.model.library.isReadable()
-            if readable && !self.wasReadable { self.scan() }
+            if readable != self.wasReadable { self.scan() }
             self.wasReadable = readable
         }
     }

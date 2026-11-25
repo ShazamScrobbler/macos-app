@@ -1,17 +1,25 @@
 import AppKit
+import os
 import ScrobbleCore
 import ShazamLibrary
 import SwiftUI
 
 /// Guides the user to grant Full Disk Access (§6.5). While open, the scheduler polls readability every 2 s, so the
 /// status row flips to "Access works" without a relaunch when the grant takes effect.
+/// Shared between the controller and the view so `show()` can restart the relaunch-button timer.
+@MainActor
+final class AccessSetupState: ObservableObject {
+    @Published var deniedSince = Date()
+}
+
 @MainActor
 final class AccessSetupWindowController: NSWindowController, NSWindowDelegate {
     private let scheduler: RescanScheduler
+    private let state = AccessSetupState()
 
     init(model: AppModel, scheduler: RescanScheduler) {
         self.scheduler = scheduler
-        let window = NSWindow(contentViewController: NSHostingController(rootView: AccessSetupView(model: model)))
+        let window = NSWindow(contentViewController: NSHostingController(rootView: AccessSetupView(model: model, state: state)))
         window.title = String(localized: "Let ShazamScrobbler Read Shazam")
         window.styleMask = [.titled, .closable]
         window.isReleasedWhenClosed = false
@@ -24,6 +32,7 @@ final class AccessSetupWindowController: NSWindowController, NSWindowDelegate {
     required init?(coder: NSCoder) { fatalError("init(coder:) is not used") }
 
     func show() {
+        state.deniedSince = Date()
         scheduler.setFastPolling(true)
         NSApp.activateApp()
         window?.makeKeyAndOrderFront(nil)
@@ -36,9 +45,15 @@ final class AccessSetupWindowController: NSWindowController, NSWindowDelegate {
 
 struct AccessSetupView: View {
     @ObservedObject var model: AppModel
-    @State private var deniedSince = Date()
+    @ObservedObject var state: AccessSetupState
 
-    private static let settingsURL = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AllFiles")!
+    private static let log = Logger(subsystem: "ShazamScrobbler", category: "ui")
+    private static var settingsURL: URL {
+        if #available(macOS 13, *) {
+            return URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AllFiles")!
+        }
+        return URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!
+    }
     private static let securityURL = URL(string: "https://github.com/ShazamScrobbler/macos-app/blob/master/SECURITY.md")!
 
     var body: some View {
@@ -61,7 +76,7 @@ struct AccessSetupView: View {
                     Text(String(localized: "3. Make sure the switch next to ShazamScrobbler is on."))
                 }
             }
-            Button(String(localized: "Open Full Disk Access Settings")) { NSWorkspace.shared.open(Self.settingsURL) }
+            Button(String(localized: "Open Full Disk Access Settings")) { Self.openSettings() }
                 .keyboardShortcut(.defaultAction)
 
             statusRow
@@ -69,7 +84,7 @@ struct AccessSetupView: View {
         .padding(24)
         .frame(width: 520)
         .onChange(of: model.snapshot.libraryStatus) { status in
-            if status == .accessDenied { deniedSince = Date() }
+            if status == .accessDenied { state.deniedSince = Date() }
         }
     }
 
@@ -91,7 +106,7 @@ struct AccessSetupView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Label(String(localized: "No access yet. This updates by itself."), systemImage: "hourglass")
                 TimelineView(.periodic(from: .now, by: 1)) { context in
-                    if context.date.timeIntervalSince(deniedSince) > 5 {
+                    if context.date.timeIntervalSince(state.deniedSince) > 5 {
                         Button(String(localized: "Already switched on? Relaunch ShazamScrobbler")) { Self.relaunch() }
                     }
                 }
@@ -102,7 +117,7 @@ struct AccessSetupView: View {
         case .notInstalled:
             Label(String(localized: "Shazam isn't installed."), systemImage: "exclamationmark.triangle").foregroundColor(.orange)
         case let .unreadable(detail):
-            Label(detail, systemImage: "exclamationmark.triangle").foregroundColor(.orange)
+            Label(String(localized: "Can't read Shazam: \(detail)"), systemImage: "exclamationmark.triangle").foregroundColor(.orange)
         }
     }
 
@@ -112,7 +127,18 @@ struct AccessSetupView: View {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/sh")
         process.arguments = ["-c", "sleep 1; exec /usr/bin/open -n \"$0\"", Bundle.main.bundlePath]
-        try? process.run()
+        do {
+            try process.run()
+        } catch {
+            log.error("Relaunch helper failed to start: \(String(describing: error), privacy: .private)")
+            return
+        }
         NSApp.terminate(nil)
+    }
+
+    private static func openSettings() {
+        if !NSWorkspace.shared.open(settingsURL) {
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Security.prefPane"))
+        }
     }
 }
