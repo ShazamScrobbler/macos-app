@@ -41,13 +41,15 @@ public actor Delivery {
                     paused: Bool) async -> DeliveryReport {
         var report = DeliveryReport()
         if !paused {
-            // Unreadable held problems must not look like "no problems": send nothing this run.
-            let held: [AccountID: AccountProblem]
+            // Unreadable held problems must not look like "no problems": send nothing this run
+            // (nextWake is still computed below, so the caller retries).
+            var held: [AccountID: AccountProblem] = [:]
+            var canSend = true
             do { held = try heldProblemsReader(store) } catch {
                 log.error("held problems read failed; sending nothing this run: \(error.localizedDescription, privacy: .private)")
-                return report
+                canSend = false
             }
-            for (account, scrobbler) in scrobblers.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
+            for (account, scrobbler) in scrobblers.sorted(by: { $0.key.rawValue < $1.key.rawValue }) where canSend {
                 if let problem = held[account] {
                     report.problems[account] = problem
                     continue
@@ -93,7 +95,7 @@ public actor Delivery {
                 case .transient, .rateLimited:
                     if !request.isRefresh {
                         var delay = Self.nowPlayingBackoff
-                        if case let .rateLimited(retryAfter) = scrobbleError { delay = max(delay, retryAfter ?? 0) }
+                        if case let .rateLimited(retryAfter) = scrobbleError { delay = max(delay, Backoff.cappedRetryAfter(retryAfter) ?? 0) }
                         nowPlayingRetryAfter[account] = time.now.addingTimeInterval(delay)
                     }
                 default: break

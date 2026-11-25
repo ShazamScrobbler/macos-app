@@ -251,31 +251,42 @@ import TestSupport
         #expect(await fake.nowPlayingTracks == [current.track])
     }
 
-    @Test func rateLimitedNowPlayingBacksOffForRetryAfterWhenLongerThan90() async throws {
+    /// Sets a now-playing error, runs once, then checks no new-tag attempt happens before `seconds` and one happens after.
+    func expectNowPlayingBackoff(_ error: ScrobbleError, seconds: TimeInterval) async throws {
         let current = tag(1, "Current", at: 0)
-        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 100_000))], now: 1000)
         let fake = FakeScrobbler()
-        await fake.setNowPlayingError(.rateLimited(retryAfter: 300))
+        await fake.setNowPlayingError(error)
         let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
         _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
-        time.advance(by: 200)
+        #expect(await fake.otherPlayerChecks.count == 1)
+        time.advance(by: seconds - 1)
         _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
         #expect(await fake.otherPlayerChecks.count == 1)
-        time.advance(by: 101)
+        #expect(await fake.nowPlayingTracks.isEmpty)
+        time.advance(by: 2)
         _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
         #expect(await fake.otherPlayerChecks.count == 2)
     }
 
-    @Test func rateLimitedNowPlayingWithoutRetryAfterUsesDefault() async throws {
-        let current = tag(1, "Current", at: 0)
-        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
-        let fake = FakeScrobbler()
-        await fake.setNowPlayingError(.rateLimited(retryAfter: 5))
-        let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
-        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
-        time.advance(by: 91)
-        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
-        #expect(await fake.otherPlayerChecks.count == 2)
+    @Test func rateLimitedNowPlayingBacksOffForRetryAfterWhenLongerThan90() async throws {
+        try await expectNowPlayingBackoff(.rateLimited(retryAfter: 300), seconds: 300)
+    }
+
+    @Test func rateLimitedNowPlayingWithShortRetryAfterUsesNinety() async throws {
+        try await expectNowPlayingBackoff(.rateLimited(retryAfter: 5), seconds: 90)
+    }
+
+    @Test func rateLimitedNowPlayingWithoutRetryAfterUsesNinety() async throws {
+        try await expectNowPlayingBackoff(.rateLimited(retryAfter: nil), seconds: 90)
+    }
+
+    @Test func rateLimitedNowPlayingWithInfiniteRetryAfterUsesNinety() async throws {
+        try await expectNowPlayingBackoff(.rateLimited(retryAfter: .infinity), seconds: 90)
+    }
+
+    @Test func rateLimitedNowPlayingRetryAfterIsCappedAtAnHour() async throws {
+        try await expectNowPlayingBackoff(.rateLimited(retryAfter: 99_999), seconds: 3600)
     }
 
     struct Boom: Error {}
@@ -291,7 +302,19 @@ import TestSupport
                                         paused: false)
         #expect(await fake.batches.isEmpty)
         #expect(await fake.nowPlayingTracks.isEmpty)
-        #expect(report == DeliveryReport())
+        #expect(report.nextWake == nil)   // nothing is scheduled for a plain waiting row
+        #expect(report.problems.isEmpty)
+        #expect(report.scrobbled == 0)
         #expect(try state(store, waiting, a) == .waiting)
+    }
+
+    @Test func unreadableHeldProblemsStillComputesNextWake() async throws {
+        let retrying = tag(1, "Retrying", at: 0)
+        let (store, _, time) = try setup([(retrying, a, .retry(attempt: 1, nextAt: t0 + 5000))], now: 1000)
+        let delivery = Delivery(store: store, time: time, random: { 0.5 }, heldProblemsReader: { _ in throw Boom() })
+        let fake = FakeScrobbler()
+        let report = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
+        #expect(await fake.batches.isEmpty)
+        #expect(report.nextWake == t0 + 5000)
     }
 }

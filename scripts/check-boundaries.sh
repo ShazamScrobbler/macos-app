@@ -52,16 +52,21 @@ if [ -n "$hits" ]; then
 fi
 
 # 2. ShazamLibrary must not contain networking or process-spawning code.
-if found 'URLSession|URLRequest|import Network|NWConnection|CFNetwork|NSURLConnection|socket\(|ScrobbleClients|Process\(|NSTask|getaddrinfo|CFStream|CFSocket|URL\(string:|contentsOf:|posix_spawn|system\(|dlopen|NSWorkspace' \
+if found 'URLSession|URLRequest|import Network|NWConnection|CFNetwork|NSURLConnection|socket\(|ScrobbleClients|Process\(|NSTask|getaddrinfo|CFStream|CFSocket|URL\(string:|contentsOf:|posix_spawn|system\(|dlopen|NSWorkspace|popen\(|execv|fork\(|NSAppleScript' \
     Kit/Sources/ShazamLibrary; then
   echo "error: Kit/Sources/ShazamLibrary must not use networking" >&2
   fail=1
 fi
 
 # 3. ShazamLibrary never writes.
-if found 'readWriteCreate|SQLITE_OPEN_READWRITE|forWritingTo|createFile|removeItem|O_RDWR|O_WRONLY|write\(to|write\(toFile|moveItem|copyItem|createDirectory|forUpdating|SQLITE_OPEN_CREATE|forWritingAtPath|O_CREAT|O_APPEND|unlink\(|rename\(|truncate\(|VACUUM|ATTACH' \
+if found 'readWriteCreate|SQLITE_OPEN_READWRITE|forWritingTo|createFile|removeItem|O_RDWR|O_WRONLY|write\(to|write\(toFile|moveItem|copyItem|createDirectory|forUpdating|SQLITE_OPEN_CREATE|forWritingAtPath|O_CREAT|O_APPEND|unlink\(|rename\(|truncate\(|fopen|mkdir\(|symlink\(|trashItem|replaceItem|linkItem|createSymbolicLink|setAttributes' \
     Kit/Sources/ShazamLibrary; then
   echo "error: Kit/Sources/ShazamLibrary must not write files" >&2
+  fail=1
+fi
+# SQL verbs that modify or attach databases, in any letter case.
+if found -i 'VACUUM|ATTACH' Kit/Sources/ShazamLibrary; then
+  echo "error: Kit/Sources/ShazamLibrary must not run VACUUM or ATTACH" >&2
   fail=1
 fi
 
@@ -76,7 +81,7 @@ if [ "$deps" != "SQLiteLite ScrobbleCore" ]; then
 fi
 
 # 5. ShazamLibrary's transitive dependencies must not import networking either.
-if found 'URLSession|URLRequest|import Network|NWConnection|CFNetwork' Kit/Sources/ScrobbleCore Kit/Sources/SQLiteLite; then
+if found 'URLSession|URLRequest|import Network|NWConnection|CFNetwork|socket\(|getaddrinfo|NSURLConnection|CFStream' Kit/Sources/ScrobbleCore Kit/Sources/SQLiteLite; then
   echo "error: ScrobbleCore and SQLiteLite must not use networking (ShazamLibrary depends on them)" >&2
   fail=1
 fi

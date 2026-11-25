@@ -213,31 +213,60 @@ import TestSupport
         #expect(await okFake.nowPlayingTracks.map(\.title) == ["New"])
     }
 
-    /// Returns `recent` only when asked for (limit > 0), tagged by the window it was read for.
-    struct WindowSource: TagSource {
+    /// Records every `recentLimit` it is asked for; `recent` is returned only when limit > 0. Windows older than
+    /// `unreadableBefore` fail with `.unreadable`.
+    final class WindowSource: TagSource, @unchecked Sendable {
         let newest: ShazamTag
+        let unreadableBefore: Date?
+        private let lock = NSLock()
+        private var _limits: [Int] = []
+        var limits: [Int] { lock.lock(); defer { lock.unlock() }; return _limits }
+        init(newest: ShazamTag, unreadableBefore: Date? = nil) { self.newest = newest; self.unreadableBefore = unreadableBefore }
         func read(since: Date, recentLimit: Int) -> TagSourceResult {
-            TagSourceResult(status: .ok, tagsSince: [], recent: recentLimit > 0 && since > Date(timeIntervalSince1970: 1_800_000_000) - 650 ? [newest] : [])
+            lock.lock(); _limits.append(recentLimit); lock.unlock()
+            if let unreadableBefore, since < unreadableBefore { return TagSourceResult(status: .unreadable("boom")) }
+            return TagSourceResult(status: .ok, tagsSince: [], recent: recentLimit > 0 ? [newest] : [])
         }
         func tags(withPKs pks: [Int64]) throws -> [Int64: ShazamTag] { [:] }
+    }
+
+    func twoAccounts() -> (old: Account, new: Account) {
+        func acct(_ id: String, _ addedAt: Date) -> Account {
+            Account(id: AccountID(rawValue: id), preset: .listenbrainz, username: "u", apiURL: URL(string: "https://example.invalid")!,
+                    webAuthURL: nil, keyMode: .own, addedAt: addedAt)
+        }
+        return (acct("old", t0 - 5000), acct("new", t0))
     }
 
     @Test func recentComesFromTheNewestWindowOnly() async throws {
         let time = ManualTimeSource(t0 + 10)
         let store = try StateStore(url: nil)
-        let oldID = AccountID(rawValue: "old"), newID = AccountID(rawValue: "new")
-        func acct(_ id: AccountID, _ addedAt: Date) -> Account {
-            Account(id: id, preset: .listenbrainz, username: "u", apiURL: URL(string: "https://example.invalid")!,
-                    webAuthURL: nil, keyMode: .own, addedAt: addedAt)
-        }
-        // Cursors t0-5000 and t0: two windows. The old window's read (since < t0-650) returns no recent even at limit 20.
-        try store.setCursor(t0 - 5000, for: oldID)
-        try store.setCursor(t0, for: newID)
+        let (oldAcc, newAcc) = twoAccounts()
+        try store.setCursor(t0 - 5000, for: oldAcc.id)
+        try store.setCursor(t0, for: newAcc.id)
         let newest = ShazamTag(pk: 7, date: t0 + 5, track: Track(artist: "A", title: "OnlyInNewest"))
-        let cycle = ScanCycle(source: WindowSource(newest: newest), store: store,
-                              delivery: Delivery(store: store, time: time), time: time)
-        let snapshot = await cycle.run(accounts: [acct(oldID, t0 - 5000), acct(newID, t0)],
-                                       scrobblers: [oldID: FakeScrobbler(), newID: FakeScrobbler()], settings: EngineSettings())
+        let source = WindowSource(newest: newest)
+        let cycle = ScanCycle(source: source, store: store, delivery: Delivery(store: store, time: time), time: time)
+        let snapshot = await cycle.run(accounts: [oldAcc, newAcc],
+                                       scrobblers: [oldAcc.id: FakeScrobbler(), newAcc.id: FakeScrobbler()], settings: EngineSettings())
+        #expect(source.limits == [0, 20])   // oldest window first, only the newest asks for recent
         #expect(snapshot.recent == [newest])
+    }
+
+    @Test func failedOlderWindowIsNotHiddenByOkNewestWindow() async throws {
+        let time = ManualTimeSource(t0 + 10)
+        let store = try StateStore(url: nil)
+        let (oldAcc, newAcc) = twoAccounts()
+        try store.setCursor(t0 - 5000, for: oldAcc.id)
+        try store.setCursor(t0, for: newAcc.id)
+        let newest = ShazamTag(pk: 7, date: t0 + 5, track: Track(artist: "A", title: "New"))
+        let source = WindowSource(newest: newest, unreadableBefore: t0 - 1000)
+        let cycle = ScanCycle(source: source, store: store, delivery: Delivery(store: store, time: time), time: time)
+        let fake = FakeScrobbler()
+        let snapshot = await cycle.run(accounts: [oldAcc, newAcc],
+                                       scrobblers: [oldAcc.id: FakeScrobbler(), newAcc.id: fake], settings: EngineSettings())
+        #expect(snapshot.libraryStatus == .unreadable("boom"))
+        #expect(await fake.nowPlayingTracks.isEmpty)   // engine skipped
+        #expect(try store.states(for: [newest.key])[newest.key] == nil)
     }
 }

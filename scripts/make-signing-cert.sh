@@ -23,14 +23,14 @@ keyUsage=critical,digitalSignature
 extendedKeyUsage=critical,codeSigning
 EOF
 
-openssl req -x509 -newkey rsa:3072 -nodes -days 7300 -config "$out/req.cnf" \
-  -keyout "$out/key.pem" -out "$out/cert.pem"
 read -r -s -p "Password for the .p12 export: " password; echo
 read -r -s -p "Repeat password: " password2; echo
 [ "$password" = "$password2" ] || { echo "passwords do not match" >&2; exit 1; }
 # -legacy is required: tested on macOS 27, `security import` rejects the OpenSSL 3+/4 default PKCS#12
 # encryption ("MAC verification failed"). The legacy format is weaker, so insist on a long password.
 [ "${#password}" -ge 20 ] || { echo "password must be at least 20 characters (the .p12 uses legacy encryption)" >&2; exit 1; }
+openssl req -x509 -newkey rsa:3072 -nodes -days 7300 -config "$out/req.cnf" \
+  -keyout "$out/key.pem" -out "$out/cert.pem"
 # The password goes to openssl through the environment, only for this command (not visible in `ps`).
 P12PASS="$password" openssl pkcs12 -export -legacy -inkey "$out/key.pem" -in "$out/cert.pem" \
   -name "ShazamScrobbler Signing" -out "$out/ShazamScrobbler-Signing.p12" -passout env:P12PASS

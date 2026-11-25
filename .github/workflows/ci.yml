@@ -35,7 +35,7 @@ jobs:
         run: |
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
-            -derivedDataPath build \
+            -derivedDataPath build -destination 'generic/platform=macOS' \
             -disableAutomaticPackageResolution -onlyUsePackageVersionsFromResolvedFile \
             CODE_SIGN_IDENTITY=- build
           archs=$(lipo -archs build/Build/Products/Release/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler)

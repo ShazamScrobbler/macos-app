@@ -34,6 +34,11 @@ public enum Backoff {
         return minutes * 60 * (0.8 + 0.4 * random)
     }
 
+    /// A server's retry hint, usable only when finite; clamped to 5 s … 1 h.
+    public static func cappedRetryAfter(_ seconds: TimeInterval?) -> TimeInterval? {
+        seconds.flatMap { $0.isFinite ? min(max($0, 5), 3600) : nil }
+    }
+
     public static func nextUTCMidnight(after date: Date) -> Date {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC")!
@@ -51,7 +56,7 @@ public enum DeliveryPolicy {
         case let .permanent(message): return .ignored(message)
         case .transient: return .retry(attempt: attempt, nextAt: now + Backoff.delay(attempt: attempt, random: random))
         case let .rateLimited(after):
-            return .retry(attempt: attempt, nextAt: now + (after.flatMap { $0.isFinite ? min(max($0, 5), 3600) : nil } ?? Backoff.delay(attempt: attempt, random: random)))
+            return .retry(attempt: attempt, nextAt: now + (Backoff.cappedRetryAfter(after) ?? Backoff.delay(attempt: attempt, random: random)))
         }
     }
 

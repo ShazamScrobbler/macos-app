@@ -19,7 +19,7 @@ Only the code in `Kit/Sources/ShazamLibrary/` touches that path. That module con
 
 ## What it sends, and where
 
-Only to the accounts you add (including a check of your own account's recent tracks, to see whether another player is active) (Last.fm, Libre.fm, ListenBrainz, or servers you enter) and to GitHub to check for updates. No analytics, no other servers. What's sent: artist, title, album and time of each Shazam tag, your username (for the other-player check) and the app version (in the User-Agent and ListenBrainz submission info).
+Only to the accounts you add (including a check of your own account's recent tracks, to see whether another player is active) (Last.fm, Libre.fm, ListenBrainz, or servers you enter) and to GitHub to check for updates. No analytics, no other servers. What's sent: artist, title, album and time of each Shazam tag, your username (for the other-player check) and the app's major version (in the User-Agent; the full version only in ListenBrainz submission info).
 
 Servers you enter yourself: an `http://` address (for example on your local network) sends your session key or token unencrypted. Prefer `https://`.
 

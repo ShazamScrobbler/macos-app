@@ -158,8 +158,10 @@ public actor ScanCycle {
             // `recent` is the same newest tags in every read, so only the newest window (last: `sinces` is ascending) fetches it.
             let isNewest = index == sinces.count - 1
             let result = source.read(since: since, recentLimit: isNewest ? recentLimit : 0)
-            if isNewest { newest = result }
-            if result.status != .ok, status == .ok { status = result.status; newest = result }
+            // Any non-ok read wins (first one kept); otherwise the newest window's result carries `recent`.
+            if status == .ok {
+                if result.status != .ok { status = result.status; newest = result } else if isNewest { newest = result }
+            }
             windows.append(ReadWindow(since: since, accounts: grouped[cursor] ?? [], tags: result.tagsSince))
         }
         return (windows, status, newest ?? TagSourceResult(status: status))
