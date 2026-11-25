@@ -35,7 +35,13 @@ final class AddAccountModel: ObservableObject {
         case done(String)
     }
 
-    @Published var preset: ServicePreset = .lastfm
+    @Published var preset: ServicePreset = .lastfm {
+        didSet {
+            guard preset != oldValue else { return }
+            usePassword = false
+            if case .failed = phase { phase = .editing }
+        }
+    }
     @Published var serverURL = ""
     @Published var keyMode: KeyMode = BuiltInLastFmKey.current == nil ? .own : .builtIn
     @Published var apiKey = ""
@@ -45,6 +51,8 @@ final class AddAccountModel: ObservableObject {
     @Published var password = ""
     @Published var usePassword = false
     @Published private(set) var phase: Phase = .editing
+    /// Set when the browser could not be opened: the sheet shows the link so it can be copied.
+    @Published private(set) var authorizationLink: URL?
 
     let mode: AddAccountMode
     private let appModel: AppModel
@@ -70,7 +78,12 @@ final class AddAccountModel: ObservableObject {
 
     /// A custom server typed as `http://`: the session key or token would travel unencrypted.
     var showsInsecureServerWarning: Bool {
-        needsServerURL && serverURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased().hasPrefix("http://")
+        preset == .customListenBrainz && serverURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased().hasPrefix("http://")
+    }
+
+    /// A custom Last.fm-compatible server typed as `http://`: it always signs in with a password, which needs https.
+    var showsHTTPSRequired: Bool {
+        preset == .customAudioscrobbler && serverURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased().hasPrefix("http://")
     }
 
     private var apiURL: URL? {
@@ -81,11 +94,19 @@ final class AddAccountModel: ObservableObject {
         return url
     }
 
-    private var credentials: (key: String, secret: String)? {
-        if keyMode == .builtIn, builtInKeyAvailable { return BuiltInLastFmKey.current }
+    /// The typed key and secret, else the built-in key, else (re-sign-in of an own-key account with empty fields)
+    /// the stored ones, read off the main actor and used for the request only.
+    private func resolveCredentials() async throws -> (key: String, secret: String) {
+        if keyMode == .builtIn, builtInKeyAvailable, let builtIn = BuiltInLastFmKey.current { return builtIn }
         let key = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
         let secret = apiSecret.trimmingCharacters(in: .whitespacesAndNewlines)
-        return key.isEmpty || secret.isEmpty ? nil : (key, secret)
+        if !key.isEmpty, !secret.isEmpty { return (key, secret) }
+        if key.isEmpty, secret.isEmpty, case let .reauthenticate(account) = mode, account.keyMode == .own {
+            let store = appModel.accountStore, id = account.id
+            let stored = await Task.detached { (store.secret(.apiKey, for: id), store.secret(.apiSecret, for: id)) }.value
+            if let k = stored.0, let sec = stored.1, !k.isEmpty, !sec.isEmpty { return (k, sec) }
+        }
+        throw SignInError.missingCredentials
     }
 
     /// Cancels sign-in in progress and goes back to editing, with no error. A finished or failed sheet is left alone.
@@ -93,38 +114,47 @@ final class AddAccountModel: ObservableObject {
         generation += 1
         task?.cancel()
         task = nil
+        authorizationLink = nil
         if isBusy { phase = .editing }
     }
 
     func signInWithBrowser() {
-        guard let apiURL, let credentials, let webAuth = preset.defaultWebAuthURL else {
+        guard let apiURL, let webAuth = preset.defaultWebAuthURL else {
             phase = .failed(String(localized: "Fill in the server and API key first."))
             return
         }
-        let auth = AudioscrobblerAuth(apiURL: apiURL, apiKey: credentials.key, apiSecret: credentials.secret,
-                                      transport: appModel.transport)
+        authorizationLink = nil
         start { [self] in
+            let credentials = try await resolveCredentials()
+            let auth = AudioscrobblerAuth(apiURL: apiURL, apiKey: credentials.key, apiSecret: credentials.secret,
+                                          transport: appModel.transport)
             let token = try await auth.getToken()
             try Task.checkCancellation()
-            NSWorkspace.shared.open(auth.authorizationURL(webAuthURL: webAuth, token: token))
+            let link = auth.authorizationURL(webAuthURL: webAuth, token: token)
+            if !NSWorkspace.shared.open(link) { authorizationLink = link }
             phase = .waitingForBrowser
             let deadline = Date().addingTimeInterval(300)
             while Date() < deadline {
                 try await Task.sleep(nanoseconds: 3_000_000_000)
+                let session: AudioscrobblerSession
                 do {
-                    let session = try await auth.getSession(token: token)
-                    try Task.checkCancellation()
-                    return try await finish(audioscrobbler: session, apiURL: apiURL, webAuth: webAuth, credentials: credentials)
+                    session = try await auth.getSession(token: token)
                 } catch AudioscrobblerAuthError.notAuthorizedYet {
                     continue
+                } catch AudioscrobblerAuthError.failed(.transient(_)) {
+                    continue   // a network blip must not throw away an approval; the deadline still applies
+                } catch AudioscrobblerAuthError.failed(.rateLimited(_)) {
+                    continue
                 }
+                try Task.checkCancellation()
+                return try await finish(audioscrobbler: session, apiURL: apiURL, webAuth: webAuth, credentials: credentials)
             }
             throw SignInError.timedOut
         }
     }
 
     func signInWithPassword() {
-        guard let apiURL, let credentials else {
+        guard let apiURL else {
             phase = .failed(String(localized: "Fill in the server and API key first."))
             return
         }
@@ -132,11 +162,12 @@ final class AddAccountModel: ObservableObject {
             phase = .failed(Self.httpsRequired)
             return
         }
-        let auth = AudioscrobblerAuth(apiURL: apiURL, apiKey: credentials.key, apiSecret: credentials.secret,
-                                      transport: appModel.transport)
         let (user, pass) = (username, password)
         password = ""
         start { [self] in
+            let credentials = try await resolveCredentials()
+            let auth = AudioscrobblerAuth(apiURL: apiURL, apiKey: credentials.key, apiSecret: credentials.secret,
+                                          transport: appModel.transport)
             let session = try await auth.getMobileSession(username: user, password: pass)
             try Task.checkCancellation()
             return try await finish(audioscrobbler: session, apiURL: apiURL, webAuth: preset.defaultWebAuthURL, credentials: credentials)
@@ -164,7 +195,7 @@ final class AddAccountModel: ObservableObject {
 
     // MARK: internals
 
-    private enum SignInError: Error { case timedOut }
+    private enum SignInError: Error { case timedOut, missingCredentials }
 
     /// Runs one sign-in attempt. The result goes to `phase` unless the attempt was cancelled meanwhile.
     private func start(_ work: @escaping @MainActor () async throws -> String) {
@@ -222,6 +253,8 @@ final class AddAccountModel: ObservableObject {
     /// User-facing text for a failure. Never includes secrets: only server-provided messages and fixed strings.
     static func message(for error: Error) -> String {
         switch error {
+        case SignInError.missingCredentials:
+            return String(localized: "Fill in the server and API key first.")
         case SignInError.timedOut:
             return String(localized: "Sign-in timed out. Approve access in the browser within 5 minutes, then try again.")
         case AudioscrobblerAuthError.tokenExpired:
@@ -237,7 +270,7 @@ final class AddAccountModel: ObservableObject {
         case let ScrobbleError.keyUnusable(code):
             return String(localized: "The API key was rejected (error \(code)). Last.fm may require Pro for this key; use your own key.")
         case let ScrobbleError.permanent(message):
-            return message.hasPrefix("Password sign-in requires an https") ? httpsRequired : message
+            return message
         case let ScrobbleError.transient(message):
             return message
         case ScrobbleError.rateLimited:

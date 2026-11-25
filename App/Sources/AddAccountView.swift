@@ -1,3 +1,4 @@
+import AppKit
 import ScrobbleCore
 import SwiftUI
 
@@ -20,9 +21,13 @@ struct AddAccountView: View {
                     }
                 }
                 if model.needsServerURL {
-                    TextField(String(localized: "Server address"), text: $model.serverURL)
-                    Text(model.preset == .customListenBrainz ? "https://maloja.example.com/apis/listenbrainz" : "https://scrobbler.example.com/2.0/")
-                        .font(.caption).foregroundColor(.secondary)
+                    TextField(String(localized: "Server address"), text: $model.serverURL,
+                              prompt: Text(verbatim: model.preset == .customListenBrainz ? "https://maloja.example.com/apis/listenbrainz" : "https://scrobbler.example.com/2.0/"))
+                    if model.showsHTTPSRequired {
+                        Label(AddAccountModel.httpsRequired, systemImage: "exclamationmark.triangle")
+                            .font(.caption).foregroundColor(.orange)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     if model.showsInsecureServerWarning {
                         Label(String(localized: "This server isn't encrypted. Your session key or token will be sent in plain text on your network."),
                               systemImage: "exclamationmark.triangle")
@@ -96,8 +101,19 @@ struct AddAccountView: View {
         case .editing: EmptyView()
         case .working: ProgressView().controlSize(.small)
         case .waitingForBrowser:
-            Label(String(localized: "Approve ShazamScrobbler in your browser. This window updates by itself."),
-                  systemImage: "safari")
+            VStack(alignment: .leading, spacing: 6) {
+                Label(String(localized: "Approve ShazamScrobbler in your browser. This window updates by itself."),
+                      systemImage: "safari")
+                if let link = model.authorizationLink {
+                    Text(String(localized: "The browser didn't open. Copy this link and open it yourself:"))
+                        .font(.caption).foregroundColor(.secondary)
+                    Text(verbatim: link.absoluteString).font(.caption).lineLimit(2).textSelection(.enabled)
+                    Button(String(localized: "Copy Link")) {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(link.absoluteString, forType: .string)
+                    }
+                }
+            }
         case let .failed(message):
             Label(message, systemImage: "exclamationmark.triangle").foregroundColor(.orange)
         case let .done(message):

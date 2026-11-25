@@ -5,6 +5,7 @@ struct AccountsSettingsView: View {
     @ObservedObject var model: AppModel
     @State private var selection: AccountID?
     @State private var sheet: AddAccountMode?
+    @State private var pendingRemoval: Account?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -21,7 +22,7 @@ struct AccountsSettingsView: View {
                     .tag(account.id)
                     .contextMenu {
                         Button(String(localized: "Sign In Again…")) { sheet = .reauthenticate(account) }
-                        Button(String(localized: "Remove"), role: .destructive) { model.removeAccount(account.id) }
+                        Button(String(localized: "Remove"), role: .destructive) { pendingRemoval = account }
                     }
                 }
             }
@@ -37,7 +38,7 @@ struct AccountsSettingsView: View {
                 Button { sheet = .add } label: { Image(systemName: "plus") }
                     .help(String(localized: "Add Account"))
                 Button {
-                    if let selection { model.removeAccount(selection) }
+                    if let selection, let account = model.accounts.first(where: { $0.id == selection }) { pendingRemoval = account }
                 } label: { Image(systemName: "minus") }
                     .disabled(selection == nil)
                     .help(String(localized: "Remove Account"))
@@ -49,6 +50,18 @@ struct AccountsSettingsView: View {
                     }
                 }
             }
+        }
+        .confirmationDialog(
+            pendingRemoval.map { String(localized: "Remove \(Formatting.accountName($0))?") } ?? "",
+            isPresented: Binding(get: { pendingRemoval != nil }, set: { if !$0 { pendingRemoval = nil } }),
+            titleVisibility: .visible, presenting: pendingRemoval
+        ) { account in
+            Button(String(localized: "Remove"), role: .destructive) {
+                model.removeAccount(account.id)
+                if selection == account.id { selection = nil }
+            }
+        } message: { _ in
+            Text(String(localized: "Its sign-in is removed from this Mac and nothing more is sent to it."))
         }
         .sheet(item: $sheet) { mode in
             AddAccountView(model: AddAccountModel(mode: mode, appModel: model)) { sheet = nil }
