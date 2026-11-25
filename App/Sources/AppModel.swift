@@ -26,6 +26,9 @@ final class AppModel: ObservableObject {
         didSet { settingsStore.notifyNowPlaying = notifyNowPlaying }
     }
 
+    /// When the last scan finished (the menu skips its on-open rescan if this is recent).
+    private(set) var lastScanFinished: Date?
+
     let accountStore: AccountStore
     let stateStore: StateStore
     let library = ShazamLibrary()
@@ -112,6 +115,7 @@ final class AppModel: ObservableObject {
     }
 
     private func publish(_ new: Snapshot) {
+        lastScanFinished = Date()
         var merged = new
         merged.problems.merge(configurationProblems) { held, _ in held }
         if merged != snapshot { snapshot = merged }

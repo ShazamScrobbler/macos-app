@@ -5,7 +5,7 @@ import AppKit
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) var model: AppModel!
     private var scheduler: RescanScheduler!
-    private var statusItem: NSStatusItem?
+    private var menuController: MenuController?
 
     /// No nib or storyboard (and no NSPrincipalClass), so `@main` alone would never install the delegate.
     static func main() {
@@ -28,11 +28,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         scheduler = RescanScheduler(model: model)
         scheduler.start()
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        item.button?.image = NSImage(named: "StatusIcon")
-        let menu = NSMenu()
-        menu.addItem(withTitle: String(localized: "Quit ShazamScrobbler"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        item.menu = menu
-        statusItem = item
+        menuController = MenuController(model: model, actions: .init(
+            openSettings: { [weak self] in self?.openSettings() },
+            openAccessSetup: { [weak self] in self?.openAccessSetup() },
+            checkForUpdates: {},
+            openAbout: { NSApp.activateApp(); NSApp.orderFrontStandardAboutPanel(nil) }))
     }
+
+    func openSettings() {}
+    func openAccessSetup() {}
 }
