@@ -38,7 +38,7 @@ Password sign-in (for servers that need it) only works over `https://`.
 
 ## Hardened runtime
 
-The app runs with the hardened runtime. Because it is not signed with an Apple team ID, it disables library validation (`com.apple.security.cs.disable-library-validation`) so it can load its bundled Sparkle framework, which macOS would otherwise refuse; this does not allow code injection via environment variables, which stays blocked.
+The app runs with the hardened runtime. Because it is not signed with an Apple team ID, it disables library validation (`com.apple.security.cs.disable-library-validation`) so it can load its bundled Sparkle framework, which macOS would otherwise refuse. The consequence: the app can load libraries signed by anyone, with no check on who signed them. Code injection through `DYLD_*` environment variables stays blocked. This would change if releases were ever signed with an Apple Developer ID: library validation could then be switched back on. Debug builds also keep the `get-task-allow` entitlement so a debugger can attach; Release builds do not.
 
 ## Reporting a vulnerability
 
