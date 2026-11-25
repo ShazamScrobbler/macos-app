@@ -25,7 +25,12 @@ final class MenuController: NSObject, NSMenuDelegate {
     private let recentHeader = NSMenuItem()
     private var recentItems: [NSMenuItem] = []
     private var problemItems: [NSMenuItem] = []
+    private let recentSeparator = NSMenuItem.separator()
+    private let problemSeparator = NSMenuItem.separator()
     private let libraryItem = NSMenuItem()
+    private let warningImage = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: String(localized: "Problem"))
+    private let waitingImage = NSImage(systemSymbolName: "hourglass", accessibilityDescription: String(localized: "Waiting"))
+    private var shownNowPlaying: SongRow?
     private let pauseItem = NSMenuItem()
     private let skipItem = NSMenuItem()
 
@@ -65,20 +70,22 @@ final class MenuController: NSObject, NSMenuDelegate {
             menu.addItem(item)
             return item
         }
-        menu.addItem(.separator())
+        recentSeparator.isHidden = true
+        menu.addItem(recentSeparator)
         problemItems = (0..<MenuModel.problemSlots).map { _ in
             let item = NSMenuItem(title: "", action: #selector(openSettingsAction), keyEquivalent: "")
             item.target = self
-            item.image = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: String(localized: "Problem"))
+            item.image = warningImage
             item.isHidden = true
             menu.addItem(item)
             return item
         }
         libraryItem.isHidden = true
         libraryItem.target = self
-        libraryItem.image = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: String(localized: "Problem"))
+        libraryItem.image = warningImage
         menu.addItem(libraryItem)
-        menu.addItem(.separator())
+        problemSeparator.isHidden = true
+        menu.addItem(problemSeparator)
 
         pauseItem.target = self
         pauseItem.action = #selector(togglePauseAction)
@@ -95,6 +102,7 @@ final class MenuController: NSObject, NSMenuDelegate {
         addAction(String(localized: "About ShazamScrobbler"), #selector(openAboutAction))
         menu.addItem(withTitle: String(localized: "Quit ShazamScrobbler"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 
+        NotificationCenter.default.addObserver(self, selector: #selector(dayChanged), name: .NSCalendarDayChanged, object: nil)
         statusItem.menu = menu
         statusItem.button?.image = NSImage(named: "StatusIcon")
         statusItem.button?.imagePosition = .imageLeading
@@ -122,6 +130,10 @@ final class MenuController: NSObject, NSMenuDelegate {
 
         let hasNowPlaying = new.nowPlaying != nil
         [nowPlayingHeader, nowPlayingItem, nowPlayingSeparator].forEach { $0.isHidden = !hasNowPlaying }
+        if shownNowPlaying != new.nowPlaying?.row {
+            shownNowPlaying = new.nowPlaying?.row
+            nowPlayingItem.submenu = new.nowPlaying.map { submenu(for: $0.row) }
+        }
         updateNowPlayingTitle()
 
         let newRecent: [SongRow?] = (0..<MenuModel.recentSlots).map { $0 < new.recent.count ? new.recent[$0] : nil }
@@ -130,6 +142,8 @@ final class MenuController: NSObject, NSMenuDelegate {
         }
         shownRecent = newRecent
         recentHeader.isHidden = new.recent.isEmpty
+        // Hidden when there are no recent rows: the now-playing separator (if any) already closes that block.
+        recentSeparator.isHidden = new.recent.isEmpty
 
         let newProblems: [ProblemRow?] = (0..<MenuModel.problemSlots).map { $0 < new.problems.count ? new.problems[$0] : nil }
         for index in MenuModel.changedSlots(old: shownProblems, new: newProblems) {
@@ -140,6 +154,8 @@ final class MenuController: NSObject, NSMenuDelegate {
         shownProblems = newProblems
 
         libraryItem.isHidden = new.library == nil
+        problemSeparator.isHidden = new.problems.isEmpty && new.library == nil
+        libraryItem.image = new.library == .waitingForShazam ? waitingImage : warningImage
         libraryItem.title = new.library.map(Formatting.library) ?? ""
         switch new.library {
         case .accessDenied?: libraryItem.action = #selector(openAccessSetupAction)
@@ -247,6 +263,8 @@ final class MenuController: NSObject, NSMenuDelegate {
     // MARK: NSMenuDelegate
 
     func menuWillOpen(_ menu: NSMenu) {
+        updateNowPlayingTitle()
+        countdownTimer?.invalidate()
         if model.lastScanFinished.map({ Date().timeIntervalSince($0) > 10 }) ?? true { model.rescan() }
         let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.updateNowPlayingTitle() }
@@ -262,6 +280,13 @@ final class MenuController: NSObject, NSMenuDelegate {
     }
 
     // MARK: actions
+
+    @objc private func dayChanged() {
+        // Row times read "today" vs a date: force every visible row (and submenu) to re-render once.
+        shownRecent = []
+        shownNowPlaying = nil
+        apply(content)
+    }
 
     @objc private func togglePauseAction() { model.togglePause() }
     @objc private func skipWaitingAction() { model.skipWaiting() }
@@ -293,7 +318,10 @@ final class MenuController: NSObject, NSMenuDelegate {
     @objc private func openLibraryAction(_ sender: NSMenuItem) {
         guard let account = sender.representedObject as? Account else { return }
         let host = account.preset == .librefm ? "libre.fm" : "www.last.fm"
-        if let url = URL(string: "https://\(host)/user/\(account.username)/library") { NSWorkspace.shared.open(url) }
+        var allowed = CharacterSet.urlPathAllowed
+        allowed.remove("/")
+        let user = account.username.addingPercentEncoding(withAllowedCharacters: allowed) ?? account.username
+        if let url = URL(string: "https://\(host)/user/\(user)/library") { NSWorkspace.shared.open(url) }
     }
 
     @objc private func copyAction(_ sender: NSMenuItem) {
