@@ -9,6 +9,18 @@ enum LaunchAtLogin {
         return false
     }
 
+    enum State: Equatable { case unsupported, enabled, requiresApproval, notRegistered, notFound }
+
+    static var state: State {
+        guard #available(macOS 13.0, *) else { return .unsupported }
+        switch SMAppService.mainApp.status {
+        case .enabled: return .enabled
+        case .requiresApproval: return .requiresApproval
+        case .notFound: return .notFound
+        default: return .notRegistered
+        }
+    }
+
     static var isEnabled: Bool {
         if #available(macOS 13.0, *) { return SMAppService.mainApp.status == .enabled }
         return false

@@ -12,6 +12,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     private var cancellables: Set<AnyCancellable> = []
     private var lastNotifiedTag: TagKey?
     private var lastProblems: [AccountID: AccountProblem] = [:]
+    private var seededProblems = false
 
     init(model: AppModel) {
         self.model = model
@@ -39,10 +40,16 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             lastNotifiedTag = playing.tag.key
             let content = UNMutableNotificationContent()
             content.title = playing.tag.track.title
-            content.body = String(localized: "\(playing.tag.track.artist) — will be scrobbled in \(Int(model.settings.minPlayTime)) s")
+            content.body = String(localized: "\(playing.tag.track.artist) — tap Don't Scrobble to skip it")
             content.categoryIdentifier = Self.category
             content.userInfo = ["tag": playing.tag.key.rawValue]
             post(content, id: playing.tag.key.rawValue)
+        }
+        // Seed from the first snapshot without posting: notify on change only, not at every launch.
+        if !seededProblems {
+            guard snapshot != .empty else { return }   // the publisher replays the placeholder first
+            seededProblems = true
+            lastProblems = snapshot.problems
         }
         // Once per state change: only problems that are new or changed since the previous snapshot.
         for (id, problem) in snapshot.problems where lastProblems[id] != problem {
@@ -61,7 +68,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
                                             withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner])
+        completionHandler([.banner, .list])
     }
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
