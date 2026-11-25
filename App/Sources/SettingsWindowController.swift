@@ -11,8 +11,8 @@ final class SettingsSelection: ObservableObject {
 final class SettingsWindowController: NSWindowController {
     private let selection = SettingsSelection()
 
-    init(model: AppModel) {
-        let root = SettingsView(model: model, selection: selection)
+    init(model: AppModel, updater: Updater) {
+        let root = SettingsView(model: model, updater: updater, selection: selection)
         let window = NSWindow(contentViewController: NSHostingController(rootView: root))
         window.title = String(localized: "ShazamScrobbler Settings")
         window.styleMask = [.titled, .closable]
@@ -34,11 +34,12 @@ final class SettingsWindowController: NSWindowController {
 
 struct SettingsView: View {
     @ObservedObject var model: AppModel
+    @ObservedObject var updater: Updater
     @ObservedObject var selection: SettingsSelection
 
     var body: some View {
         TabView(selection: $selection.tab) {
-            GeneralSettingsView(model: model)
+            GeneralSettingsView(model: model, updater: updater)
                 .tabItem { Label(String(localized: "General"), systemImage: "gearshape") }
                 .tag(SettingsTab.general)
             AccountsSettingsView(model: model)

@@ -3,11 +3,24 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     @ObservedObject var model: AppModel
-    @State private var launchAtLogin = false   // replaced by LaunchAtLogin in Task 22
+    @ObservedObject var updater: Updater
+    @State private var launchAtLogin = LaunchAtLogin.isEnabled
+    @State private var launchError: String?
 
     var body: some View {
         Form {
-            Toggle(String(localized: "Launch at login"), isOn: $launchAtLogin)
+            if LaunchAtLogin.isSupported {
+                Toggle(String(localized: "Launch at login"), isOn: $launchAtLogin)
+                    .onChange(of: launchAtLogin) { enabled in
+                        do { try LaunchAtLogin.set(enabled); launchError = nil }
+                        catch { launchError = error.localizedDescription; launchAtLogin = LaunchAtLogin.isEnabled }
+                    }
+                if LaunchAtLogin.requiresApproval || launchError != nil {
+                    Button(String(localized: "Approve in Login Items Settings…")) { LaunchAtLogin.openSystemSettings() }
+                }
+            } else {
+                Button(String(localized: "Open Login Items Settings…")) { LaunchAtLogin.openSystemSettings() }
+            }
 
             Picker(String(localized: "While paused"), selection: $model.settings.pauseMode) {
                 Text(String(localized: "Ignore new Shazam tags")).tag(PauseMode.ignore)
@@ -20,6 +33,10 @@ struct GeneralSettingsView: View {
 
             Toggle(String(localized: "Notify me when a song is detected (with a Don't Scrobble button)"),
                    isOn: $model.notifyNowPlaying)
+
+            if updater.canCheck {
+                Toggle(String(localized: "Automatically check for updates"), isOn: $updater.automaticallyChecks)
+            }
         }
     }
 }

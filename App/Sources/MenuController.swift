@@ -7,6 +7,7 @@ final class MenuController: NSObject, NSMenuDelegate {
     struct Actions {
         var openSettings: () -> Void
         var openAccessSetup: () -> Void
+        var canCheckForUpdates: Bool
         var checkForUpdates: () -> Void
         var openAbout: () -> Void
     }
@@ -97,7 +98,10 @@ final class MenuController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
 
         addAction(String(localized: "Settings…"), #selector(openSettingsAction), key: ",")
-        addAction(String(localized: "Check for Updates…"), #selector(checkForUpdatesAction))
+        let updatesItem = NSMenuItem(title: String(localized: "Check for Updates…"), action: #selector(checkForUpdatesAction), keyEquivalent: "")
+        updatesItem.target = self
+        updatesItem.isHidden = !actions.canCheckForUpdates
+        menu.addItem(updatesItem)
         addAction(String(localized: "About ShazamScrobbler"), #selector(openAboutAction))
         menu.addItem(withTitle: String(localized: "Quit ShazamScrobbler"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 

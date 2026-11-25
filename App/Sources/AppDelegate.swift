@@ -7,7 +7,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private(set) var model: AppModel!
     private var scheduler: RescanScheduler!
     private var menuController: MenuController?
-    private lazy var settingsWindow = SettingsWindowController(model: model)
+    private let updater = Updater()
+    private var notifier: Notifier?
+    private lazy var settingsWindow = SettingsWindowController(model: model, updater: updater)
     private lazy var accessWindow = AccessSetupWindowController(model: model, scheduler: scheduler)
     private var cancellables: Set<AnyCancellable> = []
     private var didAutoShowAccess = false
@@ -41,10 +43,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self.accessWindow.show()
             }
             .store(in: &cancellables)
+        notifier = Notifier(model: model)
         menuController = MenuController(model: model, actions: .init(
             openSettings: { [weak self] in self?.openSettings() },
             openAccessSetup: { [weak self] in self?.openAccessSetup() },
-            checkForUpdates: {},
+            canCheckForUpdates: updater.canCheck,
+            checkForUpdates: { [weak self] in self?.updater.checkForUpdates() },
             openAbout: { NSApp.activateApp(); NSApp.orderFrontStandardAboutPanel(nil) }))
         if model.accountStore.load().isEmpty && !UserDefaults.standard.bool(forKey: "didShowWelcome") {
             UserDefaults.standard.set(true, forKey: "didShowWelcome")
