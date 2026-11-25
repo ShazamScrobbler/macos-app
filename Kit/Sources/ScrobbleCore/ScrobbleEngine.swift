@@ -148,7 +148,7 @@ public enum ScrobbleEngine {
 
     private static func allowsNowPlaying(_ state: DeliveryState) -> Bool {
         switch state {
-        case .nowPlaying, .waiting, .retry, .scrobbled: true
+        case .nowPlaying, .waiting, .retry, .retryAfterDailyLimit, .scrobbled: true
         case .tooShort, .skipped, .ignored, .held: false
         }
     }
@@ -158,7 +158,7 @@ public enum ScrobbleEngine {
         if input.excluded.contains(tag.key) {
             switch current {
             case nil: return isDuplicate ? .skipped(.duplicate) : .skipped(.user)
-            case .nowPlaying?, .waiting?, .retry?, .held?: return .skipped(.user)
+            case .nowPlaying?, .waiting?, .retry?, .retryAfterDailyLimit?, .held?: return .skipped(.user)
             default: return current   // final states stay as they are
             }
         }

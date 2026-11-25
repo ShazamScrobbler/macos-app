@@ -49,8 +49,10 @@ public actor ScanCycle {
     }
 
     /// Callers must not overlap runs (the app serializes through `RescanGate`): `Delivery.run` must not run concurrently.
+    /// `retryNow`: the scan was triggered by a reconnect, a wake or a fixed account, so transient retries are sent now
+    /// instead of waiting for their backoff (spec §7). A new tag recorded by this scan has the same effect.
     public func run(accounts: [Account], scrobblers: [AccountID: any Scrobbler],
-                    settings: EngineSettings, recentLimit: Int = 20) async -> Snapshot {
+                    settings: EngineSettings, recentLimit: Int = 20, retryNow: Bool = false) async -> Snapshot {
         let now = time.now
         var inputsOK = true
         var cursors: [AccountCursor] = []
@@ -85,12 +87,19 @@ public actor ScanCycle {
         }
 
         var reads = readWindows(cursors.filter { deliverable.contains($0.id) }, now: now, recentLimit: recentLimit)
-        if inputsOK, reads.status == .ok, (try? LegacyMigration.resolvePending(store: store, source: source)) == true {
-            reads = readWindows(currentCursors(accounts).filter { deliverable.contains($0.id) }, now: now, recentLimit: recentLimit)
+        if inputsOK, reads.status == .ok {
+            do {
+                if try LegacyMigration.resolvePending(store: store, source: source) {
+                    reads = readWindows(currentCursors(accounts).filter { deliverable.contains($0.id) }, now: now, recentLimit: recentLimit)
+                }
+            } catch {
+                log.error("legacy migration step failed: \(error.localizedDescription, privacy: .private)")
+            }
         }
 
         var requests: [NowPlayingRequest] = []
         var engineWake: Date?
+        var newTag = false
         if inputsOK, reads.status == .ok {
             do {
                 let lastNowPlaying = try store.lastNowPlaying()
@@ -103,6 +112,8 @@ public actor ScanCycle {
                         states: states, excluded: choices.excluded, forced: choices.forced,
                         lastNowPlaying: lastNowPlaying))
                     try store.apply(output.transitions, now: now)
+                    // A row for a tag/account pair seen for the first time: a new tag was detected.
+                    if output.transitions.contains(where: { states[$0.key]?[$0.account] == nil }) { newTag = true }
                     requests += output.nowPlaying
                     engineWake = [engineWake, output.nextWake].compactMap { $0 }.min()
                 }
@@ -112,7 +123,14 @@ public actor ScanCycle {
         }
         let result = reads.result
 
-        let report = await delivery.run(scrobblers: scrobblers, nowPlaying: requests, paused: settings.paused)
+        let retryDue = retryNow || newTag
+        if retryDue {
+            do { try store.makeTransientRetriesDue(now: now) } catch {
+                log.error("making retries due failed: \(error.localizedDescription, privacy: .private)")
+            }
+        }
+        let report = await delivery.run(scrobblers: scrobblers, nowPlaying: requests, paused: settings.paused,
+                                        retryNow: retryDue)
 
         let states = (try? store.states(for: result.recent.map(\.key))) ?? [:]
         // Newest recent tag with a live now-playing state (an Auto-Shazam re-tag is newer but a duplicate).

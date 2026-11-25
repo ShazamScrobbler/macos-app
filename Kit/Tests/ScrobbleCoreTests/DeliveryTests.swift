@@ -41,7 +41,7 @@ import TestSupport
         await fake.setReplies([.success([.ignored("Track was ignored"), .dailyLimit])])
         _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
         #expect(try state(store, x, a) == .ignored("Track was ignored"))
-        #expect(try state(store, y, a) == .retry(attempt: 1, nextAt: Backoff.nextUTCMidnight(after: t0 + 1000)))
+        #expect(try state(store, y, a) == .retryAfterDailyLimit(attempt: 1, nextAt: Backoff.nextUTCMidnight(after: t0 + 1000)))
     }
 
     @Test func tooOldIsIgnoredWithoutARequest() async throws {
@@ -316,5 +316,56 @@ import TestSupport
         let report = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
         #expect(await fake.batches.isEmpty)
         #expect(report.nextWake == t0 + 5000)
+    }
+
+    // MARK: final fix wave
+
+    @Test func failedOtherPlayerCheckStillSendsNowPlaying() async throws {   // I4
+        let current = tag(1, "Current", at: 0)
+        let (store, delivery, _) = try setup([(current, a, .nowPlaying(deadline: t0 + 45))], now: 10)
+        let fake = FakeScrobbler()
+        await fake.setOtherPlayerError(.permanent("404"))
+        _ = await delivery.run(scrobblers: [a: fake],
+                               nowPlaying: [NowPlayingRequest(account: a, tag: current, isRefresh: false)], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 1)
+        #expect(await fake.nowPlayingTracks == [current.track])
+        #expect(try state(store, current, a) == .nowPlaying(deadline: t0 + 45))
+        #expect(try store.lastNowPlaying()[a]?.key == current.key)
+    }
+
+    @Test func otherPlayerCheckAccountProblemStillHoldsTheAccount() async throws {   // I4
+        let current = tag(1, "Current", at: 0), queued = tag(2, "Queued", at: -500)
+        let (store, delivery, _) = try setup([(current, a, .nowPlaying(deadline: t0 + 45)), (queued, a, .waiting)], now: 10)
+        let fake = FakeScrobbler()
+        await fake.setOtherPlayerError(.signedOut)
+        let report = await delivery.run(scrobblers: [a: fake],
+                                        nowPlaying: [NowPlayingRequest(account: a, tag: current, isRefresh: false)], paused: false)
+        #expect(report.problems == [a: .signedOut])
+        #expect(await fake.nowPlayingTracks.isEmpty)
+        #expect(await fake.batches.isEmpty)
+        #expect(try state(store, queued, a) == .held(.signedOut))
+    }
+
+    @Test func retryNowLiftsTheNowPlayingBackoff() async throws {   // I1
+        let current = tag(1, "Current", at: 0)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let fake = FakeScrobbler()
+        await fake.setNowPlayingError(.transient("offline"))
+        let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        await fake.setNowPlayingError(nil)
+        time.advance(by: 10)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false, retryNow: true)
+        #expect(await fake.nowPlayingTracks == [current.track])
+    }
+
+    @Test func dailyLimitRetryKeepsCountingAttempts() async throws {
+        let x = tag(1, "X", at: 0)
+        let (store, delivery, _) = try setup([(x, a, .retryAfterDailyLimit(attempt: 1, nextAt: t0 + 500))])
+        let fake = FakeScrobbler()
+        await fake.setReplies([.failure(.transient("offline"))])
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [], paused: false)
+        #expect(await fake.batches.count == 1)
+        #expect(try state(store, x, a) == .retry(attempt: 2, nextAt: t0 + 1000 + Backoff.delay(attempt: 2, random: 0.5)))
     }
 }

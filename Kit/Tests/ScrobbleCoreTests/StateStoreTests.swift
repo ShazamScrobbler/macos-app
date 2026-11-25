@@ -209,4 +209,47 @@ import SQLiteLite
         #expect(try s.transition(key: x.key, account: b, fromKinds: ["waiting", "retry"], to: .waiting, now: t0) == false)
         #expect(try s.states(for: [x.key])[x.key]?[b] == nil)
     }
+
+    // MARK: final fix wave
+
+    @Test func forceMovesSkippedAndTooShortRowsToWaitingAndSetsChoice() throws {   // C1
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100)
+        let c = AccountID(rawValue: "c"), d = AccountID(rawValue: "d")
+        try s.apply([transition(x, a, .skipped(.user)), transition(x, b, .tooShort),
+                     transition(x, c, .scrobbled(at: t0)), transition(x, d, .ignored("bad")),
+                     transition(y, a, .skipped(.user))], now: t0)
+        try s.setChoice(.exclude, for: x.key)
+        try s.advanceCursor(for: a)
+        let cursor = try s.cursor(for: a)
+        try s.force(key: x.key, now: t0 + 10)
+        #expect(try s.choices().forced == [x.key])
+        #expect(try s.choices().excluded.isEmpty)
+        #expect(try s.states(for: [x.key])[x.key] == [a: .waiting, b: .waiting, c: .scrobbled(at: t0), d: .ignored("bad")])
+        #expect(try s.states(for: [y.key])[y.key]?[a] == .skipped(.user))
+        #expect(try s.pending(account: a, dueBy: t0 + 10, limit: 50).map(\.key) == [x.key])
+        #expect(try s.cursor(for: a) == cursor)
+    }
+
+    @Test func makeTransientRetriesDueLeavesDailyLimitRetries() throws {   // I1
+        let s = try StateStore(url: nil)
+        let x = tag(1, "X", at: 0), y = tag(2, "Y", at: 100), z = tag(3, "Z", at: 200)
+        try s.apply([transition(x, a, .retry(attempt: 3, nextAt: t0 + 1800)),
+                     transition(y, a, .retryAfterDailyLimit(attempt: 1, nextAt: t0 + 1800)),
+                     transition(z, b, .retry(attempt: 1, nextAt: t0 + 5))], now: t0)
+        #expect(try s.makeTransientRetriesDue(now: t0 + 10) == 1)
+        #expect(try s.states(for: [x.key])[x.key]?[a] == .retry(attempt: 3, nextAt: t0 + 10))
+        #expect(try s.states(for: [y.key])[y.key]?[a] == .retryAfterDailyLimit(attempt: 1, nextAt: t0 + 1800))
+        #expect(try s.states(for: [z.key])[z.key]?[b] == .retry(attempt: 1, nextAt: t0 + 5))
+        #expect(try s.pending(account: a, dueBy: t0 + 10, limit: 50).map(\.key) == [x.key])
+        #expect(try s.nextRetryDate(accounts: [a]) == t0 + 10)
+    }
+
+    @Test func retryRowsWrittenBeforeTheDailyLimitCaseStillDecode() throws {   // I1: Codable compatibility
+        let old = #"{"retry":{"attempt":2,"nextAt":10}}"#
+        #expect(try JSONDecoder().decode(DeliveryState.self, from: Data(old.utf8))
+                == .retry(attempt: 2, nextAt: Date(timeIntervalSinceReferenceDate: 10)))
+        let daily = DeliveryState.retryAfterDailyLimit(attempt: 1, nextAt: t0)
+        #expect(try JSONDecoder().decode(DeliveryState.self, from: JSONEncoder().encode(daily)) == daily)
+    }
 }

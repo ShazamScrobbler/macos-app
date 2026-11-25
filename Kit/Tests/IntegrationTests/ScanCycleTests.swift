@@ -269,4 +269,76 @@ import TestSupport
         #expect(await fake.nowPlayingTracks.isEmpty)   // engine skipped
         #expect(try store.states(for: [newest.key])[newest.key] == nil)
     }
+
+    // MARK: final fix wave
+
+    @Test func scrobbleAnywayAfterTheCursorPassedTheTagSendsItOnce() async throws {   // C1
+        let fixture = try ShazamFixture(); defer { fixture.remove() }
+        try fixture.createDatabase()
+        try fixture.addTag(title: "Excluded", artists: ["A"], album: nil, date: t0 + 5)
+        let time = ManualTimeSource(t0 + 10)
+        let store = try StateStore(url: nil)
+        let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
+                              delivery: Delivery(store: store, time: time, random: { 0.5 }), time: time)
+        let fake = FakeScrobbler()
+        let acc = account(addedAt: t0)
+        let key = try #require(ShazamLibrary(containerURL: fixture.container).read(since: t0, recentLimit: 5).recent.first).key
+
+        try store.setChoice(.exclude, for: key)
+        _ = await cycle.run(accounts: [acc], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(try store.states(for: [key])[key]?[accountID] == .skipped(.user))
+        #expect(try #require(try store.cursor(for: accountID)) >= t0 + 5)   // the engine no longer evaluates this tag
+
+        time.advance(by: 60)
+        try store.force(key: key, now: time.now)
+        let after = await cycle.run(accounts: [acc], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.map { $0.map(\.track.title) } == [["Excluded"]])
+        #expect(try store.states(for: [key])[key]?[accountID] == .scrobbled(at: t0 + 70))
+        #expect(after.excluded.isEmpty)
+
+        _ = await cycle.run(accounts: [acc], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.count == 1)
+    }
+
+    func retryFixture(newTagAt date: Date? = nil) throws -> (ShazamFixture, StateStore, ScanCycle, ManualTimeSource, ShazamTag, ShazamTag) {
+        let fixture = try ShazamFixture()
+        try fixture.createDatabase()
+        if let date { try fixture.addTag(title: "New", artists: ["A"], album: nil, date: date) }
+        let time = ManualTimeSource(t0 + 1000)
+        let store = try StateStore(url: nil)
+        let transient = ShazamTag(pk: 90, date: t0 - 300, track: Track(artist: "Q", title: "Transient"))
+        let daily = ShazamTag(pk: 91, date: t0 - 200, track: Track(artist: "Q", title: "Daily"))
+        try store.apply([Transition(key: transient.key, tag: transient, account: accountID,
+                                    to: .retry(attempt: 2, nextAt: t0 + 1000 + 1800)),
+                         Transition(key: daily.key, tag: daily, account: accountID,
+                                    to: .retryAfterDailyLimit(attempt: 1, nextAt: t0 + 1000 + 1800))], now: t0)
+        let cycle = ScanCycle(source: ShazamLibrary(containerURL: fixture.container), store: store,
+                              delivery: Delivery(store: store, time: time, random: { 0.5 }), time: time)
+        return (fixture, store, cycle, time, transient, daily)
+    }
+
+    @Test func retryNowSendsTransientRetriesButNotDailyLimitOnes() async throws {   // I1
+        let (fixture, store, cycle, time, transient, daily) = try retryFixture(); defer { fixture.remove() }
+        let fake = FakeScrobbler()
+        let acc = account(addedAt: t0)
+        _ = await cycle.run(accounts: [acc], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.isEmpty)   // a plain scan (timer, folder change) waits for the backoff
+
+        let snapshot = await cycle.run(accounts: [acc], scrobblers: [accountID: fake], settings: EngineSettings(), retryNow: true)
+        #expect(await fake.batches.map { $0.map(\.track.title) } == [["Transient"]])
+        #expect(try store.states(for: [transient.key])[transient.key]?[accountID] == .scrobbled(at: time.now))
+        #expect(try store.states(for: [daily.key])[daily.key]?[accountID] == .retryAfterDailyLimit(attempt: 1, nextAt: t0 + 2800))
+        #expect(snapshot.nextWake == t0 + 2800)
+    }
+
+    @Test func aNewTagMakesTransientRetriesDue() async throws {   // I1
+        let (fixture, _, cycle, _, _, _) = try retryFixture(newTagAt: t0 + 990); defer { fixture.remove() }
+        let fake = FakeScrobbler()
+        _ = await cycle.run(accounts: [account(addedAt: t0)], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.map { $0.map(\.track.title) } == [["Transient"]])
+        #expect(await fake.nowPlayingTracks.map(\.title) == ["New"])
+        // The same tag on the next scan is not new: nothing else is made due.
+        _ = await cycle.run(accounts: [account(addedAt: t0)], scrobblers: [accountID: fake], settings: EngineSettings())
+        #expect(await fake.batches.count == 1)
+    }
 }

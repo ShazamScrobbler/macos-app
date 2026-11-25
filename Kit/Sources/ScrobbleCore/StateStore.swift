@@ -183,6 +183,29 @@ public final class StateStore: @unchecked Sendable {
             .map(Date.init(timeIntervalSince1970:))
     }
 
+    /// Reconnect, wake, a new tag or a fixed account (spec §7): transient retries not yet due become due now, keeping
+    /// their attempt count. Daily-limit retries keep waiting for the reset. Returns how many rows changed.
+    @discardableResult
+    public func makeTransientRetriesDue(now: Date) throws -> Int {
+        lock.lock(); defer { lock.unlock() }
+        let decoder = JSONDecoder(), encoder = JSONEncoder()
+        return try db.transaction {
+            var changed = 0
+            for row in try db.query("SELECT tag_key, account, state FROM deliveries WHERE kind = 'retry' AND next_at > ?",
+                                    [.real(now.timeIntervalSince1970)]) {
+                guard let key = row.string("tag_key"), let account = row.string("account"), let json = row.string("state"),
+                      case let .retry(attempt, _) = try decoder.decode(DeliveryState.self, from: Data(json.utf8))
+                else { continue }
+                let due = String(decoding: try encoder.encode(DeliveryState.retry(attempt: attempt, nextAt: now)), as: UTF8.self)
+                try db.query("UPDATE deliveries SET next_at = ?, state = ?, updated = ? WHERE tag_key = ? AND account = ?",
+                             [.real(now.timeIntervalSince1970), .text(due), .real(now.timeIntervalSince1970),
+                              .text(key), .text(account)])
+                changed += 1
+            }
+            return changed
+        }
+    }
+
     /// Compare-and-set: writes `state` only if the row still exists and its current kind is in `fromKinds`.
     /// Used for writes after an await, so a removed account or a user action taken meanwhile is not overwritten.
     @discardableResult
@@ -277,6 +300,22 @@ public final class StateStore: @unchecked Sendable {
         }
     }
 
+    /// "Scrobble Anyway" (§5.8), in one transaction: remembers the choice and moves the tag's skipped and too-short
+    /// rows to `waiting`. The engine only evaluates tags newer than an account's cursor, which may already have moved
+    /// past this tag; `pending()` ignores the cursor, so Delivery sends these rows either way.
+    public func force(key: TagKey, now: Date) throws {
+        lock.lock(); defer { lock.unlock() }
+        let json = String(decoding: try JSONEncoder().encode(DeliveryState.waiting), as: UTF8.self)
+        try db.transaction {
+            try db.query("INSERT OR REPLACE INTO user_choices(tag_key, choice) VALUES(?, ?)",
+                         [.text(key.rawValue), .text(UserChoice.force.rawValue)])
+            try db.query("""
+                UPDATE deliveries SET kind = 'waiting', next_at = NULL, state = ?, updated = ?
+                WHERE tag_key = ? AND kind IN ('skipped', 'tooShort')
+                """, [.text(json), .real(now.timeIntervalSince1970), .text(key.rawValue)])
+        }
+    }
+
     public func choices() throws -> (excluded: Set<TagKey>, forced: Set<TagKey>) {
         lock.lock(); defer { lock.unlock() }
         var excluded = Set<TagKey>(), forced = Set<TagKey>()
@@ -361,12 +400,14 @@ extension DeliveryState {
         case .skipped: "skipped"
         case .ignored: "ignored"
         case .held: "held"
-        case .retry: "retry"
+        case .retry, .retryAfterDailyLimit: "retry"
         }
     }
 
     var retryAt: Date? {
-        if case let .retry(_, nextAt) = self { return nextAt }
-        return nil
+        switch self {
+        case let .retry(_, nextAt), let .retryAfterDailyLimit(_, nextAt): nextAt
+        default: nil
+        }
     }
 }

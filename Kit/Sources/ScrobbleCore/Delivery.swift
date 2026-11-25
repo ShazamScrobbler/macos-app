@@ -37,9 +37,11 @@ public actor Delivery {
 
     /// Callers must not run this concurrently (ScanCycle serializes runs via RescanGate).
     /// `nextWake` is nil when paused; otherwise the earliest retry among `scrobblers`' accounts, at least 30 s away.
+    /// `retryNow` (reconnect, wake, new tag, fixed account) also lifts the first-time now-playing backoff.
     public func run(scrobblers: [AccountID: any Scrobbler], nowPlaying: [NowPlayingRequest],
-                    paused: Bool) async -> DeliveryReport {
+                    paused: Bool, retryNow: Bool = false) async -> DeliveryReport {
         var report = DeliveryReport()
+        if retryNow { nowPlayingRetryAfter = [:] }
         if !paused {
             // Unreadable held problems must not look like "no problems": send nothing this run
             // (nextWake is still computed below, so the caller retries).
@@ -74,7 +76,7 @@ public actor Delivery {
             do {
                 if !request.isRefresh {
                     let ours = (try? store.lastNowPlaying())?[account].flatMap { try? store.track(for: $0.key) }
-                    if try await scrobbler.isOtherPlayerActive(excluding: ours) {
+                    if try await otherPlayerActive(scrobbler, excluding: ours, account: account) {
                         log.info("Another player is active for \(account.rawValue, privacy: .public); skipping tag")
                         _ = try? store.transition(key: request.tag.key, account: account, fromKinds: ["nowPlaying"],
                                               to: .skipped(.otherPlayer), now: time.now)
@@ -102,6 +104,19 @@ public actor Delivery {
                 }
                 log.notice("Now playing failed for \(account.rawValue, privacy: .public): \(scrobbleError.logSummary, privacy: .public) (\(String(describing: scrobbleError), privacy: .private))")
             }
+        }
+    }
+
+    /// A failed check must not block now playing: only an account problem (signed out, unusable key) is rethrown;
+    /// any other failure counts as "no other player".
+    private func otherPlayerActive(_ scrobbler: any Scrobbler, excluding ours: Track?, account: AccountID) async throws -> Bool {
+        do {
+            return try await scrobbler.isOtherPlayerActive(excluding: ours)
+        } catch {
+            let scrobbleError = error.asScrobbleError
+            if DeliveryPolicy.problem(for: scrobbleError) != nil { throw scrobbleError }
+            log.notice("Other-player check failed for \(account.rawValue, privacy: .public); sending now playing anyway: \(scrobbleError.logSummary, privacy: .public) (\(String(describing: scrobbleError), privacy: .private))")
+            return false
         }
     }
 
@@ -187,10 +202,10 @@ public actor Delivery {
                     try store.transition(key: item.key, account: account, fromKinds: pendingKinds, to: .ignored(reason), now: now)
                 case .dailyLimit:
                     hitDailyLimit = true
-                    let attempt: Int
-                    if case let .retry(previous, _) = item.state { attempt = previous + 1 } else { attempt = 1 }
+                    let attempt = (item.state.retryAttempt ?? 0) + 1
                     try store.transition(key: item.key, account: account, fromKinds: pendingKinds,
-                                         to: .retry(attempt: attempt, nextAt: Backoff.nextUTCMidnight(after: now)), now: now)
+                                         to: .retryAfterDailyLimit(attempt: attempt, nextAt: Backoff.nextUTCMidnight(after: now)),
+                                         now: now)
                 }
             }
             return hitDailyLimit ? .stop : .proceed

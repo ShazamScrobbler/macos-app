@@ -48,8 +48,7 @@ public enum Backoff {
 
 public enum DeliveryPolicy {
     public static func state(after error: ScrobbleError, previous: DeliveryState?, now: Date, random: Double) -> DeliveryState {
-        let attempt: Int
-        if case let .retry(previousAttempt, _)? = previous { attempt = previousAttempt + 1 } else { attempt = 1 }
+        let attempt = (previous?.retryAttempt ?? 0) + 1
         switch error {
         case .signedOut: return .held(.signedOut)
         case .keyUnusable: return .held(.keyUnusable)

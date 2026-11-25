@@ -9,6 +9,8 @@ public actor FakeScrobbler: Scrobbler {
     public var replies: [Result<[ScrobbleItemResult]?, ScrobbleError>] = []
     public var otherPlayerActive = false
     public var nowPlayingError: ScrobbleError?
+    /// Thrown by `isOtherPlayerActive` when set (the check is recorded first).
+    public var otherPlayerError: ScrobbleError?
 
     public private(set) var batches: [[ScrobbleItem]] = []
     public private(set) var nowPlayingTracks: [Track] = []
@@ -22,6 +24,7 @@ public actor FakeScrobbler: Scrobbler {
     public func setReplies(_ replies: [Result<[ScrobbleItemResult]?, ScrobbleError>]) { self.replies = replies }
     public func setOtherPlayerActive(_ value: Bool) { otherPlayerActive = value }
     public func setNowPlayingError(_ error: ScrobbleError?) { nowPlayingError = error }
+    public func setOtherPlayerError(_ error: ScrobbleError?) { otherPlayerError = error }
 
     public func nowPlaying(_ track: Track) async throws {
         if let nowPlayingError { throw nowPlayingError }
@@ -39,6 +42,7 @@ public actor FakeScrobbler: Scrobbler {
 
     public func isOtherPlayerActive(excluding ours: Track?) async throws -> Bool {
         otherPlayerChecks.append(ours)
+        if let otherPlayerError { throw otherPlayerError }
         return otherPlayerActive
     }
 }
