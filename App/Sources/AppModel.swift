@@ -9,6 +9,8 @@ import ShazamLibrary
 /// `storeQueue` (a private serial queue), never on the main actor. The user-action methods (`skipWaiting`,
 /// `setChoice`, `removeAccount`, `accountSignedIn`, `reloadAccounts`) are fire-and-forget: they return at once and
 /// trigger a rescan when the work is done. Work is queued in call order. `removeFromListenBrainz` is `async`.
+/// `accountSignedIn` and `removeAccount` change the configuration, so they are applied asynchronously at the start of
+/// the next scan cycle (inside the rescan gate, never during a scan); callers can observe `accounts`.
 @MainActor
 final class AppModel: ObservableObject {
     @Published private(set) var snapshot: Snapshot = .empty
@@ -36,6 +38,14 @@ final class AppModel: ObservableObject {
     private var scrobblers: [AccountID: any Scrobbler] = [:]
     private var configurationProblems: [AccountID: AccountProblem] = [:]
     private var reloadGeneration = 0
+    private var reloadDiscarded = false
+    private enum Mutation: Sendable {
+        case remove(AccountID)
+        case signedIn(Account)
+    }
+    private var pendingMutations: [Mutation] = []
+    /// Accounts being removed: a reload that read the store before the removal ran must not resurrect them.
+    private var removing: Set<AccountID> = []
     private var wakeTimer: Timer?
     private var settingsDebounce: Task<Void, Never>?
     private let log = Logger(subsystem: "ShazamScrobbler", category: "ui")
@@ -44,8 +54,13 @@ final class AppModel: ObservableObject {
         accountStore = AccountStore()
         settingsStore = SettingsStore()
         stateStore = try StateStore(url: StateStore.defaultURL)
-        try LegacyMigration.migrateDefaults(defaults: .standard, accounts: accountStore, settings: settingsStore,
-                                            store: stateStore, now: Date())
+        do {
+            try LegacyMigration.migrateDefaults(defaults: .standard, accounts: accountStore, settings: settingsStore,
+                                                store: stateStore, now: Date())
+        } catch {
+            // Converges on the next launch (the migration is ordered to be retried); not worth blocking the app.
+            log.error("Legacy migration failed: \(String(describing: error), privacy: .private)")
+        }
         settings = settingsStore.engineSettings
         notifyNowPlaying = settingsStore.notifyNowPlaying
         let time = SystemTime()
@@ -79,6 +94,7 @@ final class AppModel: ObservableObject {
         let gate = gate, cycle = scanCycle
         Task { [weak self] in
             await gate.trigger { [weak self] in
+                await self?.applyPendingMutations()
                 guard let inputs = await self?.scanInputs() else { return }
                 let snapshot = await cycle.run(accounts: inputs.accounts, scrobblers: inputs.scrobblers, settings: inputs.settings)
                 await self?.publish(snapshot)
@@ -138,41 +154,80 @@ final class AppModel: ObservableObject {
                 }
                 return result
             }
-            guard let self, let loaded, generation == self.reloadGeneration else { return }
-            self.accounts = loaded.accounts
-            self.scrobblers = loaded.scrobblers
-            self.configurationProblems = loaded.problems
+            guard let self, let loaded else { return }
+            guard generation == self.reloadGeneration else {
+                self.reloadDiscarded = true   // a mutation came after this read started; redone once it is applied
+                return
+            }
+            let gone = self.removing
+            self.accounts = loaded.accounts.filter { !gone.contains($0.id) }
+            self.scrobblers = loaded.scrobblers.filter { !gone.contains($0.key) }
+            self.configurationProblems = loaded.problems.filter { !gone.contains($0.key) }
             self.rescan()
         }
     }
 
-    /// After a successful (re-)sign-in or key change: release held scrobbles and reload clients.
+    /// After a successful (re-)sign-in or key change: saves the account, rebuilds its client and releases held
+    /// scrobbles. Applied asynchronously at the start of the next scan cycle.
     func accountSignedIn(_ account: Account) {
-        let accountStore = accountStore, stateStore = stateStore
-        Task { [weak self] in
-            await self?.onStoreQueue {
-                accountStore.upsert(account)
-                try? stateStore.releaseHeld(account: account.id)
-            }
-            self?.reloadAccounts()
-        }
+        reloadGeneration += 1
+        pendingMutations.append(.signedIn(account))
+        rescan()
     }
 
+    /// Applied asynchronously at the start of the next scan cycle; the UI reflects the removal at once.
     func removeAccount(_ id: AccountID) {
-        // Stop delivering for it right away; the store cleanup follows off the main actor.
+        reloadGeneration += 1
         scrobblers[id] = nil
+        configurationProblems[id] = nil
         accounts.removeAll { $0.id == id }
-        let accountStore = accountStore, stateStore = stateStore
-        Task { [weak self] in
-            let failure: String? = await self?.onStoreQueue {
-                do {
-                    try accountStore.remove(id)
-                    try stateStore.removeAccount(id)
-                    return nil
-                } catch { return String(describing: error) }
+        removing.insert(id)
+        pendingMutations.append(.remove(id))
+        rescan()
+    }
+
+    /// Runs at the start of every gate body, so no scan overlaps a configuration change and the next scan sees it.
+    private func applyPendingMutations() async {
+        guard !pendingMutations.isEmpty else { return }
+        let batch = pendingMutations
+        pendingMutations = []
+        let accountStore = accountStore, stateStore = stateStore, transport = transport, log = log
+        for mutation in batch {
+            switch mutation {
+            case let .remove(id):
+                await onStoreQueue {
+                    do {
+                        try accountStore.remove(id)
+                        try stateStore.removeAccount(id)
+                    } catch {
+                        log.error("Removing account failed: \(String(describing: error), privacy: .private)")
+                    }
+                }
+                removing.remove(id)
+            case let .signedIn(account):
+                let result = await onStoreQueue { () -> Result<any Scrobbler, AccountProblem> in
+                    accountStore.upsert(account)
+                    return ScrobblerFactory.make(for: account, accounts: accountStore, transport: transport)
+                }
+                if let index = accounts.firstIndex(where: { $0.id == account.id }) { accounts[index] = account }
+                else { accounts.append(account) }
+                switch result {
+                case let .success(scrobbler):
+                    scrobblers[account.id] = scrobbler
+                    configurationProblems[account.id] = nil
+                case let .failure(problem):
+                    scrobblers[account.id] = nil
+                    configurationProblems[account.id] = problem
+                }
+                await onStoreQueue {
+                    do { try stateStore.releaseHeld(account: account.id) }
+                    catch { log.error("Releasing held scrobbles failed: \(String(describing: error), privacy: .private)") }
+                }
             }
-            if let failure { self?.log.error("Removing account failed: \(failure, privacy: .public)") }
-            self?.reloadAccounts()
+        }
+        if reloadDiscarded {
+            reloadDiscarded = false
+            reloadAccounts()
         }
     }
 
@@ -181,23 +236,29 @@ final class AppModel: ObservableObject {
     func togglePause() { settings.paused.toggle() }
 
     func skipWaiting() {
-        let stateStore = stateStore
+        let stateStore = stateStore, log = log
         Task { [weak self] in
-            await self?.onStoreQueue { _ = try? stateStore.skipAllWaiting(now: Date()) }
+            await self?.onStoreQueue {
+                do { _ = try stateStore.skipAllWaiting(now: Date()) }
+                catch { log.error("Skipping waiting scrobbles failed: \(String(describing: error), privacy: .private)") }
+            }
             self?.rescan()
         }
     }
 
     func setChoice(_ choice: UserChoice?, for key: TagKey) {
-        let stateStore = stateStore
+        let stateStore = stateStore, log = log
         Task { [weak self] in
-            await self?.onStoreQueue { try? stateStore.setChoice(choice, for: key) }
+            await self?.onStoreQueue {
+                do { try stateStore.setChoice(choice, for: key) }
+                catch { log.error("Saving the choice failed: \(String(describing: error), privacy: .private)") }
+            }
             self?.rescan()
         }
     }
 
     func removeFromListenBrainz(row: SongRow, account: Account) async {
-        let accountStore = accountStore, stateStore = stateStore, transport = transport
+        let accountStore = accountStore, stateStore = stateStore, transport = transport, log = log
         let client: ListenBrainzClient? = await onStoreQueue {
             guard case let .success(scrobbler) = ScrobblerFactory.make(for: account, accounts: accountStore, transport: transport)
             else { return nil }
@@ -207,11 +268,15 @@ final class AppModel: ObservableObject {
         do {
             try await client.remove(listenedAt: row.date, track: row.track)
             await onStoreQueue {
-                try? stateStore.setChoice(.exclude, for: row.key)
-                try? stateStore.set(.skipped(.user), key: row.key, account: account.id, now: Date())
+                do {
+                    try stateStore.setChoice(.exclude, for: row.key)
+                    try stateStore.set(.skipped(.user), key: row.key, account: account.id, now: Date())
+                } catch {
+                    log.error("Saving the removal failed: \(String(describing: error), privacy: .private)")
+                }
             }
         } catch {
-            log.error("Remove from ListenBrainz failed: \(String(describing: error), privacy: .public)")
+            log.error("Remove from ListenBrainz failed: \(String(describing: error), privacy: .private)")
         }
         rescan()
     }

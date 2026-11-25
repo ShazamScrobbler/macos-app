@@ -61,6 +61,16 @@ import TestSupport
         #expect(r.status == .unsupportedSchema("ZSHARTISTMO.ZNAME"))
     }
 
+    @Test func isReadableListsTheShazamDirectory() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase(wal: false)
+        let lib = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp)
+        #expect(lib.isReadable())
+        let dir = lib.watchedDirectoryURL.path
+        chmod(dir, 0); defer { chmod(dir, 0o755) }
+        #expect(!lib.isReadable())
+    }
+
     @Test func unreadableDatabaseIsAccessDenied() throws {
         let f = try ShazamFixture(); defer { f.remove() }
         try f.createDatabase(wal: false)

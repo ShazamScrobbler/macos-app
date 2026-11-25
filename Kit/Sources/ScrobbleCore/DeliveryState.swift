@@ -4,7 +4,7 @@ public enum SkipReason: String, Codable, Sendable {
     case paused, user, otherPlayer, duplicate
 }
 
-public enum AccountProblem: String, Codable, Sendable {
+public enum AccountProblem: String, Codable, Sendable, Error {
     case signedOut
     case keyUnusable
 }

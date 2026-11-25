@@ -2,9 +2,6 @@ import Foundation
 import ScrobbleClients
 import ScrobbleCore
 
-/// `Result` needs an `Error` failure type; Kit's `AccountProblem` does not declare one.
-extension AccountProblem: @retroactive Error {}
-
 enum BuiltInLastFmKey {
     /// Injected at build time (App/Config); absent in builds without Secrets.xcconfig.
     static var current: (key: String, secret: String)? {

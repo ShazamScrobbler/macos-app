@@ -56,10 +56,10 @@ final class RescanScheduler {
         fastTimer?.invalidate()
         fastTimer = nil
         guard on else { return }
-        wasReadable = canReadDatabase()
+        wasReadable = model.library.isReadable()
         fastTimer = makeTimer(every: 2) { [weak self] in
             guard let self else { return }
-            let readable = self.canReadDatabase()
+            let readable = self.model.library.isReadable()
             if readable && !self.wasReadable { self.scan() }
             self.wasReadable = readable
         }
@@ -86,14 +86,6 @@ final class RescanScheduler {
         }
         let names = ShazamLibrary.watchedFileNames
         return Fingerprint(database: names.first.flatMap(modified), wal: names.dropFirst().first.flatMap(modified))
-    }
-
-    /// Opens (and closes) the database read-only: unlike `access(2)`, it honours the Full Disk Access check.
-    private func canReadDatabase() -> Bool {
-        let fd = open(model.library.databaseURL.path, O_RDONLY)
-        guard fd >= 0 else { return false }
-        close(fd)
-        return true
     }
 
     private func makeTimer(every seconds: TimeInterval, _ action: @escaping @MainActor () -> Void) -> Timer {

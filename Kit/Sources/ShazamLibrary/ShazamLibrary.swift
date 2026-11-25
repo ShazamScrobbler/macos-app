@@ -37,6 +37,12 @@ public struct ShazamLibrary: TagSource {
         self.tagsSinceLimit = tagsSinceLimit
     }
 
+    /// True when the Shazam folder can be listed (false before Full Disk Access is granted). Cheap, and unlike
+    /// opening the database file it can't disturb SQLite's POSIX locks.
+    public func isReadable() -> Bool {
+        (try? FileManager.default.contentsOfDirectory(atPath: watchedDirectoryURL.path)) != nil
+    }
+
     public func read(since: Date, recentLimit: Int) -> TagSourceResult {
         let fm = FileManager.default
         guard fm.fileExists(atPath: containerURL.path) else {
