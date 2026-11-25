@@ -30,6 +30,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             .sink { _ in center.requestAuthorization(options: [.alert]) { _, _ in } }
             .store(in: &cancellables)
         model.$snapshot
+            .dropFirst()   // the replayed placeholder; the next value is the first real scan
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.handle($0) }
             .store(in: &cancellables)
@@ -47,7 +48,6 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         }
         // Seed from the first snapshot without posting: notify on change only, not at every launch.
         if !seededProblems {
-            guard snapshot != .empty else { return }   // the publisher replays the placeholder first
             seededProblems = true
             lastProblems = snapshot.problems
         }
