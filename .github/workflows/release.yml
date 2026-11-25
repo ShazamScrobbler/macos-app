@@ -14,12 +14,31 @@ jobs:
     env:
       SPARKLE_VERSION: "2.10.1"
       SPARKLE_SHA256: "1a856d2a9edb8e628de88121d7be04cf0e2167f8641650b78fca00b14244cf27"
+      XCODEGEN_VERSION: "2.48.0"
+      XCODEGEN_SHA256: "620c9f0dc10849f94728ab5df52d225ebab8187439dd6fee1925e59e80dff892"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: latest-stable
-      - run: brew install xcodegen
+      - name: Check required secrets
+        env:
+          SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          [ -n "$SIGNING_P12_BASE64" ] || { echo "missing secret SIGNING_P12_BASE64"; exit 1; }
+          [ -n "$SIGNING_P12_PASSWORD" ] || { echo "missing secret SIGNING_P12_PASSWORD"; exit 1; }
+          [ -n "$SPARKLE_PUBLIC_KEY" ] || { echo "missing secret SPARKLE_PUBLIC_KEY"; exit 1; }
+          [ -n "$SPARKLE_PRIVATE_KEY" ] || { echo "missing secret SPARKLE_PRIVATE_KEY"; exit 1; }
+      - name: Install XcodeGen (pinned, checksummed)
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/xcodegen.zip" "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
+          echo "${XCODEGEN_SHA256}  $RUNNER_TEMP/xcodegen.zip" | shasum -a 256 -c -
+          mkdir "$RUNNER_TEMP/xcodegen-tool"
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen-tool"
+          echo "$RUNNER_TEMP/xcodegen-tool/xcodegen/bin" >> "$GITHUB_PATH"
       - name: Version
         id: version
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
@@ -38,14 +57,14 @@ jobs:
             echo "SPARKLE_PUBLIC_KEY = $SPARKLE_PUBLIC_KEY"
             echo "CODE_SIGN_IDENTITY = ShazamScrobbler Signing"
           } > App/Config/Secrets.xcconfig
+      - name: Test
+        run: scripts/check-boundaries.sh && swift test --package-path Kit
       - name: Import signing identity
         id: cert
         env:
           SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
           SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
         run: scripts/ci-import-cert.sh
-      - name: Test
-        run: scripts/check-boundaries.sh && swift test --package-path Kit
       - name: Build
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -54,6 +73,7 @@ jobs:
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
             -derivedDataPath build \
+            -disableAutomaticPackageResolution -onlyUsePackageVersionsFromResolvedFile \
             MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
             OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN --timestamp=none" build
       - name: Verify signature

@@ -10,13 +10,23 @@ permissions:
 jobs:
   test:
     runs-on: macos-latest
+    env:
+      XCODEGEN_VERSION: "2.48.0"
+      XCODEGEN_SHA256: "620c9f0dc10849f94728ab5df52d225ebab8187439dd6fee1925e59e80dff892"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: latest-stable
-      - name: Tools
-        run: brew install xcodegen shellcheck
+      - name: Install XcodeGen (pinned, checksummed)
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/xcodegen.zip" "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
+          echo "${XCODEGEN_SHA256}  $RUNNER_TEMP/xcodegen.zip" | shasum -a 256 -c -
+          mkdir "$RUNNER_TEMP/xcodegen-tool"
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen-tool"
+          echo "$RUNNER_TEMP/xcodegen-tool/xcodegen/bin" >> "$GITHUB_PATH"
+      - name: Install shellcheck
+        run: brew install shellcheck
       - name: Boundaries
         run: shellcheck scripts/*.sh && scripts/check-boundaries.sh
       - name: Kit tests
@@ -25,7 +35,9 @@ jobs:
         run: |
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
-            -derivedDataPath build CODE_SIGN_IDENTITY=- build
+            -derivedDataPath build \
+            -disableAutomaticPackageResolution -onlyUsePackageVersionsFromResolvedFile \
+            CODE_SIGN_IDENTITY=- build
           archs=$(lipo -archs build/Build/Products/Release/ShazamScrobbler.app/Contents/MacOS/ShazamScrobbler)
           echo "archs: $archs"
           echo "$archs" | grep -q x86_64 && echo "$archs" | grep -q arm64
