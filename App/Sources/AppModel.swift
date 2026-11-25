@@ -192,6 +192,7 @@ final class AppModel: ObservableObject {
         let batch = pendingMutations
         pendingMutations = []
         let accountStore = accountStore, stateStore = stateStore, transport = transport, log = log
+        var removedInBatch: Set<AccountID> = []
         for mutation in batch {
             switch mutation {
             case let .remove(id):
@@ -203,8 +204,14 @@ final class AppModel: ObservableObject {
                         log.error("Removing account failed: \(String(describing: error), privacy: .private)")
                     }
                 }
+                removedInBatch.insert(id)
                 removing.remove(id)
+                accounts.removeAll { $0.id == id }
+                scrobblers[id] = nil
+                configurationProblems[id] = nil
             case let .signedIn(account):
+                // A removal of the same account (earlier in this batch, or still in flight) wins.
+                if removedInBatch.contains(account.id) || removing.contains(account.id) { continue }
                 let result = await onStoreQueue { () -> Result<any Scrobbler, AccountProblem> in
                     accountStore.upsert(account)
                     return ScrobblerFactory.make(for: account, accounts: accountStore, transport: transport)
