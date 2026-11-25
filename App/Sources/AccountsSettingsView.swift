@@ -45,7 +45,7 @@ struct AccountsSettingsView: View {
                 Spacer()
                 if let id = selection, let account = model.accounts.first(where: { $0.id == id }) {
                     Button(String(localized: "Sign In Again…")) { sheet = .reauthenticate(account) }
-                    if account.preset.family == .audioscrobbler {
+                    if account.preset.family == .audioscrobbler && account.preset != .librefm {   // Libre.fm needs no key
                         Button(String(localized: "Use My Own Key…")) { sheet = .changeKey(account) }
                     }
                 }
@@ -74,7 +74,7 @@ struct AccountsSettingsView: View {
         case .signedOut?:
             Label(String(localized: "Signed out"), systemImage: "exclamationmark.triangle").foregroundColor(.orange)
         case .keyUnusable?:
-            Label(account.keyMode == .builtIn ? String(localized: "Key needs Last.fm Pro?") : String(localized: "Key not working"),
+            Label(account.keyMode == .builtIn && account.preset == .lastfm ? String(localized: "Key needs Last.fm Pro?") : String(localized: "Key not working"),
                   systemImage: "exclamationmark.triangle").foregroundColor(.orange)
         case nil:
             Label(String(localized: "OK"), systemImage: "checkmark.circle").foregroundColor(.green)

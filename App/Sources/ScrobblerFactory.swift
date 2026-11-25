@@ -12,6 +12,12 @@ enum BuiltInLastFmKey {
     }
 }
 
+/// Libre.fm accepts any API key and secret (it doesn't register applications), so it never asks for one (spec §6.3).
+/// These fixed values only fill the protocol's required fields; they are not secrets.
+enum LibreFmKey {
+    static let current = (key: "ShazamScrobbler", secret: "ShazamScrobbler")
+}
+
 enum ScrobblerFactory {
     static var clientVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "2"
@@ -33,6 +39,7 @@ enum ScrobblerFactory {
     }
 
     static func apiCredentials(for account: Account, accounts: AccountStore) -> (key: String, secret: String)? {
+        if account.preset == .librefm { return LibreFmKey.current }
         switch account.keyMode {
         case .builtIn: return BuiltInLastFmKey.current
         case .own:

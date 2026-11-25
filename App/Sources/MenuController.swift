@@ -200,11 +200,25 @@ final class MenuController: NSObject, NSMenuDelegate {
         }
         if !row.lines.isEmpty { submenu.addItem(.separator()) }
 
-        let toggle = NSMenuItem(title: row.isExcluded ? String(localized: "Scrobble Anyway") : String(localized: "Don't Scrobble"),
-                                action: #selector(toggleChoiceAction(_:)), keyEquivalent: "")
-        toggle.target = self
-        toggle.representedObject = row
-        submenu.addItem(toggle)
+        // Scrobble Anyway (§5.8): excluded, skipped or too-short songs. Don't Scrobble: anything not excluded or all skipped.
+        let forceable = row.isExcluded || row.aggregate == .skipped || row.lines.contains { line in
+            switch line.state {
+            case .tooShort?, .skipped?: true
+            default: false
+            }
+        }
+        if forceable {
+            let force = NSMenuItem(title: String(localized: "Scrobble Anyway"), action: #selector(scrobbleAnywayAction(_:)), keyEquivalent: "")
+            force.target = self
+            force.representedObject = row
+            submenu.addItem(force)
+        }
+        if !row.isExcluded && row.aggregate != .skipped {
+            let exclude = NSMenuItem(title: String(localized: "Don't Scrobble"), action: #selector(dontScrobbleAction(_:)), keyEquivalent: "")
+            exclude.target = self
+            exclude.representedObject = row
+            submenu.addItem(exclude)
+        }
 
         for line in row.lines {
             if line.account.preset.family == .listenBrainz, case .scrobbled? = line.state {
@@ -309,9 +323,14 @@ final class MenuController: NSObject, NSMenuDelegate {
         }
     }
 
-    @objc private func toggleChoiceAction(_ sender: NSMenuItem) {
+    @objc private func scrobbleAnywayAction(_ sender: NSMenuItem) {
         guard let row = sender.representedObject as? SongRow else { return }
-        model.setChoice(row.isExcluded ? .force : .exclude, for: row.key)
+        model.setChoice(.force, for: row.key)
+    }
+
+    @objc private func dontScrobbleAction(_ sender: NSMenuItem) {
+        guard let row = sender.representedObject as? SongRow else { return }
+        model.setChoice(.exclude, for: row.key)
     }
 
     @objc private func removeFromListenBrainzAction(_ sender: NSMenuItem) {

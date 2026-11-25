@@ -3,7 +3,8 @@ import Network
 import ShazamLibrary
 
 /// Every reason to rescan (§4): Shazam folder changes, a 300 s safety-net timer, wake, network back, and a cheap
-/// readability probe while the Full Disk Access window is open. The model coalesces them.
+/// readability probe while the Full Disk Access window is open. The model coalesces them. Wake and network back
+/// also send transient retries at once (§7).
 ///
 /// The safety-net timer skips its scan when neither the Shazam database nor its -wal file changed since the last
 /// scan and no wake is due (the model's `nextWake`). Folder, wake and network triggers always rescan.
@@ -37,14 +38,14 @@ final class RescanScheduler {
 
         NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
-            Task { @MainActor in self?.scan() }
+            Task { @MainActor in self?.scan(retryNow: true) }
         }
 
         pathMonitor.pathUpdateHandler = { [weak self] path in
             let online = path.status == .satisfied
             Task { @MainActor in
                 guard let self else { return }
-                if online && !self.wasOnline { self.scan() }
+                if online && !self.wasOnline { self.scan(retryNow: true) }
                 self.wasOnline = online
             }
         }
@@ -65,9 +66,10 @@ final class RescanScheduler {
         }
     }
 
-    private func scan() {
+    /// `retryNow` (wake, network back): transient retries are sent now instead of after their backoff (§7).
+    private func scan(retryNow: Bool = false) {
         lastScan = fingerprint()
-        model.rescan()
+        model.rescan(retryNow: retryNow)
     }
 
     private func safetyNet() {

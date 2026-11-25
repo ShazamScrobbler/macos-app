@@ -72,6 +72,8 @@ final class AddAccountModel: ObservableObject {
     }
 
     var builtInKeyAvailable: Bool { preset == .lastfm && BuiltInLastFmKey.current != nil }
+    /// Libre.fm accepts any key: the fixed `LibreFmKey` is used and no key fields are shown (§6.3).
+    var usesFixedKey: Bool { preset == .librefm }
     var needsServerURL: Bool { preset == .customAudioscrobbler || preset == .customListenBrainz }
     var supportsWebAuth: Bool { preset.defaultWebAuthURL != nil }
     var isBusy: Bool { phase == .working || phase == .waitingForBrowser }
@@ -97,6 +99,7 @@ final class AddAccountModel: ObservableObject {
     /// The typed key and secret, else the built-in key, else (re-sign-in of an own-key account with empty fields)
     /// the stored ones, read off the main actor and used for the request only.
     private func resolveCredentials() async throws -> (key: String, secret: String) {
+        if usesFixedKey { return LibreFmKey.current }
         if keyMode == .builtIn, builtInKeyAvailable, let builtIn = BuiltInLastFmKey.current { return builtIn }
         let key = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
         let secret = apiSecret.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -188,6 +191,7 @@ final class AddAccountModel: ObservableObject {
             let name = try await ListenBrainzClient.validate(apiURL: apiURL, token: value, transport: appModel.transport)
             try Task.checkCancellation()
             let account = makeAccount(apiURL: apiURL, webAuth: nil, username: name, keyMode: .own)
+            try ensureNotAlreadyAdded(account)
             try await save([(.token, value)], for: account)
             return String(localized: "Signed in as \(name)")
         }
@@ -195,7 +199,18 @@ final class AddAccountModel: ObservableObject {
 
     // MARK: internals
 
-    private enum SignInError: Error { case timedOut, missingCredentials }
+    private enum SignInError: Error { case timedOut, missingCredentials, alreadyAdded }
+
+    /// Another account with the same service, server and username already exists. Signing in again to the same
+    /// account (same id) is allowed.
+    private func ensureNotAlreadyAdded(_ account: Account) throws {
+        let host = account.apiURL.host?.lowercased()
+        let duplicate = appModel.accounts.contains { other in
+            other.id != account.id && other.preset == account.preset && other.apiURL.host?.lowercased() == host
+                && other.username.caseInsensitiveCompare(account.username) == .orderedSame
+        }
+        if duplicate { throw SignInError.alreadyAdded }
+    }
 
     /// Runs one sign-in attempt. The result goes to `phase` unless the attempt was cancelled meanwhile.
     private func start(_ work: @escaping @MainActor () async throws -> String) {
@@ -220,8 +235,9 @@ final class AddAccountModel: ObservableObject {
 
     private func finish(audioscrobbler session: AudioscrobblerSession, apiURL: URL, webAuth: URL?,
                         credentials: (key: String, secret: String)) async throws -> String {
-        let keyMode: KeyMode = self.keyMode == .builtIn && builtInKeyAvailable ? .builtIn : .own
+        let keyMode: KeyMode = usesFixedKey || (self.keyMode == .builtIn && builtInKeyAvailable) ? .builtIn : .own
         let account = makeAccount(apiURL: apiURL, webAuth: webAuth, username: session.username, keyMode: keyMode)
+        try ensureNotAlreadyAdded(account)
         try await save([(.sessionKey, session.sessionKey),
                         (.apiKey, keyMode == .own ? credentials.key : nil),
                         (.apiSecret, keyMode == .own ? credentials.secret : nil)], for: account)
@@ -255,6 +271,8 @@ final class AddAccountModel: ObservableObject {
         switch error {
         case SignInError.missingCredentials:
             return String(localized: "Fill in the server and API key first.")
+        case SignInError.alreadyAdded:
+            return String(localized: "This account is already added.")
         case SignInError.timedOut:
             return String(localized: "Sign-in timed out. Approve access in the browser within 5 minutes, then try again.")
         case AudioscrobblerAuthError.tokenExpired:

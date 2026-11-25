@@ -16,6 +16,8 @@ final class AccessSetupState: ObservableObject {
 final class AccessSetupWindowController: NSWindowController, NSWindowDelegate {
     private let scheduler: RescanScheduler
     private let state = AccessSetupState()
+    /// Called once when the window next closes, then cleared.
+    var onClose: (() -> Void)?
 
     init(model: AppModel, scheduler: RescanScheduler) {
         self.scheduler = scheduler
@@ -38,8 +40,13 @@ final class AccessSetupWindowController: NSWindowController, NSWindowDelegate {
         window?.makeKeyAndOrderFront(nil)
     }
 
+    var isShown: Bool { window?.isVisible == true }
+
     func windowWillClose(_ notification: Notification) {
         scheduler.setFastPolling(false)
+        let action = onClose
+        onClose = nil
+        action?()
     }
 }
 

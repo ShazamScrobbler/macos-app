@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import Foundation
 import os
@@ -28,6 +29,8 @@ final class AppModel: ObservableObject {
 
     /// When the last scan finished (the menu skips its on-open rescan if this is recent).
     private(set) var lastScanFinished: Date?
+    /// True once the first scan has finished, even if its snapshot equals the placeholder (so it published nothing).
+    @Published private(set) var hasScanned = false
 
     let accountStore: AccountStore
     let stateStore: StateStore
@@ -49,6 +52,8 @@ final class AppModel: ObservableObject {
     private var pendingMutations: [Mutation] = []
     /// Accounts being removed: a reload that read the store before the removal ran must not resurrect them.
     private var removing: Set<AccountID> = []
+    /// Set by a reconnect, wake or fixed account; consumed by the next scan, which then sends transient retries now.
+    private var pendingRetryNow = false
     private var wakeTimer: Timer?
     private var settingsDebounce: Task<Void, Never>?
     private let log = Logger(subsystem: "ShazamScrobbler", category: "ui")
@@ -86,20 +91,27 @@ final class AppModel: ObservableObject {
         var accounts: [Account]
         var scrobblers: [AccountID: any Scrobbler]
         var settings: EngineSettings
+        var retryNow: Bool
     }
 
-    private func scanInputs() -> ScanInputs {
-        ScanInputs(accounts: accounts, scrobblers: scrobblers, settings: settings)
+    /// Takes (and clears) the pending retry-now request, so it is used by exactly one scan.
+    private func takeScanInputs() -> ScanInputs {
+        defer { pendingRetryNow = false }
+        return ScanInputs(accounts: accounts, scrobblers: scrobblers, settings: settings, retryNow: pendingRetryNow)
     }
 
     /// Safe to call from anywhere, any number of times: scans are coalesced and serialized by the gate.
-    func rescan() {
+    /// `retryNow` (reconnect, wake): the scan also sends transient retries now instead of after their backoff (§7);
+    /// it carries over to a coalesced scan.
+    func rescan(retryNow: Bool = false) {
+        if retryNow { pendingRetryNow = true }
         let gate = gate, cycle = scanCycle
         Task { [weak self] in
             await gate.trigger { [weak self] in
                 await self?.applyPendingMutations()
-                guard let inputs = await self?.scanInputs() else { return }
-                let snapshot = await cycle.run(accounts: inputs.accounts, scrobblers: inputs.scrobblers, settings: inputs.settings)
+                guard let inputs = await self?.takeScanInputs() else { return }
+                let snapshot = await cycle.run(accounts: inputs.accounts, scrobblers: inputs.scrobblers,
+                                               settings: inputs.settings, retryNow: inputs.retryNow)
                 await self?.publish(snapshot)
             }
         }
@@ -119,6 +131,7 @@ final class AppModel: ObservableObject {
         var merged = new
         merged.problems.merge(configurationProblems) { held, _ in held }
         if merged != snapshot { snapshot = merged }
+        if !hasScanned { hasScanned = true }
         scheduleWake(at: merged.nextWake)
     }
 
@@ -234,6 +247,7 @@ final class AppModel: ObservableObject {
                     do { try stateStore.releaseHeld(account: account.id) }
                     catch { log.error("Releasing held scrobbles failed: \(String(describing: error), privacy: .private)") }
                 }
+                pendingRetryNow = true   // account fixed: this scan sends its retries now (§7)
             }
         }
         if reloadDiscarded {
@@ -257,12 +271,16 @@ final class AppModel: ObservableObject {
         }
     }
 
+    /// `.force` is "Scrobble Anyway": also moves the tag's skipped and too-short rows to waiting, which works even after
+    /// the account cursor has passed the tag (`StateStore.force`).
     func setChoice(_ choice: UserChoice?, for key: TagKey) {
         let stateStore = stateStore, log = log
         Task { [weak self] in
             await self?.onStoreQueue {
-                do { try stateStore.setChoice(choice, for: key) }
-                catch { log.error("Saving the choice failed: \(String(describing: error), privacy: .private)") }
+                do {
+                    if choice == .force { try stateStore.force(key: key, now: Date()) }
+                    else { try stateStore.setChoice(choice, for: key) }
+                } catch { log.error("Saving the choice failed: \(String(describing: error), privacy: .private)") }
             }
             self?.rescan()
         }
@@ -288,6 +306,12 @@ final class AppModel: ObservableObject {
             }
         } catch {
             log.error("Remove from ListenBrainz failed: \(String(describing: error), privacy: .private)")
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.messageText = String(localized: "Couldn't remove “\(Formatting.songTitle(row.track))” from \(Formatting.accountName(account))")
+            alert.informativeText = String(localized: "The listen is still on the server. Check your connection and try again.")
+            NSApp.activateApp()
+            alert.runModal()
         }
         rescan()
     }

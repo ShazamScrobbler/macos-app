@@ -71,7 +71,7 @@ struct AddAccountView: View {
             }
             .pickerStyle(.radioGroup)
         }
-        if model.keyMode == .own || !model.builtInKeyAvailable {
+        if !model.usesFixedKey && (model.keyMode == .own || !model.builtInKeyAvailable) {
             TextField(String(localized: "API key"), text: $model.apiKey)
             SecureField(String(localized: "Shared secret"), text: $model.apiSecret)
             Link(String(localized: "Get an API key…"), destination: URL(string: "https://www.last.fm/api/account/create")!)

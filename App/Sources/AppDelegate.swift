@@ -13,6 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var accessWindow = AccessSetupWindowController(model: model, scheduler: scheduler)
     private var cancellables: Set<AnyCancellable> = []
     private var didAutoShowAccess = false
+    private var terminating = false
 
     /// No nib or storyboard (and no NSPrincipalClass), so `@main` alone would never install the delegate.
     static func main() {
@@ -51,9 +52,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             checkForUpdates: { [weak self] in self?.updater.checkForUpdates() },
             openAbout: { NSApp.activateApp(); NSApp.orderFrontStandardAboutPanel(nil) }))
         if model.accountStore.load().isEmpty && !UserDefaults.standard.bool(forKey: "didShowWelcome") {
-            UserDefaults.standard.set(true, forKey: "didShowWelcome")
-            settingsWindow.show(tab: .accounts)
+            // Fresh install: wait for the first scan. If Shazam can't be read, the Full Disk Access window comes first
+            // and Settings › Accounts opens when it closes. The flag is set only once Settings is actually shown.
+            model.$hasScanned
+                .first { $0 }
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] _ in self?.showWelcomeAfterAccessSetup() }
+                .store(in: &cancellables)
         }
+    }
+
+    private func showWelcomeAfterAccessSetup() {
+        if model.snapshot.libraryStatus == .accessDenied && !didAutoShowAccess {
+            didAutoShowAccess = true
+            accessWindow.show()
+        }
+        if accessWindow.isShown {
+            accessWindow.onClose = { [weak self] in self?.showWelcome() }
+        } else {
+            showWelcome()
+        }
+    }
+
+    func applicationWillTerminate(_ notification: Notification) { terminating = true }
+
+    private func showWelcome() {
+        guard !terminating else { return }   // e.g. "Relaunch" from the access window: the next launch shows it
+        UserDefaults.standard.set(true, forKey: "didShowWelcome")
+        settingsWindow.show(tab: .accounts)
     }
 
     func openSettings() { settingsWindow.show() }

@@ -52,7 +52,7 @@ struct GeneralSettingsView: View {
                 Text(String(localized: "Scrobble after a song plays for \(Int(model.settings.minPlayTime)) seconds"))
             }
 
-            Toggle(String(localized: "Notify me when a song is detected (with a Don't Scrobble button)"),
+            Toggle(String(localized: "Show notifications for detected songs (with a Don't Scrobble button) and account problems"),
                    isOn: $model.notifyNowPlaying)
 
             if updater.canCheck {

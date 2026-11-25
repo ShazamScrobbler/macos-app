@@ -50,6 +50,7 @@ enum Formatting {
         case .held(.signedOut): return String(localized: "On hold: signed out")
         case .held(.keyUnusable): return String(localized: "On hold: API key not working")
         case let .retry(_, nextAt): return String(localized: "Retrying at \(time(nextAt))")
+        case let .retryAfterDailyLimit(_, nextAt): return String(localized: "Daily limit reached, retrying at \(time(nextAt))")
         }
     }
 
@@ -57,7 +58,7 @@ enum Formatting {
         let name = accountName(row.account)
         switch row.problem {
         case .signedOut: return String(localized: "\(name): signed out")
-        case .keyUnusable where row.account.keyMode == .builtIn:
+        case .keyUnusable where row.account.keyMode == .builtIn && row.account.preset == .lastfm:
             return String(localized: "\(name): key not working. Last.fm may require Pro for this key")
         case .keyUnusable: return String(localized: "\(name): API key not working")
         }

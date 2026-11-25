@@ -2,7 +2,8 @@ import Combine
 import ScrobbleCore
 import UserNotifications
 
-/// Now-playing and problem notifications. Content is artist/title and account problems only, never credentials.
+/// Now-playing and problem notifications, both only while the notifications setting is on. Content is artist/title
+/// and account problems only, never credentials. A now-playing notification is withdrawn once the tag stops playing.
 @MainActor
 final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     private nonisolated static let category = "NOW_PLAYING"
@@ -11,6 +12,8 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     private let model: AppModel
     private var cancellables: Set<AnyCancellable> = []
     private var lastNotifiedTag: TagKey?
+    /// The now-playing notification still shown in Notification Center, removed when its tag leaves now playing.
+    private var deliveredNowPlaying: TagKey?
     private var lastProblems: [AccountID: AccountProblem] = [:]
     private var seededProblems = false
 
@@ -37,8 +40,13 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     }
 
     private func handle(_ snapshot: Snapshot) {
+        if let shown = deliveredNowPlaying, shown != snapshot.nowPlaying?.tag.key {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [shown.rawValue])
+            deliveredNowPlaying = nil
+        }
         if model.notifyNowPlaying, let playing = snapshot.nowPlaying, playing.tag.key != lastNotifiedTag {
             lastNotifiedTag = playing.tag.key
+            deliveredNowPlaying = playing.tag.key
             let content = UNMutableNotificationContent()
             content.title = playing.tag.track.title
             content.body = String(localized: "\(playing.tag.track.artist) — tap Don't Scrobble to skip it")
@@ -52,7 +60,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             lastProblems = snapshot.problems
         }
         // Once per state change: only problems that are new or changed since the previous snapshot.
-        for (id, problem) in snapshot.problems where lastProblems[id] != problem {
+        for (id, problem) in snapshot.problems where model.notifyNowPlaying && lastProblems[id] != problem {
             guard let account = model.accounts.first(where: { $0.id == id }) else { continue }
             let content = UNMutableNotificationContent()
             content.title = String(localized: "ShazamScrobbler needs attention")
