@@ -48,10 +48,15 @@ public struct ShazamLibrary: TagSource {
                 Self.log.error("Unsupported Shazam schema, missing \(missing, privacy: .public)")
                 return TagSourceResult(status: .unsupportedSchema(missing))
             }
-            // Fetch twice the limit: rows without an artist are dropped in Swift after the cheap top-N selection.
-            let top = try Self.tags(db, filter: "1=1", bindings: [], ascending: false, limit: max(recentLimit, 0) * 2)
-            guard top.fetched > 0 else { return TagSourceResult(status: .noLibraryYet) }
-            let recent = Array(top.tags.prefix(max(recentLimit, 0)))
+            // recentLimit 0 means the caller only wants `tagsSince` (an empty library is then reported by the
+            // read that asks for `recent`). Otherwise fetch twice the limit: rows without an artist are dropped
+            // in Swift after the cheap top-N selection.
+            var recent: [ShazamTag] = []
+            if recentLimit > 0 {
+                let top = try Self.tags(db, filter: "1=1", bindings: [], ascending: false, limit: recentLimit * 2)
+                guard top.fetched > 0 else { return TagSourceResult(status: .noLibraryYet) }
+                recent = Array(top.tags.prefix(recentLimit))
+            }
             // Capped: a backlog larger than this is picked up by later scans as the caller's cursor advances.
             let since = try Self.tags(db, filter: "ZDATE > ?", bindings: [.real(since.timeIntervalSinceReferenceDate)],
                                       ascending: true, limit: tagsSinceLimit).tags
@@ -74,11 +79,11 @@ public struct ShazamLibrary: TagSource {
 
     private func classify(_ error: SQLiteError) -> LibraryStatus {
         if error.isPermissionDenied {
-            Self.log.notice("Shazam database read refused: \(error.description, privacy: .public)")
+            Self.log.notice("Shazam database read refused: SQLite \(error.code, privacy: .public): \(error.message, privacy: .private)")
             return .accessDenied
         }
         if !FileManager.default.fileExists(atPath: databaseURL.path) { return .noLibraryYet }
-        Self.log.error("Shazam database unreadable: \(error.description, privacy: .public)")
+        Self.log.error("Shazam database unreadable: SQLite \(error.code, privacy: .public): \(error.message, privacy: .private)")
         return .unreadable(error.description)
     }
 

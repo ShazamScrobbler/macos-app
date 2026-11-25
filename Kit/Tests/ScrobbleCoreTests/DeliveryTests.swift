@@ -250,4 +250,48 @@ import TestSupport
         _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [NowPlayingRequest(account: a, tag: current, isRefresh: true)], paused: false)
         #expect(await fake.nowPlayingTracks == [current.track])
     }
+
+    @Test func rateLimitedNowPlayingBacksOffForRetryAfterWhenLongerThan90() async throws {
+        let current = tag(1, "Current", at: 0)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let fake = FakeScrobbler()
+        await fake.setNowPlayingError(.rateLimited(retryAfter: 300))
+        let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        time.advance(by: 200)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 1)
+        time.advance(by: 101)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 2)
+    }
+
+    @Test func rateLimitedNowPlayingWithoutRetryAfterUsesDefault() async throws {
+        let current = tag(1, "Current", at: 0)
+        let (_, delivery, time) = try setup([(current, a, .nowPlaying(deadline: t0 + 1045))], now: 1000)
+        let fake = FakeScrobbler()
+        await fake.setNowPlayingError(.rateLimited(retryAfter: 5))
+        let request = NowPlayingRequest(account: a, tag: current, isRefresh: false)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        time.advance(by: 91)
+        _ = await delivery.run(scrobblers: [a: fake], nowPlaying: [request], paused: false)
+        #expect(await fake.otherPlayerChecks.count == 2)
+    }
+
+    struct Boom: Error {}
+
+    @Test func unreadableHeldProblemsSendsNothing() async throws {
+        let waiting = tag(1, "Waiting", at: 0)
+        let store = try StateStore(url: nil)
+        try store.apply([Transition(key: waiting.key, tag: waiting, account: a, to: .waiting)], now: t0)
+        let delivery = Delivery(store: store, time: ManualTimeSource(t0 + 1000), random: { 0.5 },
+                                heldProblemsReader: { _ in throw Boom() })
+        let fake = FakeScrobbler()
+        let report = await delivery.run(scrobblers: [a: fake], nowPlaying: [NowPlayingRequest(account: a, tag: waiting, isRefresh: false)],
+                                        paused: false)
+        #expect(await fake.batches.isEmpty)
+        #expect(await fake.nowPlayingTracks.isEmpty)
+        #expect(report == DeliveryReport())
+        #expect(try state(store, waiting, a) == .waiting)
+    }
 }

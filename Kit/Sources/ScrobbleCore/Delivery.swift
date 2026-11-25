@@ -16,13 +16,23 @@ public actor Delivery {
     private let log = Logger(subsystem: "ShazamScrobbler", category: "delivery")
     /// Accounts whose first-time now playing failed transiently: not retried before this date. Refreshes are exempt.
     private var nowPlayingRetryAfter: [AccountID: Date] = [:]
-    private static let nowPlayingBackoff: TimeInterval = 90
+    private static let nowPlayingBackoff: TimeInterval = 90   // minimum; a longer server retryAfter wins
+
+    typealias HeldProblemsReader = @Sendable (StateStore) throws -> [AccountID: AccountProblem]
+    private let heldProblemsReader: HeldProblemsReader
 
     public init(store: StateStore, time: any TimeSource,
                 random: @escaping @Sendable () -> Double = { Double.random(in: 0..<1) }) {
+        self.init(store: store, time: time, random: random, heldProblemsReader: { try $0.heldProblems() })
+    }
+
+    /// `heldProblemsReader` exists so tests can simulate a failing store read.
+    init(store: StateStore, time: any TimeSource, random: @escaping @Sendable () -> Double = { Double.random(in: 0..<1) },
+         heldProblemsReader: @escaping HeldProblemsReader) {
         self.store = store
         self.time = time
         self.random = random
+        self.heldProblemsReader = heldProblemsReader
     }
 
     /// Callers must not run this concurrently (ScanCycle serializes runs via RescanGate).
@@ -31,7 +41,12 @@ public actor Delivery {
                     paused: Bool) async -> DeliveryReport {
         var report = DeliveryReport()
         if !paused {
-            let held = (try? store.heldProblems()) ?? [:]
+            // Unreadable held problems must not look like "no problems": send nothing this run.
+            let held: [AccountID: AccountProblem]
+            do { held = try heldProblemsReader(store) } catch {
+                log.error("held problems read failed; sending nothing this run: \(error.localizedDescription, privacy: .private)")
+                return report
+            }
             for (account, scrobbler) in scrobblers.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
                 if let problem = held[account] {
                     report.problems[account] = problem
@@ -76,7 +91,11 @@ public actor Delivery {
                 }
                 switch scrobbleError {
                 case .transient, .rateLimited:
-                    if !request.isRefresh { nowPlayingRetryAfter[account] = time.now.addingTimeInterval(Self.nowPlayingBackoff) }
+                    if !request.isRefresh {
+                        var delay = Self.nowPlayingBackoff
+                        if case let .rateLimited(retryAfter) = scrobbleError { delay = max(delay, retryAfter ?? 0) }
+                        nowPlayingRetryAfter[account] = time.now.addingTimeInterval(delay)
+                    }
                 default: break
                 }
                 log.notice("Now playing failed for \(account.rawValue, privacy: .public): \(scrobbleError.logSummary, privacy: .public) (\(String(describing: scrobbleError), privacy: .private))")

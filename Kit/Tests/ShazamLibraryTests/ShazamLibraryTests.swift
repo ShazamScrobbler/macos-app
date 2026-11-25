@@ -178,4 +178,14 @@ import TestSupport
         let r = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: .distantPast, recentLimit: 20)
         #expect(r.status == .unsupportedSchema("ZSHTAGRESULTMO is not a table"))
     }
+
+    @Test func recentLimitZeroStillReadsTagsSinceWithOkStatus() throws {
+        let f = try ShazamFixture(); defer { f.remove() }
+        try f.createDatabase()
+        try f.addTag(title: "One", artists: ["A"], album: nil, date: t0 + 5)
+        let result = ShazamLibrary(containerURL: f.container, shazamAppURL: noShazamApp).read(since: t0, recentLimit: 0)
+        #expect(result.status == .ok)
+        #expect(result.tagsSince.map(\.track.title) == ["One"])
+        #expect(result.recent.isEmpty)
+    }
 }

@@ -141,7 +141,7 @@ public actor ScanCycle {
     }
 
     /// One `source.read` per distinct cursor. `status` is the first non-ok status (any failed read skips the engine);
-    /// `result` carries the `recent` list, which is the same newest window in every read.
+    /// `result` carries the `recent` list, read only in the newest window (a failed read's result wins).
     private func readWindows(_ cursors: [AccountCursor], now: Date, recentLimit: Int)
         -> (windows: [ReadWindow], status: LibraryStatus, result: TagSourceResult) {
         let grouped = Dictionary(grouping: cursors, by: \.since)
@@ -151,16 +151,18 @@ public actor ScanCycle {
             return ([], result.status, result)
         }
         var windows: [ReadWindow] = []
-        var first: TagSourceResult?
+        var newest: TagSourceResult?
         var status = LibraryStatus.ok
-        for cursor in sinces {
+        for (index, cursor) in sinces.enumerated() {
             let since = cursor.addingTimeInterval(-EngineSettings.duplicateWindow)
-            let result = source.read(since: since, recentLimit: recentLimit)
-            if first == nil { first = result }
-            if result.status != .ok, status == .ok { status = result.status; first = result }
+            // `recent` is the same newest tags in every read, so only the newest window (last: `sinces` is ascending) fetches it.
+            let isNewest = index == sinces.count - 1
+            let result = source.read(since: since, recentLimit: isNewest ? recentLimit : 0)
+            if isNewest { newest = result }
+            if result.status != .ok, status == .ok { status = result.status; newest = result }
             windows.append(ReadWindow(since: since, accounts: grouped[cursor] ?? [], tags: result.tagsSince))
         }
-        return (windows, status, first ?? TagSourceResult(status: status))
+        return (windows, status, newest ?? TagSourceResult(status: status))
     }
 
     private func currentCursors(_ accounts: [Account]) -> [AccountCursor] {

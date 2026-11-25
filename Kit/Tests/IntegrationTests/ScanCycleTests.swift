@@ -212,4 +212,32 @@ import TestSupport
         }
         #expect(await okFake.nowPlayingTracks.map(\.title) == ["New"])
     }
+
+    /// Returns `recent` only when asked for (limit > 0), tagged by the window it was read for.
+    struct WindowSource: TagSource {
+        let newest: ShazamTag
+        func read(since: Date, recentLimit: Int) -> TagSourceResult {
+            TagSourceResult(status: .ok, tagsSince: [], recent: recentLimit > 0 && since > Date(timeIntervalSince1970: 1_800_000_000) - 650 ? [newest] : [])
+        }
+        func tags(withPKs pks: [Int64]) throws -> [Int64: ShazamTag] { [:] }
+    }
+
+    @Test func recentComesFromTheNewestWindowOnly() async throws {
+        let time = ManualTimeSource(t0 + 10)
+        let store = try StateStore(url: nil)
+        let oldID = AccountID(rawValue: "old"), newID = AccountID(rawValue: "new")
+        func acct(_ id: AccountID, _ addedAt: Date) -> Account {
+            Account(id: id, preset: .listenbrainz, username: "u", apiURL: URL(string: "https://example.invalid")!,
+                    webAuthURL: nil, keyMode: .own, addedAt: addedAt)
+        }
+        // Cursors t0-5000 and t0: two windows. The old window's read (since < t0-650) returns no recent even at limit 20.
+        try store.setCursor(t0 - 5000, for: oldID)
+        try store.setCursor(t0, for: newID)
+        let newest = ShazamTag(pk: 7, date: t0 + 5, track: Track(artist: "A", title: "OnlyInNewest"))
+        let cycle = ScanCycle(source: WindowSource(newest: newest), store: store,
+                              delivery: Delivery(store: store, time: time), time: time)
+        let snapshot = await cycle.run(accounts: [acct(oldID, t0 - 5000), acct(newID, t0)],
+                                       scrobblers: [oldID: FakeScrobbler(), newID: FakeScrobbler()], settings: EngineSettings())
+        #expect(snapshot.recent == [newest])
+    }
 }
