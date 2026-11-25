@@ -36,6 +36,10 @@ Password sign-in (for servers that need it) only works over `https://`.
 - **Network:** with [LuLu](https://objective-see.org/products/lulu.html) or Little Snitch, connections go only to your accounts' servers and `github.com` and GitHub's download hosts (`*.githubusercontent.com`) for updates.
 - **Build it yourself:** see README > Build from source, then give your own build Full Disk Access.
 
+## Hardened runtime
+
+The app runs with the hardened runtime. Because it is not signed with an Apple team ID, it disables library validation (`com.apple.security.cs.disable-library-validation`) so it can load its bundled Sparkle framework, which macOS would otherwise refuse; this does not allow code injection via environment variables, which stays blocked.
+
 ## Reporting a vulnerability
 
 Open a private security advisory on GitHub (Security > Report a vulnerability).
