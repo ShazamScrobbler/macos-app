@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 
 @main
 @MainActor
@@ -7,6 +8,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var scheduler: RescanScheduler!
     private var menuController: MenuController?
     private lazy var settingsWindow = SettingsWindowController(model: model)
+    private lazy var accessWindow = AccessSetupWindowController(model: model, scheduler: scheduler)
+    private var cancellables: Set<AnyCancellable> = []
+    private var didAutoShowAccess = false
 
     /// No nib or storyboard (and no NSPrincipalClass), so `@main` alone would never install the delegate.
     static func main() {
@@ -29,6 +33,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         scheduler = RescanScheduler(model: model)
         scheduler.start()
+        model.$snapshot
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] snapshot in
+                guard let self, snapshot.libraryStatus == .accessDenied, !self.didAutoShowAccess else { return }
+                self.didAutoShowAccess = true
+                self.accessWindow.show()
+            }
+            .store(in: &cancellables)
         menuController = MenuController(model: model, actions: .init(
             openSettings: { [weak self] in self?.openSettings() },
             openAccessSetup: { [weak self] in self?.openAccessSetup() },
@@ -41,5 +53,5 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func openSettings() { settingsWindow.show() }
-    func openAccessSetup() {}
+    func openAccessSetup() { accessWindow.show() }
 }
