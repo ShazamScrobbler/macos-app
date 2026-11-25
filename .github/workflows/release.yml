@@ -3,14 +3,17 @@ on:
   push:
     tags: ["v*"]
 
-permissions:
-  contents: write
-  id-token: write
-  attestations: write
+permissions: {}
 
 jobs:
   release:
     runs-on: macos-latest
+    # One job builds, attests and publishes, so it alone holds these: contents (create the release),
+    # id-token + attestations (build provenance for the DMG).
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
     env:
       SPARKLE_VERSION: "2.10.1"
       SPARKLE_SHA256: "1a856d2a9edb8e628de88121d7be04cf0e2167f8641650b78fca00b14244cf27"
@@ -27,11 +30,16 @@ jobs:
           SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
           SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
         run: |
           [ -n "$SIGNING_P12_BASE64" ] || { echo "missing secret SIGNING_P12_BASE64"; exit 1; }
           [ -n "$SIGNING_P12_PASSWORD" ] || { echo "missing secret SIGNING_P12_PASSWORD"; exit 1; }
           [ -n "$SPARKLE_PUBLIC_KEY" ] || { echo "missing secret SPARKLE_PUBLIC_KEY"; exit 1; }
           [ -n "$SPARKLE_PRIVATE_KEY" ] || { echo "missing secret SPARKLE_PRIVATE_KEY"; exit 1; }
+          # Must be 1.x's built-in key and secret: migrated 1.x Last.fm sessions only work with the key that created them.
+          [ -n "$LASTFM_API_KEY" ] || { echo "missing secret LASTFM_API_KEY"; exit 1; }
+          [ -n "$LASTFM_API_SECRET" ] || { echo "missing secret LASTFM_API_SECRET"; exit 1; }
       - name: Install XcodeGen (pinned, checksummed)
         run: |
           curl -fsSL -o "$RUNNER_TEMP/xcodegen.zip" "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
@@ -75,12 +83,15 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
           KEYCHAIN: ${{ steps.cert.outputs.keychain }}
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
+          # Above the local default (200) and 1.x's CFBundleVersion (1.4.0), and increasing, so Sparkle sees each release as newer.
+          build_number=$((2000000 + RUN_NUMBER))
           cd App && xcodegen generate
           xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
             -derivedDataPath build -destination 'generic/platform=macOS' \
             -disableAutomaticPackageResolution -onlyUsePackageVersionsFromResolvedFile \
-            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$build_number" \
             OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN --timestamp=none" build
       - name: Verify signature
         run: scripts/verify-release-signature.sh App/build/Build/Products/Release/ShazamScrobbler.app
