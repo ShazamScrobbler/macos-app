@@ -1,0 +1,8 @@
+// Defaults; real values come from Secrets.xcconfig locally or from CI for releases.
+LASTFM_API_KEY =
+LASTFM_API_SECRET =
+SPARKLE_PUBLIC_KEY =
+SPARKLE_FEED_URL = https:/$()/github.com/ShazamScrobbler/macos-app/releases/latest/download/appcast.xml
+CODE_SIGN_IDENTITY = -
+
+#include? "Secrets.xcconfig"

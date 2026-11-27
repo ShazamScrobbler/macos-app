@@ -1,0 +1,149 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: macos-latest
+    # One job builds, attests and publishes, so it alone holds these: contents (create the release),
+    # id-token + attestations (build provenance for the DMG).
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      SPARKLE_VERSION: "2.10.1"
+      SPARKLE_SHA256: "1a856d2a9edb8e628de88121d7be04cf0e2167f8641650b78fca00b14244cf27"
+      XCODEGEN_VERSION: "2.48.0"
+      XCODEGEN_SHA256: "620c9f0dc10849f94728ab5df52d225ebab8187439dd6fee1925e59e80dff892"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: latest-stable
+      - name: Check required secrets
+        env:
+          SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
+        run: |
+          [ -n "$SIGNING_P12_BASE64" ] || { echo "missing secret SIGNING_P12_BASE64"; exit 1; }
+          [ -n "$SIGNING_P12_PASSWORD" ] || { echo "missing secret SIGNING_P12_PASSWORD"; exit 1; }
+          [ -n "$SPARKLE_PUBLIC_KEY" ] || { echo "missing secret SPARKLE_PUBLIC_KEY"; exit 1; }
+          [ -n "$SPARKLE_PRIVATE_KEY" ] || { echo "missing secret SPARKLE_PRIVATE_KEY"; exit 1; }
+          # Must be 1.x's built-in key and secret: migrated 1.x Last.fm sessions only work with the key that created them.
+          [ -n "$LASTFM_API_KEY" ] || { echo "missing secret LASTFM_API_KEY"; exit 1; }
+          [ -n "$LASTFM_API_SECRET" ] || { echo "missing secret LASTFM_API_SECRET"; exit 1; }
+      - name: Install XcodeGen (pinned, checksummed)
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/xcodegen.zip" "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
+          echo "${XCODEGEN_SHA256}  $RUNNER_TEMP/xcodegen.zip" | shasum -a 256 -c -
+          mkdir "$RUNNER_TEMP/xcodegen-tool"
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen-tool"
+          echo "$RUNNER_TEMP/xcodegen-tool/xcodegen/bin" >> "$GITHUB_PATH"
+      - name: Install Sparkle tools (pinned, checksummed)
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/sparkle.tar.xz" "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          echo "${SPARKLE_SHA256}  $RUNNER_TEMP/sparkle.tar.xz" | shasum -a 256 -c -
+          mkdir "$RUNNER_TEMP/sparkle"
+          tar -xf "$RUNNER_TEMP/sparkle.tar.xz" -C "$RUNNER_TEMP/sparkle"
+      - name: Version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - name: Build configuration
+        env:
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+        run: |
+          case "$SPARKLE_PUBLIC_KEY" in
+            *//*) echo "error: SPARKLE_PUBLIC_KEY contains '//' which an xcconfig would truncate" >&2; exit 1 ;;
+          esac
+          {
+            echo "LASTFM_API_KEY = $LASTFM_API_KEY"
+            echo "LASTFM_API_SECRET = $LASTFM_API_SECRET"
+            echo "SPARKLE_PUBLIC_KEY = $SPARKLE_PUBLIC_KEY"
+            echo "CODE_SIGN_IDENTITY = ShazamScrobbler Signing"
+          } > App/Config/Secrets.xcconfig
+      - name: Test
+        run: scripts/check-boundaries.sh && swift test --package-path Kit
+      - name: Import signing identity
+        id: cert
+        env:
+          SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
+        run: scripts/ci-import-cert.sh
+      - name: Build
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          KEYCHAIN: ${{ steps.cert.outputs.keychain }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          # Above the local default (200) and 1.x's CFBundleVersion (1.4.0), and increasing, so Sparkle sees each release as newer.
+          build_number=$((2000000 + RUN_NUMBER))
+          cd App && xcodegen generate
+          xcodebuild -project ShazamScrobbler.xcodeproj -scheme ShazamScrobbler -configuration Release \
+            -derivedDataPath build -destination 'generic/platform=macOS' \
+            -disableAutomaticPackageResolution -onlyUsePackageVersionsFromResolvedFile \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$build_number" \
+            OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN --timestamp=none" build
+      - name: Verify signature
+        run: scripts/verify-release-signature.sh App/build/Build/Products/Release/ShazamScrobbler.app
+      - name: Verify Sparkle public key
+        env:
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+        run: |
+          built=$(/usr/libexec/PlistBuddy -c "Print :SUPublicEDKey" App/build/Build/Products/Release/ShazamScrobbler.app/Contents/Info.plist)
+          if [ "$built" != "$SPARKLE_PUBLIC_KEY" ]; then
+            echo "error: SUPublicEDKey in the built app does not match SPARKLE_PUBLIC_KEY" >&2
+            exit 1
+          fi
+      - name: DMG
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          KEYCHAIN: ${{ steps.cert.outputs.keychain }}
+        run: |
+          mkdir -p dist dmgroot
+          cp -R App/build/Build/Products/Release/ShazamScrobbler.app dmgroot/
+          ln -s /Applications dmgroot/Applications
+          hdiutil create -volname ShazamScrobbler -srcfolder dmgroot -ov -format UDZO \
+            "dist/ShazamScrobbler-$VERSION.dmg"
+          codesign --keychain "$KEYCHAIN" -s "ShazamScrobbler Signing" --timestamp=none dist/*.dmg
+          (cd dist && shasum -a 256 ./*.dmg > SHA256SUMS.txt)
+      - name: Sparkle appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          umask 077
+          trap 'rm -f "$RUNNER_TEMP/sparkle.key"' EXIT
+          printf '%s' "$SPARKLE_PRIVATE_KEY" > "$RUNNER_TEMP/sparkle.key"
+          "$RUNNER_TEMP/sparkle/bin/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle.key" \
+            --download-url-prefix "https://github.com/${REPOSITORY}/releases/download/${GITHUB_REF_NAME}/" dist
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+        with:
+          subject-path: dist/*.dmg
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          {
+            echo "## First launch"
+            echo "This build is open source and not notarized by Apple. The first time you open it, macOS blocks it:"
+            echo "open it once, then go to System Settings › Privacy & Security and click **Open Anyway**."
+            echo "Then follow the in-app steps to give it Full Disk Access (it reads only Shazam's library). See SECURITY.md."
+            echo
+            echo "Verify this download: \`gh attestation verify ShazamScrobbler-$VERSION.dmg -R $REPOSITORY\`"
+            echo
+            cat dist/SHA256SUMS.txt
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/appcast.xml dist/SHA256SUMS.txt \
+            --title "ShazamScrobbler $VERSION" --notes-file notes.md

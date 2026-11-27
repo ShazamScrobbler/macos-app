@@ -1,0 +1,87 @@
+import AppKit
+import Combine
+
+@main
+@MainActor
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    private(set) var model: AppModel!
+    private var scheduler: RescanScheduler!
+    private var menuController: MenuController?
+    private let updater = Updater()
+    private var notifier: Notifier?
+    private lazy var settingsWindow = SettingsWindowController(model: model, updater: updater)
+    private lazy var accessWindow = AccessSetupWindowController(model: model, scheduler: scheduler)
+    private var cancellables: Set<AnyCancellable> = []
+    private var didAutoShowAccess = false
+    private var terminating = false
+
+    /// No nib or storyboard (and no NSPrincipalClass), so `@main` alone would never install the delegate.
+    static func main() {
+        let app = NSApplication.shared
+        let delegate = AppDelegate()
+        app.delegate = delegate
+        withExtendedLifetime(delegate) { app.run() }
+    }
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        do {
+            model = try AppModel()
+        } catch {
+            let alert = NSAlert()
+            alert.messageText = String(localized: "ShazamScrobbler can't open its data")
+            alert.informativeText = String(localized: "It keeps its state in ~/Library/Application Support/ShazamScrobbler. Error: \(String(describing: error))")
+            alert.runModal()
+            NSApp.terminate(nil)
+            return
+        }
+        scheduler = RescanScheduler(model: model)
+        scheduler.start()
+        model.$snapshot
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] snapshot in
+                guard let self, snapshot.libraryStatus == .accessDenied, !self.didAutoShowAccess else { return }
+                self.didAutoShowAccess = true
+                self.accessWindow.show()
+            }
+            .store(in: &cancellables)
+        notifier = Notifier(model: model)
+        menuController = MenuController(model: model, actions: .init(
+            openSettings: { [weak self] in self?.openSettings() },
+            openAccessSetup: { [weak self] in self?.openAccessSetup() },
+            canCheckForUpdates: updater.canCheck,
+            checkForUpdates: { [weak self] in self?.updater.checkForUpdates() },
+            openAbout: { NSApp.activateApp(); NSApp.orderFrontStandardAboutPanel(nil) }))
+        if model.accountStore.load().isEmpty && !UserDefaults.standard.bool(forKey: "didShowWelcome") {
+            // Fresh install: wait for the first scan. If Shazam can't be read, the Full Disk Access window comes first
+            // and Settings › Accounts opens when it closes. The flag is set only once Settings is actually shown.
+            model.$hasScanned
+                .first { $0 }
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] _ in self?.showWelcomeAfterAccessSetup() }
+                .store(in: &cancellables)
+        }
+    }
+
+    private func showWelcomeAfterAccessSetup() {
+        if model.snapshot.libraryStatus == .accessDenied && !didAutoShowAccess {
+            didAutoShowAccess = true
+            accessWindow.show()
+        }
+        if accessWindow.isShown {
+            accessWindow.onClose = { [weak self] in self?.showWelcome() }
+        } else {
+            showWelcome()
+        }
+    }
+
+    func applicationWillTerminate(_ notification: Notification) { terminating = true }
+
+    private func showWelcome() {
+        guard !terminating else { return }   // e.g. "Relaunch" from the access window: the next launch shows it
+        UserDefaults.standard.set(true, forKey: "didShowWelcome")
+        settingsWindow.show(tab: .accounts)
+    }
+
+    func openSettings() { settingsWindow.show() }
+    func openAccessSetup() { accessWindow.show() }
+}

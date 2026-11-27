@@ -1,9 +1,26 @@
 ## CHANGELOG
 
-### Unreleased
+### 2.0.0 (unreleased)
 
-- Build a universal binary (Apple silicon and Intel) so the app runs natively on M-series Macs and macOS does not warn that Rosetta apps will stop working in a future release
-- Raise the minimum system to macOS 11, which current Xcode requires in order to link an Apple silicon build
+Rewritten in Swift for macOS 12+ (Apple Silicon and Intel).
+
+#### Added
+- Scrobble to several accounts at once: Last.fm, Libre.fm, ListenBrainz, and self-hosted Last.fm- or ListenBrainz-compatible servers.
+- Use your own Last.fm API key (Last.fm may require Pro for API keys).
+- Browser sign-in for Last.fm; passwords are never stored. Secrets live in the Keychain. Password sign-in for other servers only works over https.
+- Guided Full Disk Access setup: macOS 27 refuses to show a prompt for Shazam's data, so access has to be granted by hand (1.x silently showed an empty menu).
+- Live menu: new tags, countdown and statuses update while the menu is open (#8).
+- Per-song status per account, with the reason when a scrobble isn't accepted (#31).
+- Don't Scrobble / Scrobble Anyway, Skip Waiting, and a pause mode that ignores tags (#2, #17, #28).
+- Optional notification with a Don't Scrobble button (#1). Remove a listen from ListenBrainz (#7).
+- In-app updates (Sparkle).
+
+#### Fixed
+- New tags not scrobbled until toggling Enable (#41).
+- "Now playing" disappearing after ~30 s (#47).
+- Whole history scrobbled on first launch (#25); Auto-Shazam repeats scrobbled several times (#42).
+- Queued scrobbles sent one by one (#18) and lost on errors.
+- Intel Macs not supported by 1.4.0 (#46).
 
 ### 1.4.0 (2025/3/15)
 

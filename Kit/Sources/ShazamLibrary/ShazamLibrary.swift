@@ -1,0 +1,146 @@
+import Foundation
+import os
+import ScrobbleCore
+import SQLiteLite
+
+/// The only code allowed to touch Shazam's container (see scripts/check-boundaries.sh).
+/// Opens the database read-only; never writes, never uses the network.
+public struct ShazamLibrary: TagSource {
+    public static let defaultContainerURL = URL(fileURLWithPath: NSHomeDirectory())
+        .appendingPathComponent("Library/Group Containers/4GWDBCF5A4.group.com.shazam")
+    public static let defaultShazamAppURL = URL(fileURLWithPath: "/Applications/Shazam.app")
+    public static let watchedFileNames = ["ShazamDataModel.sqlite", "ShazamDataModel.sqlite-wal"]
+
+    public let containerURL: URL
+    public let shazamAppURL: URL
+    private let tagsSinceLimit: Int
+    public var watchedDirectoryURL: URL { containerURL.appendingPathComponent("com.shazam.mac.Shazam") }
+    public var databaseURL: URL { watchedDirectoryURL.appendingPathComponent("ShazamDataModel.sqlite") }
+
+    private static let log = Logger(subsystem: "ShazamScrobbler", category: "shazam")
+    private static let requiredColumns: [(table: String, columns: [String])] = [
+        ("ZSHTAGRESULTMO", ["Z_PK", "ZDATE", "ZTRACKNAME"]),
+        ("ZSHARTISTMO", ["Z_PK", "ZTAGRESULT", "ZNAME"]),
+        ("ZSHMETADATAMO", ["Z_PK", "ZTAGRESULT", "ZKEY", "ZVALUE"]),
+    ]
+
+    /// The only public way in: always Shazam's real container, never a caller-chosen path.
+    public init() {
+        self.init(containerURL: Self.defaultContainerURL, shazamAppURL: Self.defaultShazamAppURL,
+                  tagsSinceLimit: Self.sinceCap)
+    }
+
+    /// Internal so only tests (via `@testable import`) can point the reader elsewhere.
+    init(containerURL: URL, shazamAppURL: URL = ShazamLibrary.defaultShazamAppURL, tagsSinceLimit: Int = ShazamLibrary.sinceCap) {
+        self.containerURL = containerURL
+        self.shazamAppURL = shazamAppURL
+        self.tagsSinceLimit = tagsSinceLimit
+    }
+
+    /// True when the Shazam folder can be listed (false before Full Disk Access is granted). Cheap, and unlike
+    /// opening the database file it can't disturb SQLite's POSIX locks.
+    public func isReadable() -> Bool {
+        (try? FileManager.default.contentsOfDirectory(atPath: watchedDirectoryURL.path)) != nil
+    }
+
+    public func read(since: Date, recentLimit: Int) -> TagSourceResult {
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: containerURL.path) else {
+            return TagSourceResult(status: fm.fileExists(atPath: shazamAppURL.path) ? .noLibraryYet : .notInstalled)
+        }
+        do {
+            let db = try SQLiteDatabase(path: databaseURL.path, mode: .readOnly)
+            if let missing = try Self.schemaProblem(db) {
+                Self.log.error("Unsupported Shazam schema, missing \(missing, privacy: .public)")
+                return TagSourceResult(status: .unsupportedSchema(missing))
+            }
+            // recentLimit 0 means the caller only wants `tagsSince` (an empty library is then reported by the
+            // read that asks for `recent`). Otherwise fetch twice the limit: rows without an artist are dropped
+            // in Swift after the cheap top-N selection.
+            var recent: [ShazamTag] = []
+            if recentLimit > 0 {
+                let top = try Self.tags(db, filter: "1=1", bindings: [], ascending: false, limit: recentLimit * 2)
+                guard top.fetched > 0 else { return TagSourceResult(status: .noLibraryYet) }
+                recent = Array(top.tags.prefix(recentLimit))
+            }
+            // Capped: a backlog larger than this is picked up by later scans as the caller's cursor advances.
+            let since = try Self.tags(db, filter: "ZDATE > ?", bindings: [.real(since.timeIntervalSinceReferenceDate)],
+                                      ascending: true, limit: tagsSinceLimit).tags
+            return TagSourceResult(status: .ok, tagsSince: since, recent: recent)
+        } catch let error as SQLiteError {
+            return TagSourceResult(status: classify(error))
+        } catch {
+            return TagSourceResult(status: .unreadable(String(describing: error)))
+        }
+    }
+
+    public func tags(withPKs pks: [Int64]) throws -> [Int64: ShazamTag] {
+        guard !pks.isEmpty else { return [:] }
+        let db = try SQLiteDatabase(path: databaseURL.path, mode: .readOnly)
+        let placeholders = Array(repeating: "?", count: pks.count).joined(separator: ",")
+        let found = try Self.tags(db, filter: "Z_PK IN (\(placeholders))", bindings: pks.map { .integer($0) },
+                                  ascending: true, limit: pks.count).tags
+        return Dictionary(found.map { ($0.pk, $0) }, uniquingKeysWith: { a, _ in a })
+    }
+
+    private func classify(_ error: SQLiteError) -> LibraryStatus {
+        if error.isPermissionDenied {
+            Self.log.notice("Shazam database read refused: SQLite \(error.code, privacy: .public): \(error.message, privacy: .private)")
+            return .accessDenied
+        }
+        if !FileManager.default.fileExists(atPath: databaseURL.path) { return .noLibraryYet }
+        Self.log.error("Shazam database unreadable: SQLite \(error.code, privacy: .public): \(error.message, privacy: .private)")
+        return .unreadable(error.description)
+    }
+
+    static let sinceCap = 5000
+    /// Valid ZDATE window in seconds since 2001 (about 2001...2127); anything else is corrupt and ignored.
+    private static let dateRange: (lower: Double, upper: Double) = (0, 4e9)
+
+    private static func schemaProblem(_ db: SQLiteDatabase) throws -> String? {
+        for (table, columns) in requiredColumns {
+            let kind = try db.query("SELECT type FROM sqlite_master WHERE name = ? COLLATE NOCASE", [.text(table)]).first?.string("type")
+            if let kind, kind != "table" { return "\(table) is not a table" }
+            let present = Set(try db.query("PRAGMA table_info(\(table))").compactMap { $0.string("name") })
+            if present.isEmpty { return table }
+            if let missing = columns.first(where: { !present.contains($0) }) { return "\(table).\(missing)" }
+        }
+        return nil
+    }
+
+    /// Picks the top `limit` tags first (a CTE), then resolves the first artist and first album of only those tags
+    /// with grouped MIN(Z_PK) lookups joined back by rowid. Shazam's tables have no index on ZTAGRESULT, so correlated
+    /// subqueries would rescan them per row; the grouped form scans each table once (O(n), not O(n*m)).
+    /// `filter` refers to unqualified ZSHTAGRESULTMO columns. `fetched` is the inner row count before artist filtering.
+    private static func tags(_ db: SQLiteDatabase, filter: String, bindings: [SQLiteValue],
+                             ascending: Bool, limit: Int) throws -> (tags: [ShazamTag], fetched: Int) {
+        let dir = ascending ? "ASC" : "DESC"
+        let sql = """
+            WITH top AS (
+              SELECT Z_PK AS pk, ZDATE AS date, ZTRACKNAME AS title FROM ZSHTAGRESULTMO
+              WHERE \(filter) AND ZTRACKNAME IS NOT NULL AND ZTRACKNAME <> '' AND ZDATE BETWEEN ? AND ?
+              ORDER BY ZDATE \(dir), Z_PK \(dir) LIMIT ?),
+            art AS (
+              SELECT ZTAGRESULT AS tag, MIN(Z_PK) AS rid FROM ZSHARTISTMO
+              WHERE ZNAME <> '' AND ZTAGRESULT IN (SELECT pk FROM top) GROUP BY ZTAGRESULT),
+            alb AS (
+              SELECT ZTAGRESULT AS tag, MIN(Z_PK) AS rid FROM ZSHMETADATAMO
+              WHERE ZKEY = 'Album' AND ZTAGRESULT IN (SELECT pk FROM top) GROUP BY ZTAGRESULT)
+            SELECT top.pk AS pk, top.date AS date, top.title AS title, a.ZNAME AS artist, m.ZVALUE AS album
+            FROM top
+            LEFT JOIN art ON art.tag = top.pk LEFT JOIN ZSHARTISTMO a ON a.Z_PK = art.rid
+            LEFT JOIN alb ON alb.tag = top.pk LEFT JOIN ZSHMETADATAMO m ON m.Z_PK = alb.rid
+            ORDER BY top.date \(dir), top.pk \(dir)
+            """
+        let all = bindings + [.real(dateRange.lower), .real(dateRange.upper), .integer(Int64(limit))]
+        let rows = try db.query(sql, all)
+        let tags = rows.compactMap { row -> ShazamTag? in
+            guard let pk = row.int("pk"), let seconds = row.double("date"), seconds.isFinite,
+                  let title = row.string("title"), let artist = row.string("artist") else { return nil }
+            let album = row.string("album").flatMap { $0.isEmpty ? nil : $0 }
+            return ShazamTag(pk: pk, date: Date(timeIntervalSinceReferenceDate: seconds),
+                             track: Track(artist: artist, title: title, album: album))
+        }
+        return (tags, rows.count)
+    }
+}

@@ -17,12 +17,18 @@ DerivedData
 *.ipa
 *.xcuserstate
 
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
-#
-# Pods/
-
 .DS_Store
+Kit/.build/
+Kit/.swiftpm/
+App/ShazamScrobbler.xcodeproj/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!App/ShazamScrobbler.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+App/Resources/Info.plist
+App/Config/Secrets.xcconfig
+App/build/
+signing/
