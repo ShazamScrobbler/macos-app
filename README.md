@@ -1,4 +1,4 @@
-# ShazamScrobbler for Mac
+# ShazamScrobbler for Mac [![CI](https://github.com/ShazamScrobbler/macos-app/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/ShazamScrobbler/macos-app/actions/workflows/ci.yml)
 
 A menu bar app that scrobbles the songs Shazam for Mac identifies to Last.fm, Libre.fm, ListenBrainz and compatible servers, several at once.
 
